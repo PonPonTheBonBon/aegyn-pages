@@ -16,14 +16,21 @@
         .section {
             margin-bottom: 20px;
         }
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .form-group > div {
+            flex: 1;
+            min-width: 150px;
+        }
         label {
             display: block;
-            margin-top: 10px;
         }
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], input[type="date"] {
             width: 100%;
             padding: 5px;
-            margin-top: 5px;
         }
         .btn {
             display: inline-block;
@@ -44,6 +51,10 @@
             padding: 10px;
             border: 1px solid #ccc;
         }
+        .separator {
+            border-bottom: 1px solid #ccc;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -55,24 +66,35 @@
     </div>
 
     <h2>General Information</h2>
-    <div class="section">
-        <label for="englishName">English Name (max 25 chars):</label>
-        <input type="text" id="englishName" maxlength="25">
-
-        <label for="country">Country (C, max 4 chars):</label>
-        <input type="text" id="country" maxlength="4">
-
-        <label for="subdivision">Subdivision (S, max 4 chars):</label>
-        <input type="text" id="subdivision" maxlength="4">
-
-        <label for="district">District (D, max 4 chars):</label>
-        <input type="text" id="district" maxlength="4">
-
-        <label for="latitude">Latitude (precision 7 decimals, -90 to 90):</label>
-        <input type="number" id="latitude" step="0.0000001" min="-90" max="90">
-
-        <label for="longitude">Longitude (precision 7 decimals, -180 to 180):</label>
-        <input type="number" id="longitude" step="0.0000001" min="-180" max="180">
+    <div class="section form-group">
+        <div>
+            <label for="id">ID:</label>
+            <input type="text" id="id" maxlength="25">
+        </div>
+        <div>
+            <label for="englishName">English Name (max 25 chars):</label>
+            <input type="text" id="englishName" maxlength="25">
+        </div>
+        <div>
+            <label for="country">Country (C, max 4 chars):</label>
+            <input type="text" id="country" maxlength="4">
+        </div>
+        <div>
+            <label for="subdivision">Subdivision (S, max 4 chars):</label>
+            <input type="text" id="subdivision" maxlength="4">
+        </div>
+        <div>
+            <label for="district">District (D, max 4 chars):</label>
+            <input type="text" id="district" maxlength="4">
+        </div>
+        <div>
+            <label for="latitude">Latitude (precision 7 decimals, -90 to 90):</label>
+            <input type="number" id="latitude" step="0.0000001" min="-90" max="90">
+        </div>
+        <div>
+            <label for="longitude">Longitude (precision 7 decimals, -180 to 180):</label>
+            <input type="number" id="longitude" step="0.0000001" min="-180" max="180">
+        </div>
     </div>
 
     <h2>Calendar Rules</h2>
@@ -95,6 +117,7 @@
     <script>
         const xmlInput = document.getElementById('xmlInput');
         const xmlOutput = document.getElementById('xmlOutput');
+        const id = document.getElementById('id');
         const englishName = document.getElementById('englishName');
         const country = document.getElementById('country');
         const subdivision = document.getElementById('subdivision');
@@ -109,7 +132,11 @@
             const xmlDoc = parser.parseFromString(xmlInput.value, "text/xml");
 
             const location = xmlDoc.getElementsByTagName('location')[0];
-            englishName.value = ''; // Add logic to get English name from somewhere
+            const comment = xmlDoc.createComment("Sweden / Stockholm");
+            const commentContent = comment.textContent.trim();
+            englishName.value = commentContent.split('/')[1].trim();
+
+            id.value = location.getAttribute('id');
             country.value = location.getAttribute('c');
             subdivision.value = location.getAttribute('s');
             district.value = location.getAttribute('d');
@@ -128,6 +155,8 @@
         function addRule(rule = null) {
             const ruleDiv = document.createElement('div');
             ruleDiv.classList.add('rule');
+            ruleDiv.classList.add('form-group');
+            ruleDiv.innerHTML = '<div class="separator"></div>';
 
             const day = rule ? rule.getAttribute('day') : '';
             const time = rule ? rule.getAttribute('time') : '';
@@ -144,34 +173,81 @@
             const dstem = rule ? rule.getAttribute('dstem') : '';
             const dsteo = rule ? rule.getAttribute('dsteo') : '';
 
-            ruleDiv.innerHTML = `
-                <label>Day:</label><input type="number" value="${day}" min="-9999999" max="9999999">
-                <label>Time:</label><input type="number" value="${time}" min="0" max="86399">
-                <label>Calendar:</label><input type="text" value="${cal}" maxlength="5">
-                <label>Offset:</label><input type="number" value="${off}" min="-86400" max="86400">
-                <label>Timezone:</label><input type="text" value="${tz}">
-                <label>DST:</label><input type="checkbox" ${dst == '1' ? 'checked' : ''}>
+            ruleDiv.innerHTML += `
+                <div>
+                    <label>Day:</label>
+                    <input type="number" value="${day}" min="-9999999" max="9999999">
+                </div>
+                <div>
+                    <label>Time:</label>
+                    <input type="number" value="${time}" min="0" max="86399">
+                </div>
+                <div>
+                    <label>Calendar:</label>
+                    <input type="text" value="${cal}" maxlength="5">
+                </div>
+                <div>
+                    <label>Offset:</label>
+                    <input type="number" value="${off}" min="-86400" max="86400">
+                </div>
+                <div>
+                    <label>Timezone:</label>
+                    <input type="text" value="${tz}">
+                </div>
+                <div>
+                    <label>DST:</label>
+                    <input type="checkbox" ${dst == '1' ? 'checked' : ''}>
+                </div>
                 <div class="dst-details" style="${dst == '1' ? '' : 'display:none'}">
-                    <label>DST Offset:</label><input type="number" value="${dstoff}" min="-86400" max="86400">
-                    <label>DST Timezone:</label><input type="text" value="${dsttz}">
-                    <label>DST Start Day:</label><input type="text" value="${dstsd}" maxlength="4">
-                    <label>DST Start Month:</label><input type="number" value="${dstsm}" min="1" max="99">
-                    <label>DST Start Time:</label><input type="number" value="${dstso}" min="0" max="86399">
-                    <label>DST End Day:</label><input type="text" value="${dsted}" maxlength="4">
-                    <label>DST End Month:</label><input type="number" value="${dstem}" min="1" max="99">
-                    <label>DST End Time:</label><input type="number" value="${dsteo}" min="0" max="86399">
+                    <div>
+                        <label>DST Offset:</label>
+                        <input type="number" value="${dstoff}" min="-86400" max="86400">
+                    </div>
+                    <div>
+                        <label>DST Timezone:</label>
+                        <input type="text" value="${dsttz}">
+                    </div>
+                    <div>
+                        <label>DST Start Day:</label>
+                        <input type="text" value="${dstsd}" maxlength="4">
+                    </div>
+                    <div>
+                        <label>DST Start Month:</label>
+                        <input type="number" value="${dstsm}" min="1" max="99">
+                    </div>
+                    <div>
+                        <label>DST Start Offset:</label>
+                        <input type="number" value="${dstso}" min="0" max="86399">
+                    </div>
+                    <div>
+                        <label>DST End Day:</label>
+                        <input type="text" value="${dsted}" maxlength="4">
+                    </div>
+                    <div>
+                        <label>DST End Month:</label>
+                        <input type="number" value="${dstem}" min="1" max="99">
+                    </div>
+                    <div>
+                        <label>DST End Offset:</label>
+                        <input type="number" value="${dsteo}" min="0" max="86399">
+                    </div>
                 </div>
             `;
+
             ruleDiv.querySelector('input[type="checkbox"]').addEventListener('change', function() {
-                const dstDetails = this.parentNode.querySelector('.dst-details');
+                const dstDetails = this.parentNode.parentNode.querySelector('.dst-details');
                 dstDetails.style.display = this.checked ? '' : 'none';
             });
+
             rulesSection.appendChild(ruleDiv);
+            generateXML();
         }
 
         function addYear(year = null) {
             const yearDiv = document.createElement('div');
             yearDiv.classList.add('year');
+            yearDiv.classList.add('form-group');
+            yearDiv.innerHTML = '<div class="separator"></div>';
 
             const id = year ? year.getAttribute('id') : '';
             const calA = year ? year.getAttribute('calA') : '';
@@ -180,17 +256,43 @@
             const Aend = year ? year.getAttribute('Aend') : '';
             const Bstart = year ? year.getAttribute('Bstart') : '';
             const Bend = year ? year.getAttribute('Bend') : '';
-            const app = year ? year.getAttribute('app') : '';
+            const app = year ? year.getAttribute('app') : '0';
 
-            yearDiv.innerHTML = `
-                <label>Calendar A:</label><input type="text" value="${calA}" maxlength="5">
-                <label>Calendar B:</label><input type="text" value="${calB}" maxlength="5">
-                <label>Start Date A:</label><input type="date" value="${Astart}">
-                <label>End Date A:</label><input type="date" value="${Aend}">
-                <label>Start Date B:</label><input type="date" value="${Bstart}" ${calB ? '' : 'disabled'}>
-                <label>End Date B:</label><input type="date" value="${Bend}" ${calB ? '' : 'disabled'}>
-                <label>Append Month:</label><input type="checkbox" ${app == '0' ? '' : 'checked'} ${calB ? '' : 'disabled'}>
+            yearDiv.innerHTML += `
+                <div>
+                    <label>ID:</label>
+                    <input type="number" value="${id}" min="0">
+                </div>
+                <div>
+                    <label>Calendar A:</label>
+                    <input type="text" value="${calA}" maxlength="5">
+                </div>
+                <div>
+                    <label>Calendar B:</label>
+                    <input type="text" value="${calB}" maxlength="5">
+                </div>
+                <div>
+                    <label>Start Date A:</label>
+                    <input type="date" value="${Astart}">
+                </div>
+                <div>
+                    <label>End Date A:</label>
+                    <input type="date" value="${Aend}">
+                </div>
+                <div>
+                    <label>Start Date B:</label>
+                    <input type="date" value="${Bstart}" ${calB ? '' : 'disabled'}>
+                </div>
+                <div>
+                    <label>End Date B:</label>
+                    <input type="date" value="${Bend}" ${calB ? '' : 'disabled'}>
+                </div>
+                <div>
+                    <label>Append Month:</label>
+                    <input type="checkbox" ${app == '0' ? '' : 'checked'} ${calB ? '' : 'disabled'}>
+                </div>
             `;
+
             yearDiv.querySelector('input[type="text"][value="${calB}"]').addEventListener('input', function() {
                 const BstartInput = this.parentNode.querySelector('input[type="date"][value="${Bstart}"]');
                 const BendInput = this.parentNode.querySelector('input[type="date"][value="${Bend}"]');
@@ -200,11 +302,14 @@
                 BendInput.disabled = !isCalB;
                 appendInput.disabled = !isCalB;
             });
+
             yearsSection.appendChild(yearDiv);
+            generateXML();
         }
 
         function generateXML() {
-            let xml = `<location id="SE_Sthlm" c="${country.value}" s="${subdivision.value}" d="${district.value}" lat="${latitude.value}" long="${longitude.value}">\n`;
+            const comment = `<!-- Sweden / ${englishName.value} -->\n`;
+            let xml = `${comment}<location id="${id.value}" c="${country.value}" s="${subdivision.value}" d="${district.value}" lat="${latitude.value}" long="${longitude.value}">\n`;
             xml += '    <rules>\n';
 
             const rules = rulesSection.getElementsByClassName('rule');
