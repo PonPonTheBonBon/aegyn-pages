@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location XML Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .xml-output {
+            white-space: pre;
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Import XML</h2>
+    <div class="section">
+        <textarea id="xmlInput" rows="10" style="width: 100%;"></textarea>
+        <button class="btn" onclick="importXML()">Import</button>
+    </div>
+
+    <h2>General Information</h2>
+    <div class="section">
+        <label for="englishName">English Name (max 25 chars):</label>
+        <input type="text" id="englishName" maxlength="25">
+
+        <label for="country">Country (C, max 4 chars):</label>
+        <input type="text" id="country" maxlength="4">
+
+        <label for="subdivision">Subdivision (S, max 4 chars):</label>
+        <input type="text" id="subdivision" maxlength="4">
+
+        <label for="district">District (D, max 4 chars):</label>
+        <input type="text" id="district" maxlength="4">
+
+        <label for="latitude">Latitude (precision 7 decimals, -90 to 90):</label>
+        <input type="number" id="latitude" step="0.0000001" min="-90" max="90">
+
+        <label for="longitude">Longitude (precision 7 decimals, -180 to 180):</label>
+        <input type="number" id="longitude" step="0.0000001" min="-180" max="180">
+    </div>
+
+    <h2>Calendar Rules</h2>
+    <div class="section" id="rulesSection">
+        <!-- Dynamic rule entries will be added here -->
+    </div>
+    <button class="btn" onclick="addRule()">Add Rule</button>
+
+    <h2>Calendar Years</h2>
+    <div class="section" id="yearsSection">
+        <!-- Dynamic year entries will be added here -->
+    </div>
+    <button class="btn" onclick="addYear()">Add Year</button>
+
+    <h2>Generated XML</h2>
+    <div class="section">
+        <pre id="xmlOutput" class="xml-output"></pre>
+    </div>
+
+    <script>
+        const xmlInput = document.getElementById('xmlInput');
+        const xmlOutput = document.getElementById('xmlOutput');
+        const englishName = document.getElementById('englishName');
+        const country = document.getElementById('country');
+        const subdivision = document.getElementById('subdivision');
+        const district = document.getElementById('district');
+        const latitude = document.getElementById('latitude');
+        const longitude = document.getElementById('longitude');
+        const rulesSection = document.getElementById('rulesSection');
+        const yearsSection = document.getElementById('yearsSection');
+
+        function importXML() {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlInput.value, "text/xml");
+
+            const location = xmlDoc.getElementsByTagName('location')[0];
+            englishName.value = ''; // Add logic to get English name from somewhere
+            country.value = location.getAttribute('c');
+            subdivision.value = location.getAttribute('s');
+            district.value = location.getAttribute('d');
+            latitude.value = location.getAttribute('lat');
+            longitude.value = location.getAttribute('long');
+
+            const rules = xmlDoc.getElementsByTagName('rule');
+            rulesSection.innerHTML = '';
+            Array.from(rules).forEach(rule => addRule(rule));
+
+            const years = xmlDoc.getElementsByTagName('year');
+            yearsSection.innerHTML = '';
+            Array.from(years).forEach(year => addYear(year));
+        }
+
+        function addRule(rule = null) {
+            const ruleDiv = document.createElement('div');
+            ruleDiv.classList.add('rule');
+
+            const day = rule ? rule.getAttribute('day') : '';
+            const time = rule ? rule.getAttribute('time') : '';
+            const cal = rule ? rule.getAttribute('cal') : '';
+            const off = rule ? rule.getAttribute('off') : '';
+            const tz = rule ? rule.getAttribute('tz') : '';
+            const dst = rule ? rule.getAttribute('dst') : '0';
+            const dstoff = rule ? rule.getAttribute('dstoff') : '';
+            const dsttz = rule ? rule.getAttribute('dsttz') : '';
+            const dstsd = rule ? rule.getAttribute('dstsd') : '';
+            const dstsm = rule ? rule.getAttribute('dstsm') : '';
+            const dstso = rule ? rule.getAttribute('dstso') : '';
+            const dsted = rule ? rule.getAttribute('dsted') : '';
+            const dstem = rule ? rule.getAttribute('dstem') : '';
+            const dsteo = rule ? rule.getAttribute('dsteo') : '';
+
+            ruleDiv.innerHTML = `
+                <label>Day:</label><input type="number" value="${day}" min="-9999999" max="9999999">
+                <label>Time:</label><input type="number" value="${time}" min="0" max="86399">
+                <label>Calendar:</label><input type="text" value="${cal}" maxlength="5">
+                <label>Offset:</label><input type="number" value="${off}" min="-86400" max="86400">
+                <label>Timezone:</label><input type="text" value="${tz}">
+                <label>DST:</label><input type="checkbox" ${dst == '1' ? 'checked' : ''}>
+                <div class="dst-details" style="${dst == '1' ? '' : 'display:none'}">
+                    <label>DST Offset:</label><input type="number" value="${dstoff}" min="-86400" max="86400">
+                    <label>DST Timezone:</label><input type="text" value="${dsttz}">
+                    <label>DST Start Day:</label><input type="text" value="${dstsd}" maxlength="4">
+                    <label>DST Start Month:</label><input type="number" value="${dstsm}" min="1" max="99">
+                    <label>DST Start Time:</label><input type="number" value="${dstso}" min="0" max="86399">
+                    <label>DST End Day:</label><input type="text" value="${dsted}" maxlength="4">
+                    <label>DST End Month:</label><input type="number" value="${dstem}" min="1" max="99">
+                    <label>DST End Time:</label><input type="number" value="${dsteo}" min="0" max="86399">
+                </div>
+            `;
+            ruleDiv.querySelector('input[type="checkbox"]').addEventListener('change', function() {
+                const dstDetails = this.parentNode.querySelector('.dst-details');
+                dstDetails.style.display = this.checked ? '' : 'none';
+            });
+            rulesSection.appendChild(ruleDiv);
+        }
+
+        function addYear(year = null) {
+            const yearDiv = document.createElement('div');
+            yearDiv.classList.add('year');
+
+            const id = year ? year.getAttribute('id') : '';
+            const calA = year ? year.getAttribute('calA') : '';
+            const calB = year ? year.getAttribute('calB') : '';
+            const Astart = year ? year.getAttribute('Astart') : '';
+            const Aend = year ? year.getAttribute('Aend') : '';
+            const Bstart = year ? year.getAttribute('Bstart') : '';
+            const Bend = year ? year.getAttribute('Bend') : '';
+            const app = year ? year.getAttribute('app') : '';
+
+            yearDiv.innerHTML = `
+                <label>Calendar A:</label><input type="text" value="${calA}" maxlength="5">
+                <label>Calendar B:</label><input type="text" value="${calB}" maxlength="5">
+                <label>Start Date A:</label><input type="date" value="${Astart}">
+                <label>End Date A:</label><input type="date" value="${Aend}">
+                <label>Start Date B:</label><input type="date" value="${Bstart}" ${calB ? '' : 'disabled'}>
+                <label>End Date B:</label><input type="date" value="${Bend}" ${calB ? '' : 'disabled'}>
+                <label>Append Month:</label><input type="checkbox" ${app == '0' ? '' : 'checked'} ${calB ? '' : 'disabled'}>
+            `;
+            yearDiv.querySelector('input[type="text"][value="${calB}"]').addEventListener('input', function() {
+                const BstartInput = this.parentNode.querySelector('input[type="date"][value="${Bstart}"]');
+                const BendInput = this.parentNode.querySelector('input[type="date"][value="${Bend}"]');
+                const appendInput = this.parentNode.querySelector('input[type="checkbox"]');
+                const isCalB = !!this.value.trim();
+                BstartInput.disabled = !isCalB;
+                BendInput.disabled = !isCalB;
+                appendInput.disabled = !isCalB;
+            });
+            yearsSection.appendChild(yearDiv);
+        }
+
+        function generateXML() {
+            let xml = `<location id="SE_Sthlm" c="${country.value}" s="${subdivision.value}" d="${district.value}" lat="${latitude.value}" long="${longitude.value}">\n`;
+            xml += '    <rules>\n';
+
+            const rules = rulesSection.getElementsByClassName('rule');
+            Array.from(rules).forEach(rule => {
+                const inputs = rule.getElementsByTagName('input');
+                xml += `        <rule day="${inputs[0].value}" time="${inputs[1].value}" cal="${inputs[2].value}" off="${inputs[3].value}" tz="${inputs[4].value}"`;
+                if (inputs[5].checked) {
+                    xml += ` dst="1" dstoff="${inputs[6].value}" dsttz="${inputs[7].value}" dstsd="${inputs[8].value}" dstsm="${inputs[9].value}" dstso="${inputs[10].value}" dsted="${inputs[11].value}" dstem="${inputs[12].value}" dsteo="${inputs[13].value}"`;
+                } else {
+                    xml += ' dst="0"';
+                }
+                xml += '/>\n';
+            });
+
+            xml += '    </rules>\n    <years>\n';
+
+            const years = yearsSection.getElementsByClassName('year');
+            Array.from(years).forEach(year => {
+                const inputs = year.getElementsByTagName('input');
+                xml += `        <year id="${inputs[0].value}" calA="${inputs[1].value}" calB="${inputs[2].value}" Astart="${inputs[3].value}" Aend="${inputs[4].value}"`;
+                if (inputs[2].value.trim()) {
+                    xml += ` Bstart="${inputs[5].value}" Bend="${inputs[6].value}" app="${inputs[7].checked ? '1' : '0'}"`;
+                }
+                xml += '/>\n';
+            });
+
+            xml += '    </years>\n</location>';
+            xmlOutput.textContent = xml;
+        }
+
+        rulesSection.addEventListener('input', generateXML);
+        yearsSection.addEventListener('input', generateXML);
+        document.querySelectorAll('input').forEach(input => input.addEventListener('input', generateXML));
+
+    </script>
+</body>
+</html>
