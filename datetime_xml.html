@@ -65,34 +65,34 @@
         <button class="btn" onclick="importXML()">Import</button>
     </div>
 
-    <h2>General Information</h2>
+    <h2>Location Information</h2>
     <div class="section form-group">
         <div>
-            <label for="id">ID:</label>
-            <input type="text" id="id" maxlength="25">
+            <label for="id">ID</label>
+            <input type="text" id="id" maxlength="11">
         </div>
         <div>
-            <label for="englishName">English Name (max 25 chars):</label>
+            <label for="englishName">Name</label>
             <input type="text" id="englishName" maxlength="25">
         </div>
-        <div>
-            <label for="country">Country (C, max 4 chars):</label>
-            <input type="text" id="country" maxlength="4">
+        <div style="width: 50px;">
+            <label for="country">C</label>
+            <input type="text" id="country" maxlength="2">
         </div>
-        <div>
-            <label for="subdivision">Subdivision (S, max 4 chars):</label>
+        <div style="width: 50px;">
+            <label for="subdivision">S</label>
             <input type="text" id="subdivision" maxlength="4">
         </div>
-        <div>
-            <label for="district">District (D, max 4 chars):</label>
+        <div style="width: 50px;">
+            <label for="district">D</label>
             <input type="text" id="district" maxlength="4">
         </div>
         <div>
-            <label for="latitude">Latitude (precision 7 decimals, -90 to 90):</label>
+            <label for="latitude">Latitude</label>
             <input type="number" id="latitude" step="0.0000001" min="-90" max="90">
         </div>
         <div>
-            <label for="longitude">Longitude (precision 7 decimals, -180 to 180):</label>
+            <label for="longitude">Longitude</label>
             <input type="number" id="longitude" step="0.0000001" min="-180" max="180">
         </div>
     </div>
@@ -175,60 +175,60 @@
 
             ruleDiv.innerHTML += `
                 <div>
-                    <label>Day:</label>
+                    <label>Day</label>
                     <input type="number" value="${day}" min="-9999999" max="9999999">
                 </div>
                 <div>
-                    <label>Time:</label>
+                    <label>Time</label>
                     <input type="number" value="${time}" min="0" max="86399">
                 </div>
                 <div>
-                    <label>Calendar:</label>
+                    <label>Calendar</label>
                     <input type="text" value="${cal}" maxlength="5">
                 </div>
                 <div>
-                    <label>Offset:</label>
+                    <label>Offset</label>
                     <input type="number" value="${off}" min="-86400" max="86400">
                 </div>
                 <div>
-                    <label>Timezone:</label>
+                    <label>Timezone</label>
                     <input type="text" value="${tz}">
                 </div>
                 <div>
-                    <label>DST:</label>
+                    <label>DST</label>
                     <input type="checkbox" ${dst == '1' ? 'checked' : ''}>
                 </div>
                 <div class="dst-details" style="${dst == '1' ? '' : 'display:none'}">
                     <div>
-                        <label>DST Offset:</label>
+                        <label>DST Offset</label>
                         <input type="number" value="${dstoff}" min="-86400" max="86400">
                     </div>
                     <div>
-                        <label>DST Timezone:</label>
+                        <label>DST Timezone</label>
                         <input type="text" value="${dsttz}">
                     </div>
                     <div>
-                        <label>DST Start Day:</label>
+                        <label>DST Start Day</label>
                         <input type="text" value="${dstsd}" maxlength="4">
                     </div>
                     <div>
-                        <label>DST Start Month:</label>
+                        <label>DST Start Month</label>
                         <input type="number" value="${dstsm}" min="1" max="99">
                     </div>
                     <div>
-                        <label>DST Start Offset:</label>
+                        <label>DST Start Offset</label>
                         <input type="number" value="${dstso}" min="0" max="86399">
                     </div>
                     <div>
-                        <label>DST End Day:</label>
+                        <label>DST End Day</label>
                         <input type="text" value="${dsted}" maxlength="4">
                     </div>
                     <div>
-                        <label>DST End Month:</label>
+                        <label>DST End Month</label>
                         <input type="number" value="${dstem}" min="1" max="99">
                     </div>
                     <div>
-                        <label>DST End Offset:</label>
+                        <label>DST End Offset</label>
                         <input type="number" value="${dsteo}" min="0" max="86399">
                     </div>
                 </div>
