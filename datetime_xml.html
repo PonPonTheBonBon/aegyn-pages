@@ -1,596 +1,635 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Location XML Editor</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        .flex-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            font-family: Consolas, monospace;
-        }
-        .flex-container > label {
-            flex: 0 0 100px;
-        }
-        .flex-container > input {
-            font-family: Consolas, monospace;
-        }
-        .separator {
-            flex: 0 0 100%;
-            height: 1px;
-            background: #ccc;
-            margin: 10px 0;
-        }
-        .dst-details {
-            display: none;
-            gap: 10px;
-            align-items: center;
-        }
-        textarea {
-            width: 100%;
-            height: 150px;
-            font-family: Consolas, monospace;
-        }
-        #xml-output {
-            width: 100%;
-            height: 200px;
-            font-family: Consolas, monospace;
-            white-space: pre;
-            border: 1px solid #ccc;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<title>Location XML Editor</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+		}
+		h2 {
+			display: block;
+		}
+		.section {
+			margin-bottom: 20px;
+		}
+		.flex-container {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+		}
+		label {
+			display: block;
+			margin-top: 10px;
+		}
+		input {
+			padding: 5px;
+			margin-top: 5px;
+			font-family: Consolas, monospace;
+		}
+		input#english-name {
+			font-family: Arial, sans-serif;
+		}
+		.rule {
+			padding-bottom: 5px;
+			border-bottom: 1px solid #767676;
+		}
+		.rule:last-child {
+			border-bottom: none;
+		}
+		.year {
+			padding-bottom: 5px;
+			border-bottom: 1px solid #767676;
+		}
+		.year:last-child {
+			border-bottom: none;
+		}
+		.btn {
+			display: inline-block;
+			padding: 10px 20px;
+			margin-top: 10px;
+			cursor: pointer;
+			background-color: #FA3B7B;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			transition: background-color 150ms linear;
+		}
+		.btn:hover, .btn:focus {
+			background-color: #E01F60;
+		}
+		.btn:active {
+			background-color: #C70848;
+			transition: background-color 0ms linear;
+		}
+		.xml-output {
+			white-space: pre;
+			background-color: #f8f8f8;
+			padding: 10px;
+			border: 1px solid #ccc;
+		}
+		hr {
+			border: none;
+			border-top: 1px solid #767676;
+			overflow: visible;
+			text-align: center;
+			height: 1px;
+		}
+	</style>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 </head>
 <body>
-    <div class="section">
-        <h2>Import XML</h2>
-        <textarea id="xml-input"></textarea>
-        <button id="import-button">Import</button>
-    </div>
-    <div class="section">
-        <h2>Location Information</h2>
-        <div class="flex-container">
-            <label>ID:</label><input type="text" id="location-id" style="width: 5ch;">
-            <label>English Name:</label><input type="text" id="english-name" style="width: 25ch;">
-            <label>C:</label><input type="text" id="country" maxlength="2" style="width: 2ch;">
-            <label>S:</label><input type="text" id="subdivision" maxlength="4" style="width: 4ch;">
-            <label>D:</label><input type="text" id="district" maxlength="4" style="width: 4ch;">
-            <label>Latitude:</label><input type="number" id="latitude" step="0.0000001" style="width: 12ch;">
-            <label>Longitude:</label><input type="number" id="longitude" step="0.0000001" style="width: 12ch;">
-        </div>
-    </div>
-    <div class="section">
-        <h2>Calendar Rules</h2>
-        <div id="rules-section"></div>
-        <button id="add-rule-button">Add Rule</button>
-    </div>
-    <div class="section">
-        <h2>Calendar Years</h2>
-        <div id="years-section"></div>
-        <button id="add-year-button">Add Year</button>
-    </div>
-    <div class="section">
-        <h2>Generated XML</h2>
-        <pre id="xml-output"></pre>
-    </div>
-    <script>
-        const xmlInput = document.getElementById('xml-input');
-        const importButton = document.getElementById('import-button');
-        const locationId = document.getElementById('location-id');
-        const englishName = document.getElementById('english-name');
-        const country = document.getElementById('country');
-        const subdivision = document.getElementById('subdivision');
-        const district = document.getElementById('district');
-        const latitude = document.getElementById('latitude');
-        const longitude = document.getElementById('longitude');
-        const rulesSection = document.getElementById('rules-section');
-        const yearsSection = document.getElementById('years-section');
-        const xmlOutput = document.getElementById('xml-output');
+	<h2>Import XML</h2>
+	<div class="section">
+		<textarea id="xmlInput" rows="10" style="width: 100%;"></textarea>
+		<button class="btn" id="importButton" onclick="importXML()">Import</button>
+	</div>
+	<h2>Location Information</h2>
+	<div class="section flex-container">
+		<label>ID</label><input type="text" id="loc-id" maxlength="11" style="width: 11ch;">
+		<label>Name</label><input type="text" id="loc-name" style="width: 25ch;">
+		<label>C</label><input type="text" id="country" maxlength="2" style="width: 2ch;">
+		<label>S</label><input type="text" id="subdivision" maxlength="4" style="width: 4ch;">
+		<label>D</label><input type="text" id="district" maxlength="4" style="width: 4ch;">
+		<label>Latitude</label><input type="number" id="latitude" step="0.0000001" style="width: 14ch;">
+		<label>Longitude</label><input type="number" id="longitude" step="0.0000001" style="width: 14ch;">
+	</div>
+	<hr/>
+	<h2>Calendar Rules</h2>
+	<div class="section" id="rulesSection">
+		<!-- Dynamic rule entries will be added here -->
+	</div>
+	<button class="btn" id="rulesButton" onclick="addRule()">Add Rule</button>
+	<hr/>
+	<h2>Calendar Years</h2>
+	<div class="section" id="yearsSection">
+		<!-- Dynamic year entries will be added here -->
+	</div>
+	<button class="btn" id="yearsButton" onclick="addYear()">Add Year</button>
+	<hr/>
+	<h2>Results</h2>
+	<div class="section" id="resultSection">
+		<!-- Dynamic result entries will be added here -->
+	</div>
+	<hr/>
+	<h2>Output XML</h2>
+	<div class="section">
+		<pre id="xmlOutput" class="xml-output"></pre>
+		<button class="btn" onclick="copyXML()">Copy XML</button>
+	</div>
+	
+	<script>
+		const xmlInput = document.getElementById('xmlInput');
+		const xmlOutput = document.getElementById('xmlOutput');
+		const locID = document.getElementById('loc-id');
+		const locName = document.getElementById('loc-name');
+		const country = document.getElementById('country');
+		const subdivision = document.getElementById('subdivision');
+		const district = document.getElementById('district');
+		const latitude = document.getElementById('latitude');
+		const longitude = document.getElementById('longitude');
+		const rulesSection = document.getElementById('rulesSection');
+		const yearsSection = document.getElementById('yearsSection');
 
-        const countryNames = {
-            "AC": "Ascension Isl.",
-            "AD": "Andorra",
-            "AE": "UAE",
-            "AF": "Afghanistan",
-            "AG": "Antigua-Barbuda",
-            "AI": "Anguilla",
-            "AL": "Albania",
-            "AM": "Armenia",
-            "AO": "Angola",
-            "AQ": "Antarctica",
-            "AR": "Argentina",
-            "AS": "Am. Samoa",
-            "AT": "Austria",
-            "AU": "Australia",
-            "AW": "Aruba",
-            "AX": "Åland Isl.",
-            "AZ": "Azerbaijan",
-            "BA": "Bosnia-Herzeg.",
-            "BB": "Barbados",
-            "BD": "Bangladesh",
-            "BE": "Belgium",
-            "BF": "Burkina Faso",
-            "BG": "Bulgaria",
-            "BH": "Bahrain",
-            "BI": "Burundi",
-            "BJ": "Benin",
-            "BL": "St Barthélemy",
-            "BM": "Bermuda",
-            "BN": "Brunei",
-            "BO": "Bolivia",
-            "BQ": "Carib. Netherl.",
-            "BR": "Brazil",
-            "BS": "Bahamas",
-            "BT": "Bhutan",
-            "BV": "Bouvet Isl.",
-            "BW": "Botswana",
-            "BY": "Belarus",
-            "BZ": "Belize",
-            "CA": "Canada",
-            "CC": "Cocos (Keeling) Isl.",
-            "CD": "DR Congo",
-            "CF": "CAR",
-            "CG": "Rep. Congo",
-            "CH": "Switzerland",
-            "CI": "Côte d’Ivoire",
-            "CK": "Cook Isl.",
-            "CL": "Chile",
-            "CM": "Cameroon",
-            "CN": "China",
-            "CO": "Colombia",
-            "CP": "Clipperton Isl.",
-            "CR": "Costa Rica",
-            "CU": "Cuba",
-            "CV": "Cape Verde",
-            "CW": "Curaçao",
-            "CX": "Christmas Isl.",
-            "CY": "Cyprus",
-            "CZ": "Czechia",
-            "DE": "Germany",
-            "DG": "Diego Garcia",
-            "DJ": "Djibouti",
-            "DK": "Denmark",
-            "DM": "Dominica",
-            "DO": "Dominican Rep.",
-            "DZ": "Algeria",
-            "EA": "Ceuta-Melilla",
-            "EC": "Ecuador",
-            "EE": "Estonia",
-            "EG": "Egypt",
-            "EH": "Western Sahara",
-            "ER": "Eritrea",
-            "ES": "Spain",
-            "ET": "Ethiopia",
-            "FI": "Finland",
-            "FJ": "Fiji",
-            "FK": "Falkland Isl.",
-            "FM": "Micronesia",
-            "FO": "Faroe Isl.",
-            "FR": "France",
-            "GA": "Gabon",
-            "GB": "UK",
-            "GD": "Grenada",
-            "GE": "Georgia",
-            "GF": "French Guiana",
-            "GG": "Guernsey",
-            "GH": "Ghana",
-            "GI": "Gibraltar",
-            "GL": "Greenland",
-            "GM": "Gambia",
-            "GN": "Guinea",
-            "GP": "Guadeloupe",
-            "GQ": "Equatorial Guinea",
-            "GR": "Greece",
-            "GS": "S.Geo.-S.San. Isl.",
-            "GT": "Guatemala",
-            "GU": "Guam",
-            "GW": "Guinea-Bissau",
-            "GY": "Guyana",
-            "HK": "Hong Kong",
-            "HM": "Heard-McD. Isl.",
-            "HN": "Honduras",
-            "HR": "Croatia",
-            "HT": "Haiti",
-            "HU": "Hungary",
-            "IC": "Canary Isl.",
-            "ID": "Indonesia",
-            "IE": "Ireland",
-            "IL": "Israel",
-            "IM": "Isle of Man",
-            "IN": "India",
-            "IO": "Br.In. Ocean Terr.",
-            "IQ": "Iraq",
-            "IR": "Iran",
-            "IS": "Iceland",
-            "IT": "Italy",
-            "JE": "Jersey",
-            "JM": "Jamaica",
-            "JO": "Jordan",
-            "JP": "Japan",
-            "KE": "Kenya",
-            "KG": "Kyrgyzstan",
-            "KH": "Cambodia",
-            "KI": "Kiribati",
-            "KM": "Comoros",
-            "KN": "St Kitts-Nevis",
-            "KP": "North Korea",
-            "KR": "South Korea",
-            "KW": "Kuwait",
-            "KY": "Cayman Isl.",
-            "KZ": "Kazakhstan",
-            "LA": "Laos",
-            "LB": "Lebanon",
-            "LC": "St Lucia",
-            "LI": "Liechtenstein",
-            "LK": "Sri Lanka",
-            "LR": "Liberia",
-            "LS": "Lesotho",
-            "LT": "Lithuania",
-            "LU": "Luxembourg",
-            "LV": "Latvia",
-            "LY": "Libya",
-            "MA": "Morocco",
-            "MC": "Monaco",
-            "MD": "Moldova",
-            "ME": "Montenegro",
-            "MF": "St Martin",
-            "MG": "Madagascar",
-            "MH": "Marshall Isl.",
-            "MK": "North Macedonia",
-            "ML": "Mali",
-            "MM": "Myanmar (Burma)",
-            "MN": "Mongolia",
-            "MO": "Macao",
-            "MP": "N.Mariana Isl.",
-            "MQ": "Martinique",
-            "MR": "Mauritania",
-            "MS": "Montserrat",
-            "MT": "Malta",
-            "MU": "Mauritius",
-            "MV": "Maldives",
-            "MW": "Malawi",
-            "MX": "Mexico",
-            "MY": "Malaysia",
-            "MZ": "Mozambique",
-            "NA": "Namibia",
-            "NC": "New Caledonia",
-            "NE": "Niger",
-            "NF": "Norfolk Isl.",
-            "NG": "Nigeria",
-            "NI": "Nicaragua",
-            "NL": "Netherlands",
-            "NO": "Norway",
-            "NP": "Nepal",
-            "NR": "Nauru",
-            "NU": "Niue",
-            "NZ": "New Zealand",
-            "OM": "Oman",
-            "PA": "Panama",
-            "PE": "Peru",
-            "PF": "Fr. Polynesia",
-            "PG": "PNG",
-            "PH": "Philippines",
-            "PK": "Pakistan",
-            "PL": "Poland",
-            "PM": "St Pierre-Miqu.",
-            "PN": "Pitcairn Isl.",
-            "PR": "Puerto Rico",
-            "PS": "Palestine",
-            "PT": "Portugal",
-            "PW": "Palau",
-            "PY": "Paraguay",
-            "QA": "Qatar",
-            "RE": "Réunion",
-            "RO": "Romania",
-            "RS": "Serbia",
-            "RU": "Russia",
-            "RW": "Rwanda",
-            "SA": "Saudi Arabia",
-            "SB": "Solomon Isl.",
-            "SC": "Seychelles",
-            "SD": "Sudan",
-            "SE": "Sweden",
-            "SG": "Singapore",
-            "SH": "St Helena",
-            "SI": "Slovenia",
-            "SJ": "Svalb.-Jan M.",
-            "SK": "Slovakia",
-            "SL": "Sierra Leone",
-            "SM": "San Marino",
-            "SN": "Senegal",
-            "SO": "Somalia",
-            "SR": "Suriname",
-            "SS": "South Sudan",
-            "ST": "S.Tomé-Prínc.",
-            "SV": "El Salvador",
-            "SX": "Sint Maarten",
-            "SY": "Syria",
-            "SZ": "Eswatini",
-            "TA": "Tristan da C.",
-            "TC": "Turks & Caicos Isl.",
-            "TD": "Chad",
-            "TF": "French S.Terr.",
-            "TG": "Togo",
-            "TH": "Thailand",
-            "TJ": "Tajikistan",
-            "TK": "Tokelau",
-            "TL": "Timor-Leste",
-            "TM": "Turkmenistan",
-            "TN": "Tunisia",
-            "TO": "Tonga",
-            "TR": "Turkey",
-            "TT": "Trinidad-Tobago",
-            "TV": "Tuvalu",
-            "TW": "Taiwan",
-            "TZ": "Tanzania",
-            "UA": "Ukraine",
-            "UG": "Uganda",
-            "UM": "US Outlying Isl.",
-            "US": "US",
-            "UY": "Uruguay",
-            "UZ": "Uzbekistan",
-            "VA": "Vatican City",
-            "VC": "St Vinc.-Gren.",
-            "VE": "Venezuela",
-            "VG": "British Virgin Isl.",
-            "VI": "US Virgin Isl.",
-            "VN": "Vietnam",
-            "VU": "Vanuatu",
-            "WF": "Wallis-Futuna",
-            "WS": "Samoa",
-            "XK": "Kosovo",
-            "XN": "N.Cyprus",
-            "YE": "Yemen",
-            "YT": "Mayotte",
-            "ZA": "South Africa",
-            "ZM": "Zambia",
-            "ZW": "Zimbabwe",
-            "ZZ": ""
-        };
+		const countryNames = {
+			"AC": "Ascension Isl.",
+			"AD": "Andorra",
+			"AE": "UAE",
+			"AF": "Afghanistan",
+			"AG": "Antigua-Barbuda",
+			"AI": "Anguilla",
+			"AL": "Albania",
+			"AM": "Armenia",
+			"AO": "Angola",
+			"AQ": "Antarctica",
+			"AR": "Argentina",
+			"AS": "Am. Samoa",
+			"AT": "Austria",
+			"AU": "Australia",
+			"AW": "Aruba",
+			"AX": "Åland Isl.",
+			"AZ": "Azerbaijan",
+			"BA": "Bosnia-Herzeg.",
+			"BB": "Barbados",
+			"BD": "Bangladesh",
+			"BE": "Belgium",
+			"BF": "Burkina Faso",
+			"BG": "Bulgaria",
+			"BH": "Bahrain",
+			"BI": "Burundi",
+			"BJ": "Benin",
+			"BL": "St Barthélemy",
+			"BM": "Bermuda",
+			"BN": "Brunei",
+			"BO": "Bolivia",
+			"BQ": "Carib. Netherl.",
+			"BR": "Brazil",
+			"BS": "Bahamas",
+			"BT": "Bhutan",
+			"BV": "Bouvet Isl.",
+			"BW": "Botswana",
+			"BY": "Belarus",
+			"BZ": "Belize",
+			"CA": "Canada",
+			"CC": "Cocos (Keeling) Isl.",
+			"CD": "DR Congo",
+			"CF": "CAR",
+			"CG": "Rep. Congo",
+			"CH": "Switzerland",
+			"CI": "Côte d’Ivoire",
+			"CK": "Cook Isl.",
+			"CL": "Chile",
+			"CM": "Cameroon",
+			"CN": "China",
+			"CO": "Colombia",
+			"CP": "Clipperton Isl.",
+			"CR": "Costa Rica",
+			"CU": "Cuba",
+			"CV": "Cape Verde",
+			"CW": "Curaçao",
+			"CX": "Christmas Isl.",
+			"CY": "Cyprus",
+			"CZ": "Czechia",
+			"DE": "Germany",
+			"DG": "Diego Garcia",
+			"DJ": "Djibouti",
+			"DK": "Denmark",
+			"DM": "Dominica",
+			"DO": "Dominican Rep.",
+			"DZ": "Algeria",
+			"EA": "Ceuta-Melilla",
+			"EC": "Ecuador",
+			"EE": "Estonia",
+			"EG": "Egypt",
+			"EH": "Western Sahara",
+			"ER": "Eritrea",
+			"ES": "Spain",
+			"ET": "Ethiopia",
+			"FI": "Finland",
+			"FJ": "Fiji",
+			"FK": "Falkland Isl.",
+			"FM": "Micronesia",
+			"FO": "Faroe Isl.",
+			"FR": "France",
+			"GA": "Gabon",
+			"GB-map": "UK",
+			"GD": "Grenada",
+			"GE": "Georgia",
+			"GF": "French Guiana",
+			"GG": "Guernsey",
+			"GH": "Ghana",
+			"GI": "Gibraltar",
+			"GL": "Greenland",
+			"GM": "Gambia",
+			"GN": "Guinea",
+			"GP": "Guadeloupe",
+			"GQ": "Equatorial Guinea",
+			"GR": "Greece",
+			"GS": "S.Geo.-S.San. Isl.",
+			"GT": "Guatemala",
+			"GU": "Guam",
+			"GW": "Guinea-Bissau",
+			"GY": "Guyana",
+			"HK": "Hong Kong",
+			"HM": "Heard-McD. Isl.",
+			"HN": "Honduras",
+			"HR": "Croatia",
+			"HT": "Haiti",
+			"HU": "Hungary",
+			"IC": "Canary Isl.",
+			"ID": "Indonesia",
+			"IE": "Ireland",
+			"IL": "Israel",
+			"IM": "Isle of Man",
+			"IN": "India",
+			"IO": "Br.In. Ocean Terr.",
+			"IQ": "Iraq",
+			"IR": "Iran",
+			"IS": "Iceland",
+			"IT": "Italy",
+			"JE": "Jersey",
+			"JM": "Jamaica",
+			"JO": "Jordan",
+			"JP": "Japan",
+			"KE": "Kenya",
+			"KG": "Kyrgyzstan",
+			"KH": "Cambodia",
+			"KI": "Kiribati",
+			"KM": "Comoros",
+			"KN": "St Kitts-Nevis",
+			"KP": "North Korea",
+			"KR": "South Korea",
+			"KW": "Kuwait",
+			"KY": "Cayman Isl.",
+			"KZ": "Kazakhstan",
+			"LA": "Laos",
+			"LB": "Lebanon",
+			"LC": "St Lucia",
+			"LI": "Liechtenstein",
+			"LK": "Sri Lanka",
+			"LR": "Liberia",
+			"LS": "Lesotho",
+			"LT": "Lithuania",
+			"LU": "Luxembourg",
+			"LV": "Latvia",
+			"LY": "Libya",
+			"MA": "Morocco",
+			"MC": "Monaco",
+			"MD": "Moldova",
+			"ME": "Montenegro",
+			"MF": "St Martin",
+			"MG": "Madagascar",
+			"MH": "Marshall Isl.",
+			"MK": "North Macedonia",
+			"ML": "Mali",
+			"MM": "Myanmar (Burma)",
+			"MN": "Mongolia",
+			"MO": "Macao",
+			"MP": "N.Mariana Isl.",
+			"MQ": "Martinique",
+			"MR": "Mauritania",
+			"MS": "Montserrat",
+			"MT": "Malta",
+			"MU": "Mauritius",
+			"MV": "Maldives",
+			"MW": "Malawi",
+			"MX": "Mexico",
+			"MY": "Malaysia",
+			"MZ": "Mozambique",
+			"NA": "Namibia",
+			"NC": "New Caledonia",
+			"NE": "Niger",
+			"NF": "Norfolk Isl.",
+			"NG": "Nigeria",
+			"NI": "Nicaragua",
+			"NL": "Netherlands",
+			"NO": "Norway",
+			"NP": "Nepal",
+			"NR": "Nauru",
+			"NU": "Niue",
+			"NZ": "New Zealand",
+			"OM": "Oman",
+			"PA": "Panama",
+			"PE": "Peru",
+			"PF": "Fr. Polynesia",
+			"PG": "PNG",
+			"PH": "Philippines",
+			"PK": "Pakistan",
+			"PL": "Poland",
+			"PM": "St Pierre-Miqu.",
+			"PN": "Pitcairn Isl.",
+			"PR": "Puerto Rico",
+			"PS": "Palestine",
+			"PT": "Portugal",
+			"PW": "Palau",
+			"PY": "Paraguay",
+			"QA": "Qatar",
+			"RE": "Réunion",
+			"RO": "Romania",
+			"RS": "Serbia",
+			"RU": "Russia",
+			"RW": "Rwanda",
+			"SA": "Saudi Arabia",
+			"SB": "Solomon Isl.",
+			"SC": "Seychelles",
+			"SD": "Sudan",
+			"SE": "Sweden",
+			"SG": "Singapore",
+			"SH": "St Helena",
+			"SI": "Slovenia",
+			"SJ": "Svalb.-Jan M.",
+			"SK": "Slovakia",
+			"SL": "Sierra Leone",
+			"SM": "San Marino",
+			"SN": "Senegal",
+			"SO": "Somalia",
+			"SR": "Suriname",
+			"SS": "South Sudan",
+			"ST": "S.Tomé-Prínc.",
+			"SV": "El Salvador",
+			"SX": "Sint Maarten",
+			"SY": "Syria",
+			"SZ": "Eswatini",
+			"TA": "Tristan da C.",
+			"TC": "Turks & Caicos Isl.",
+			"TD": "Chad",
+			"TF": "French S.Terr.",
+			"TG": "Togo",
+			"TH": "Thailand",
+			"TJ": "Tajikistan",
+			"TK": "Tokelau",
+			"TL": "Timor-Leste",
+			"TM": "Turkmenistan",
+			"TN": "Tunisia",
+			"TO": "Tonga",
+			"TR": "Turkey",
+			"TT": "Trinidad-Tobago",
+			"TV": "Tuvalu",
+			"TW": "Taiwan",
+			"TZ": "Tanzania",
+			"UA": "Ukraine",
+			"UG": "Uganda",
+			"UM": "US Outlying Isl.",
+			"US": "US",
+			"UY": "Uruguay",
+			"UZ": "Uzbekistan",
+			"VA": "Vatican City",
+			"VC": "St Vinc.-Gren.",
+			"VE": "Venezuela",
+			"VG": "British Virgin Isl.",
+			"VI": "US Virgin Isl.",
+			"VN": "Vietnam",
+			"VU": "Vanuatu",
+			"WF": "Wallis-Futuna",
+			"WS": "Samoa",
+			"XK": "Kosovo",
+			"XN": "N.Cyprus",
+			"YE": "Yemen",
+			"YT": "Mayotte",
+			"ZA": "South Africa",
+			"ZM": "Zambia",
+			"ZW": "Zimbabwe",
+			"ZZ": ""
+		};
 
-        const subdivisionNames = {
-            "CA": {
-                "AB": "Alberta",
-                "BC": "British Columbia",
-                "MB": "Manitoba",
-                "NB": "New Brunswick",
-                "NL": "Newfoundland and Labrador",
-                "NS": "Nova Scotia",
-                "NT": "Northwest Territories",
-                "NU": "Nunavut",
-                "ON": "Ontario",
-                "PE": "Prince Edward Island",
-                "QC": "Quebec",
-                "SK": "Saskatchewan",
-                "YT": "Yukon"
-            },
-            "GB": {
-                "ENG": "England",
-                "NIR": "Northern Ireland",
-                "SCT": "Scotland",
-                "WLS": "Wales"
-            },
-            "US": {
-                "AK": "Alaska",
-                "AL": "Alabama",
-                "AR": "Arkansas",
-                "AZ": "Arizona",
-                "CA": "California",
-                "CO": "Colorado",
-                "CT": "Connecticut",
-                "DE": "Delaware",
-                "FL": "Florida",
-                "GA": "Georgia",
-                "HI": "Hawaii",
-                "IA": "Iowa",
-                "ID": "Idaho",
-                "IL": "Illinois",
-                "IN": "Indiana",
-                "KS": "Kansas",
-                "KY": "Kentucky",
-                "LA": "Louisiana",
-                "MA": "Massachusetts",
-                "MD": "Maryland",
-                "ME": "Maine",
-                "MI": "Michigan",
-                "MN": "Minnesota",
-                "MO": "Missouri",
-                "MS": "Mississippi",
-                "MT": "Montana",
-                "NC": "North Carolina",
-                "ND": "North Dakota",
-                "NE": "Nebraska",
-                "NH": "New Hampshire",
-                "NJ": "New Jersey",
-                "NM": "New Mexico",
-                "NV": "Nevada",
-                "NY": "New York",
-                "OH": "Ohio",
-                "OK": "Oklahoma",
-                "OR": "Oregon",
-                "PA": "Pennsylvania",
-                "RI": "Rhode Island",
-                "SC": "South Carolina",
-                "SD": "South Dakota",
-                "TN": "Tennessee",
-                "TX": "Texas",
-                "UT": "Utah",
-                "VA": "Virginia",
-                "VT": "Vermont",
-                "WA": "Washington",
-                "WI": "Wisconsin",
-                "WV": "West Virginia",
-                "WY": "Wyoming"
-            }
-        };
+		const subdivisionNames = {
+			"CA": {
+				"AB": "Alberta",
+				"BC": "British Columbia",
+				"MB": "Manitoba",
+				"NB": "New Brunswick",
+				"NL": "Newfoundland and Labrador",
+				"NS": "Nova Scotia",
+				"NT": "Northwest Territories",
+				"NU": "Nunavut",
+				"ON": "Ontario",
+				"PE": "Prince Edward Island",
+				"QC": "Quebec",
+				"SK": "Saskatchewan",
+				"YT": "Yukon"
+			},
+			"GB": {
+				"ENG": "England",
+				"NIR": "Northern Ireland",
+				"SCT": "Scotland",
+				"WLS": "Wales"
+			},
+			"US": {
+				"AK": "Alaska",
+				"AL": "Alabama",
+				"AR": "Arkansas",
+				"AZ": "Arizona",
+				"CA": "California",
+				"CO": "Colorado",
+				"CT": "Connecticut",
+				"DE": "Delaware",
+				"FL": "Florida",
+				"GA": "Georgia",
+				"HI": "Hawaii",
+				"IA": "Iowa",
+				"ID": "Idaho",
+				"IL": "Illinois",
+				"IN": "Indiana",
+				"KS": "Kansas",
+				"KY": "Kentucky",
+				"LA": "Louisiana",
+				"MA": "Massachusetts",
+				"MD": "Maryland",
+				"ME": "Maine",
+				"MI": "Michigan",
+				"MN": "Minnesota",
+				"MO": "Missouri",
+				"MS": "Mississippi",
+				"MT": "Montana",
+				"NC": "North Carolina",
+				"ND": "North Dakota",
+				"NE": "Nebraska",
+				"NH": "New Hampshire",
+				"NJ": "New Jersey",
+				"NM": "New Mexico",
+				"NV": "Nevada",
+				"NY": "New York",
+				"OH": "Ohio",
+				"OK": "Oklahoma",
+				"OR": "Oregon",
+				"PA": "Pennsylvania",
+				"RI": "Rhode Island",
+				"SC": "South Carolina",
+				"SD": "South Dakota",
+				"TN": "Tennessee",
+				"TX": "Texas",
+				"UT": "Utah",
+				"VA": "Virginia",
+				"VT": "Vermont",
+				"WA": "Washington",
+				"WI": "Wisconsin",
+				"WV": "West Virginia",
+				"WY": "Wyoming"
+			}
+		};
+		function importXML() {
+			const parser = new DOMParser();
+			const xmlDoc = parser.parseFromString(xmlInput.value, "text/xml");
 
-        importButton.addEventListener('click', () => {
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(xmlInput.value, "application/xml");
+			const location = xmlDoc.getElementsByTagName('location')[0];
+			/*const NameMatch = location.nodeValue.trim().match(/\/ ([^\/]+) -->$/);*/
+			/*locName.value = NameMatch ? NameMatch[1] : '';*/
+			/*console.log(location);
+			console.log(location);
+            const comment = location.previousSibling.nodeValue.trim();
+            const nameMatch = comment.match(/\/ ([^\/]+) -->$/);*/
+			
+            const serializer = new XMLSerializer();
+            const xmlString = serializer.serializeToString(xmlDoc);
+            const firstLine = xmlString.split('\n')[0];
+			locName.value = firstLine.match(/\/ ([^\/]+) -->$/)[1];
 
-            // Extract general information
-            const locationElement = xmlDoc.getElementsByTagName('location')[0];
-            locationId.value = locationElement.getAttribute('id') || '';
-            country.value = locationElement.getAttribute('c') || '';
-            subdivision.value = locationElement.getAttribute('s') || '';
-            district.value = locationElement.getAttribute('d') || '';
-            latitude.value = locationElement.getAttribute('lat') || '';
-            longitude.value = locationElement.getAttribute('long') || '';
+			locID.value = location.getAttribute('id');
+			country.value = location.getAttribute('c');
+			subdivision.value = location.getAttribute('s');
+			district.value = location.getAttribute('d');
+			latitude.value = location.getAttribute('lat');
+			longitude.value = location.getAttribute('long');
 
-            const comment = xmlDoc.firstChild.nodeValue.trim();
-            const englishNameMatch = comment.match(/\/ ([^\/]+) -->$/);
-            englishName.value = englishNameMatch ? englishNameMatch[1] : '';
+			const rules = xmlDoc.getElementsByTagName('rule');
+			rulesSection.innerHTML = '';
+			Array.from(rules).forEach(rule => addRule(rule));
 
-            // Clear and populate rules
-            rulesSection.innerHTML = '';
-            const rules = locationElement.getElementsByTagName('rule');
-            for (const rule of rules) {
-                addRule(rule);
-            }
+			const years = xmlDoc.getElementsByTagName('year');
+			yearsSection.innerHTML = '';
+			Array.from(years).forEach(year => addYear(year));
+		}
+		function addRule(rule = null) {
+			const ruleDiv = document.createElement('div');
+			ruleDiv.classList.add('flex-container');
+			ruleDiv.classList.add('rule');
 
-            // Clear and populate years
-            yearsSection.innerHTML = '';
-            const years = locationElement.getElementsByTagName('year');
-            for (const year of years) {
-                addYear(year);
-            }
+			const day = rule ? rule.getAttribute('day') : '';
+			const time = rule ? rule.getAttribute('time') : '';
+			const cal = rule ? rule.getAttribute('cal') : '';
+			const off = rule ? rule.getAttribute('off') : '';
+			const tz = rule ? rule.getAttribute('tz') : '';
+			const dst = rule ? rule.getAttribute('dst') : '0';
+			const dstoff = rule ? rule.getAttribute('dstoff') : '';
+			const dsttz = rule ? rule.getAttribute('dsttz') : '';
+			const dstsd = rule ? rule.getAttribute('dstsd') : '';
+			const dstsm = rule ? rule.getAttribute('dstsm') : '';
+			const dstso = rule ? rule.getAttribute('dstso') : '';
+			const dsted = rule ? rule.getAttribute('dsted') : '';
+			const dstem = rule ? rule.getAttribute('dstem') : '';
+			const dsteo = rule ? rule.getAttribute('dsteo') : '';
 
-            generateXML();
-        });
+			ruleDiv.innerHTML = `
+				<label>Day</label><input type="number" value="${day}" min="-9999999" max="9999999" style="width: 10ch;">
+				<label>Time</label><input type="number" value="${time}" min="0" max="86399" style="width: 7ch;">
+				<label>Calendar</label><input type="text" value="${cal}" maxlength="5" style="width: 5ch;">
+				<label>Offset</label><input type="number" value="${off}" min="-86400" max="86400" style="width: 8ch;">
+				<label>Timezone</label><input type="text" value="${tz}" maxlength="16" style="width: 16ch;">
+				<label>Summertime</label><input type="checkbox" ${dst == '1' ? 'checked' : ''}>
+				<div class="flex-container dst-details" style="${dst == '1' ? '' : 'display:none'}">
+					<label>Summertime:</label>
+					<label>Offset</label><input type="number" value="${dstoff}" min="-86400" max="86400" style="width: 6ch;">
+					<label>Timezone</label><input type="text" value="${dsttz}" maxlength="16" style="width: 16ch;">
+					<label>Start: Day</label><input type="text" value="${dstsd}" maxlength="4" style="width: 4ch;">
+					<label>Month</label><input type="number" value="${dstsm}" min="1" max="99" style="width: 2ch;">
+					<label>Time</label><input type="number" value="${dstso}" min="0" max="86399" style="width: 5ch;">
+					<label>End: Day</label><input type="text" value="${dsted}" maxlength="4" style="width: 4ch;">
+					<label>Month</label><input type="number" value="${dstem}" min="1" max="99" style="width: 2ch;">
+					<label>Time</label><input type="number" value="${dsteo}" min="0" max="86399" style="width: 5ch;">
+				</div>
+			`;
+			ruleDiv.querySelector('input[type="checkbox"]').addEventListener('change', function() {
+				const dstDetails = this.parentNode.querySelector('.dst-details');
+				dstDetails.style.display = this.checked ? 'flex' : 'none';
+			});
+			rulesSection.appendChild(ruleDiv);
+		}
+		function addYear(year = null) {
+			const yearDiv = document.createElement('div');
+			yearDiv.classList.add('flex-container');
+			yearDiv.classList.add('year');
 
-        function addRule(rule = null) {
-            const ruleDiv = document.createElement('div');
-            ruleDiv.classList.add('flex-container', 'rule');
+			const id = year ? year.getAttribute('id') : '';
+			const calA = year ? year.getAttribute('calA') : '';
+			const calB = year ? year.getAttribute('calB') : '';
+			const Astart = year ? year.getAttribute('Astart') : '';
+			const Aend = year ? year.getAttribute('Aend') : '';
+			const Bstart = year ? year.getAttribute('Bstart') : '';
+			const Bend = year ? year.getAttribute('Bend') : '';
+			const app = year ? year.getAttribute('app') : '0';
 
-            const day = rule ? rule.getAttribute('day') : '';
-            const time = rule ? rule.getAttribute('time') : '';
-            const cal = rule ? rule.getAttribute('cal') : '';
-            const off = rule ? rule.getAttribute('off') : '';
-            const tz = rule ? rule.getAttribute('tz') : '';
-            const dst = rule ? rule.getAttribute('dst') : '0';
-            const dstoff = rule ? rule.getAttribute('dstoff') : '';
-            const dsttz = rule ? rule.getAttribute('dsttz') : '';
-            const dstsd = rule ? rule.getAttribute('dstsd') : '';
-            const dstsm = rule ? rule.getAttribute('dstsm') : '';
-            const dstso = rule ? rule.getAttribute('dstso') : '';
-            const dsted = rule ? rule.getAttribute('dsted') : '';
-            const dstem = rule ? rule.getAttribute('dstem') : '';
-            const dsteo = rule ? rule.getAttribute('dsteo') : '';
+			yearDiv.innerHTML = `
+				<label>ID</label><input type="text" value="${id}" style="width: 2ch;">
+				<label>Cal A</label><input type="text" value="${calA}" maxlength="5" style="width: 5ch;">
+				<label>Cal B</label><input type="text" id="calB" value="${calB}" maxlength="5" style="width: 5ch;">
+				<label>Start Date A</label><input type="text" value="${Astart}" maxlength="12" style="width: 12ch;">
+				<label>End Date A</label><input type="text" value="${Aend}" maxlength="12" style="width: 12ch;">
+				<div class="flex-container cal-details" style="${calB != '' ? '' : 'display:none'}">
+					<label>Start Date B</label><input type="text" value="${Bstart}" maxlength="12" style="width: 12ch;">
+					<label>End Date B</label><input type="text" value="${Bend}" maxlength="12" style="width: 12ch;">
+					<label>Append Month</label><input type="checkbox" ${app == '0' ? '' : 'checked'}>
+				</div>
+			`;
 
-            ruleDiv.innerHTML = `
-                <label>Day:</label><input type="number" value="${day}" min="-9999999" max="9999999" style="width: 8ch;">
-                <label>Time:</label><input type="number" value="${time}" min="0" max="86399" style="width: 5ch;">
-                <label>Calendar:</label><input type="text" value="${cal}" maxlength="5" style="width: 5ch;">
-                <label>Offset:</label><input type="number" value="${off}" min="-86400" max="86400" style="width: 6ch;">
-                <label>Timezone:</label><input type="text" value="${tz}" maxlength="16" style="width: 16ch;">
-                <label>DST:</label><input type="checkbox" ${dst == '1' ? 'checked' : ''}>
-                <div class="dst-details" style="display: ${dst == '1' ? 'flex' : 'none'};">
-                    <label>DST Offset:</label><input type="number" value="${dstoff}" min="-86400" max="86400" style="width: 6ch;">
-                    <label>DST Timezone:</label><input type="text" value="${dsttz}" maxlength="16" style="width: 16ch;">
-                    <label>DST Start Day:</label><input type="text" value="${dstsd}" maxlength="4" style="width: 4ch;">
-                    <label>DST Start Month:</label><input type="number" value="${dstsm}" min="1" max="99" style="width: 2ch;">
-                    <label>DST Start Time:</label><input type="number" value="${dstso}" min="0" max="86399" style="width: 5ch;">
-                    <label>DST End Day:</label><input type="text" value="${dsted}" maxlength="4" style="width: 4ch;">
-                    <label>DST End Month:</label><input type="number" value="${dstem}" min="1" max="99" style="width: 2ch;">
-                    <label>DST End Time:</label><input type="number" value="${dsteo}" min="0" max="86399" style="width: 5ch;">
-                </div>
-                <div class="separator"></div>
-            `;
+			yearDiv.querySelector('input[type="text"][id="calB"]').addEventListener('input', function() {
+				const calDetails = this.parentNode.querySelector('.cal-details');
+				calDetails.style.display = !!this.value.trim() ? 'flex' : 'none';
+			});
+			/*	const BstartInput = this.parentNode.querySelector('input[type="date"][value="${Bstart}"]');
+				const BendInput = this.parentNode.querySelector('input[type="date"][value="${Bend}"]');
+				const appendInput = this.parentNode.querySelector('input[type="checkbox"]');
+				const isCalB = !!this.value.trim();
+				BstartInput.disabled = !isCalB;
+				BendInput.disabled = !isCalB;
+				appendInput.disabled = !isCalB;
+			});*/
 
-            ruleDiv.querySelector('input[type="checkbox"]').addEventListener('change', function() {
-                const dstDetails = this.parentNode.querySelector('.dst-details');
-                dstDetails.style.display = this.checked ? 'flex' : 'none';
-            });
-            rulesSection.appendChild(ruleDiv);
-        }
+			yearsSection.appendChild(yearDiv);
+		}
+		
+		function generateXML() {
+			const countryFullName = countryNames[country.value] || country.value;
+			const subdivisionFullName = subdivisionNames[country.value]?.[subdivision.value] || subdivision.value;
+			const comment = `<!-- ${countryFullName ? countryFullName + ' / ' : ''}${subdivisionFullName ? subdivisionFullName + ' / ' : ''}${locName.value} -->`;
 
-        function addYear(year = null) {
-            const yearDiv = document.createElement('div');
-            yearDiv.classList.add('flex-container', 'year');
+			let xml = `<location id="${locID.value}" c="${country.value}" s="${subdivision.value}" d="${district.value}" lat="${latitude.value}" long="${longitude.value}"> ${comment}\n`;
+			xml += '	<rules>\n';
 
-            const id = year ? year.getAttribute('id') : '';
-            const calA = year ? year.getAttribute('calA') : '';
-            const calB = year ? year.getAttribute('calB') : '';
-            const Astart = year ? year.getAttribute('Astart') : '';
-            const Aend = year ? year.getAttribute('Aend') : '';
-            const Bstart = year ? year.getAttribute('Bstart') : '';
-            const Bend = year ? year.getAttribute('Bend') : '';
-            const app = year ? year.getAttribute('app') : '0';
+			const rules = rulesSection.getElementsByClassName('rule');
+			Array.from(rules).forEach(rule => {
+				const inputs = rule.getElementsByTagName('input');
+				xml += `		<rule day="${inputs[0].value}" time="${inputs[1].value}" cal="${inputs[2].value}" off="${inputs[3].value}" tz="${inputs[4].value}"`;
+				if (inputs[5].checked) {
+					xml += ` dst="1" dstoff="${inputs[6].value}" dsttz="${inputs[7].value}" dstsd="${inputs[8].value}" dstsm="${inputs[9].value}" dstso="${inputs[10].value}" dsted="${inputs[11].value}" dstem="${inputs[12].value}" dsteo="${inputs[13].value}"`;
+				} else {
+					xml += ' dst="0"';
+				}
+				xml += '/>\n';
+			});
 
-            yearDiv.innerHTML = `
-                <label>ID:</label><input type="text" value="${id}" style="width: 2ch;">
-                <label>Cal A:</label><input type="text" value="${calA}" maxlength="5" style="width: 5ch;">
-                <label>Cal B:</label><input type="text" value="${calB}" maxlength="5" style="width: 5ch;">
-                <label>Start Date A:</label><input type="date" value="${Astart}">
-                <label>End Date A:</label><input type="date" value="${Aend}">
-                <label>Start Date B:</label><input type="date" value="${Bstart}" ${calB ? '' : 'disabled'}>
-                <label>End Date B:</label><input type="date" value="${Bend}" ${calB ? '' : 'disabled'}>
-                <label>Append Month:</label><input type="checkbox" ${app == '0' ? '' : 'checked'} ${calB ? '' : 'disabled'}>
-                <div class="separator"></div>
-            `;
+			xml += '	</rules>\n	<years>\n';
 
-            yearDiv.querySelector('input[type="text"][value="${calB}"]').addEventListener('input', function() {
-                const BstartInput = this.parentNode.querySelector('input[type="date"][value="${Bstart}"]');
-                const BendInput = this.parentNode.querySelector('input[type="date"][value="${Bend}"]');
-                const appendInput = this.parentNode.querySelector('input[type="checkbox"]');
-                const isCalB = !!this.value.trim();
-                BstartInput.disabled = !isCalB;
-                BendInput.disabled = !isCalB;
-                appendInput.disabled = !isCalB;
-            });
+			const years = yearsSection.getElementsByClassName('year');
+			Array.from(years).forEach(year => {
+				const inputs = year.getElementsByTagName('input');
+				xml += `		<year id="${inputs[0].value}" calA="${inputs[1].value}" calB="${inputs[2].value}" Astart="${inputs[3].value}" Aend="${inputs[4].value}"`;
+				if (inputs[2].value.trim()) {
+					xml += ` Bstart="${inputs[5].value}" Bend="${inputs[6].value}" app="${inputs[7].checked ? '1' : '0'}"`;
+				}
+				xml += '/>\n';
+			});
 
-            yearsSection.appendChild(yearDiv);
-        }
-
-        function generateXML() {
-            const countryFullName = countryNames[country.value] || country.value;
-            const subdivisionFullName = subdivisionNames[country.value]?.[subdivision.value] || subdivision.value;
-            const comment = `<!-- ${countryFullName ? countryFullName + ' / ' : ''}${subdivisionFullName ? subdivisionFullName + ' / ' : ''}${englishName.value} -->`;
-
-            let xml = `${comment}\n<location id="${locationId.value}" c="${country.value}" s="${subdivision.value}" d="${district.value}" lat="${latitude.value}" long="${longitude.value}">\n`;
-            xml += '    <rules>\n';
-
-            const rules = rulesSection.getElementsByClassName('rule');
-            Array.from(rules).forEach(rule => {
-                const inputs = rule.getElementsByTagName('input');
-                xml += `        <rule day="${inputs[0].value}" time="${inputs[1].value}" cal="${inputs[2].value}" off="${inputs[3].value}" tz="${inputs[4].value}"`;
-                if (inputs[5].checked) {
-                    xml += ` dst="1" dstoff="${inputs[6].value}" dsttz="${inputs[7].value}" dstsd="${inputs[8].value}" dstsm="${inputs[9].value}" dstso="${inputs[10].value}" dsted="${inputs[11].value}" dstem="${inputs[12].value}" dsteo="${inputs[13].value}"`;
-                } else {
-                    xml += ' dst="0"';
-                }
-                xml += '/>\n';
-            });
-
-            xml += '    </rules>\n    <years>\n';
-
-            const years = yearsSection.getElementsByClassName('year');
-            Array.from(years).forEach(year => {
-                const inputs = year.getElementsByTagName('input');
-                xml += `        <year id="${inputs[0].value}" calA="${inputs[1].value}" calB="${inputs[2].value}" Astart="${inputs[3].value}" Aend="${inputs[4].value}"`;
-                if (inputs[2].value.trim()) {
-                    xml += ` Bstart="${inputs[5].value}" Bend="${inputs[6].value}" app="${inputs[7].checked ? '1' : '0'}"`;
-                }
-                xml += '/>\n';
-            });
-
-            xml += '    </years>\n</location>';
-            xmlOutput.textContent = xml;
-        }
-
-        document.getElementById('add-rule-button').addEventListener('click', () => addRule());
-        document.getElementById('add-year-button').addEventListener('click', () => addYear());
-        rulesSection.addEventListener('input', generateXML);
-        yearsSection.addEventListener('input', generateXML);
-        document.querySelectorAll('input').forEach(input => input.addEventListener('input', generateXML));
-    </script>
+			xml += '	</years>\n</location>';
+			xmlOutput.textContent = xml;
+		}
+		importButton.addEventListener('click', generateXML);
+		rulesButton.addEventListener('click', generateXML);
+		yearsButton.addEventListener('click', generateXML);
+		rulesSection.addEventListener('input', generateXML);
+		yearsSection.addEventListener('input', generateXML);
+		document.querySelectorAll('input').forEach(input => input.addEventListener('input', generateXML));
+		generateXML();
+	</script>
 </body>
 </html>
