@@ -583,7 +583,7 @@
 		}
 		
 		function generateXML() {
-			const countryFullName = countryNames[country.value] || country.value;
+			const countryFullName = countryNames[country.value] || ((country.value === "ZZ") ? "" : country.value);
 			const subdivisionFullName = subdivisionNames[country.value]?.[subdivision.value] || subdivision.value;
 			const comment = `<!-- ${countryFullName ? countryFullName + ' / ' : ''}${subdivisionFullName ? subdivisionFullName + ' / ' : ''}${locName.value} -->`;
 			const lat = Number(latitude.value).toFixed(7);
