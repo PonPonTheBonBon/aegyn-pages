@@ -473,17 +473,11 @@
 			const xmlDoc = parser.parseFromString(xmlInput.value, "text/xml");
 
 			const location = xmlDoc.getElementsByTagName('location')[0];
-			/*const NameMatch = location.nodeValue.trim().match(/\/ ([^\/]+) -->$/);*/
-			/*locName.value = NameMatch ? NameMatch[1] : '';*/
-			/*console.log(location);
-			console.log(location);
-            const comment = location.previousSibling.nodeValue.trim();
-            const nameMatch = comment.match(/\/ ([^\/]+) -->$/);*/
 			
             const serializer = new XMLSerializer();
             const xmlString = serializer.serializeToString(xmlDoc);
             const firstLine = xmlString.split('\n')[0];
-			locName.value = firstLine.match(/\/ ([^\/]+) -->$/)[1];
+			locName.value = firstLine.match(/(?:\/|<!--) ([^\/]+) -->$/)[1];
 
 			locID.value = location.getAttribute('id');
 			country.value = location.getAttribute('c');
@@ -592,8 +586,10 @@
 			const countryFullName = countryNames[country.value] || country.value;
 			const subdivisionFullName = subdivisionNames[country.value]?.[subdivision.value] || subdivision.value;
 			const comment = `<!-- ${countryFullName ? countryFullName + ' / ' : ''}${subdivisionFullName ? subdivisionFullName + ' / ' : ''}${locName.value} -->`;
+			const lat = Number(latitude.value).toFixed(7);
+			const long = Number(longitude.value).toFixed(7);
 
-			let xml = `<location id="${locID.value}" c="${country.value}" s="${subdivision.value}" d="${district.value}" lat="${latitude.value}" long="${longitude.value}"> ${comment}\n`;
+			let xml = `<location id="${locID.value}" c="${country.value}" s="${subdivision.value}" d="${district.value}" lat="${lat}" long="${long}"> ${comment}\n`;
 			xml += '	<rules>\n';
 
 			const rules = rulesSection.getElementsByClassName('rule');
