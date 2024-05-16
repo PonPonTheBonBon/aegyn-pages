@@ -11,6 +11,9 @@
 		h2 {
 			display: block;
 		}
+		th, td {
+			padding-right: 18px;
+		}
 		.section {
 			margin-bottom: 20px;
 		}
@@ -18,6 +21,9 @@
 			display: flex;
 			flex-wrap: wrap;
 			gap: 10px;
+		}
+		#resultSection {
+			font-family: Consolas, monospace;
 		}
 		label {
 			display: block;
@@ -110,6 +116,7 @@
 	<hr/>
 	<h2>Results</h2>
 	<div class="section" id="resultSection">
+		<span id="resultOutput" class="result-output"></span>
 		<!-- Dynamic result entries will be added here -->
 	</div>
 	<hr/>
@@ -120,6 +127,11 @@
 	</div>
 	
 	<script>
+		Number.prototype.mod = function (n) {
+			"use strict";
+			return ((this % n) + n) % n;
+		};
+
 		const xmlInput = document.getElementById('xmlInput');
 		const xmlOutput = document.getElementById('xmlOutput');
 		const locID = document.getElementById('loc-id');
@@ -172,7 +184,7 @@
 			"BY": "Belarus",
 			"BZ": "Belize",
 			"CA": "Canada",
-			"CC": "Cocos (Keeling) Isl.",
+			"CC": "Cocos-Keel. Isl.",
 			"CD": "DR Congo",
 			"CF": "CAR",
 			"CG": "Rep. Congo",
@@ -213,7 +225,7 @@
 			"FO": "Faroe Isl.",
 			"FR": "France",
 			"GA": "Gabon",
-			"GB-map": "UK",
+			"GB": "UK",
 			"GD": "Grenada",
 			"GE": "Georgia",
 			"GF": "French Guiana",
@@ -281,9 +293,9 @@
 			"MF": "St Martin",
 			"MG": "Madagascar",
 			"MH": "Marshall Isl.",
-			"MK": "North Macedonia",
+			"MK": "N.Macedonia",
 			"ML": "Mali",
-			"MM": "Myanmar (Burma)",
+			"MM": "Myanmar",
 			"MN": "Mongolia",
 			"MO": "Macao",
 			"MP": "N.Mariana Isl.",
@@ -352,7 +364,7 @@
 			"SY": "Syria",
 			"SZ": "Eswatini",
 			"TA": "Tristan da C.",
-			"TC": "Turks & Caicos Isl.",
+			"TC": "Turks-Caicos Isl.",
 			"TD": "Chad",
 			"TF": "French S.Terr.",
 			"TG": "Togo",
@@ -370,14 +382,14 @@
 			"TZ": "Tanzania",
 			"UA": "Ukraine",
 			"UG": "Uganda",
-			"UM": "US Outlying Isl.",
+			"UM": "US Outl. Isl.",
 			"US": "US",
 			"UY": "Uruguay",
 			"UZ": "Uzbekistan",
 			"VA": "Vatican City",
 			"VC": "St Vinc.-Gren.",
 			"VE": "Venezuela",
-			"VG": "British Virgin Isl.",
+			"VG": "UK Virgin Isl.",
 			"VI": "US Virgin Isl.",
 			"VN": "Vietnam",
 			"VU": "Vanuatu",
@@ -387,12 +399,11 @@
 			"XN": "N.Cyprus",
 			"YE": "Yemen",
 			"YT": "Mayotte",
-			"ZA": "South Africa",
+			"ZA": "S.Africa",
 			"ZM": "Zambia",
 			"ZW": "Zimbabwe",
 			"ZZ": ""
 		};
-
 		const subdivisionNames = {
 			"CA": {
 				"AB": "Alberta",
@@ -468,6 +479,193 @@
 				"WY": "Wyoming"
 			}
 		};
+		const calendarNames = {
+			"bruml": "Brumal",
+			"brumR": "Brumal (Roman)",
+			"chine": "Chinese",
+			"coptc": "Coptic",
+			"coptN": "Coptic-Nabu",
+			"egypt": "Egyptian",
+			"frenc": "French",
+			"frenD": "French (decimal)",
+			"germn": "Germanic",
+			"gregr": "Gregorian",
+			"iceln": "Icelandic",
+			"intrn": "Internal",
+			"islam": "Islamic",
+			"isowk": "ISO-week",
+			"japaL": "Japanese (lunar)",
+			"japaS": "Japanese (solar)",
+			"julin": "Julian",
+			"maria": "Marian",
+			"mariN": "Marian (Norse)",
+			"roman": "Roman",
+			"rumii": "Rumi",
+			"swedi": "Swedish"
+		};
+		const calendarYears = {
+			"bruml": "Western",
+			"brumR": "Roman",
+			"chine": "Chinese",
+			"coptc": "Martyrs",
+			"coptN": "Martyrs",
+			"egypt": "Nabonassar",
+			"frenc": "French",
+			"frenD": "French",
+			"germn": "Germanic",
+			"gregr": "Western",
+			"iceln": "Icelandic",
+			"intrn": "none",
+			"islam": "Hijrah",
+			"isowk": "Western",
+			"japaL": "Japanese",
+			"japaS": "Japanese",
+			"julin": "Western",
+			"maria": "Western",
+			"mariN": "Western",
+			"roman": "Roman",
+			"rumii": "Hijrah",
+			"swedi": "Western"
+		};
+		const calendarTime = {
+			"bruml": "24 hours",
+			"brumR": "24 hours",
+			"chine": "24 hours",
+			"coptc": "24 hours",
+			"coptN": "24 hours",
+			"egypt": "24 hours",
+			"frenc": "24 hours",
+			"frenD": "10 hours",
+			"germn": "8 stounds",
+			"gregr": "24 hours",
+			"iceln": "24 hours",
+			"intrn": "86400 s",
+			"islam": "24 hours",
+			"isowk": "24 hours",
+			"japaL": "24 hours",
+			"japaS": "24 hours",
+			"julin": "24 hours",
+			"maria": "24 hours",
+			"mariN": "8 stounds",
+			"roman": "24 hours",
+			"rumii": "24 hours",
+			"swedi": "24 hours"
+		};
+		const timezoneCode = {
+			"tz_afr_centl": "CAT",
+			"tz_afr_eastn": "EAT",
+			"tz_afr_westn": "WAT",
+			"tz_aq_casey_stnd": "CAST",
+			"tz_aq_casey_sumr": "CAST",
+			"tz_arab_stnd": "AST",
+			"tz_au_centl_dlst": "ACDT",
+			"tz_au_centl_stnd": "ACST",
+			"tz_au_cwest_dlst": "ACWDT",
+			"tz_au_cwest_stnd": "ACWST",
+			"tz_au_eastn_dlst": "AEDT",
+			"tz_au_eastn_stnd": "AEST",
+			"tz_au_westn_dlst": "AWDT",
+			"tz_au_westn_stnd": "AWST",
+			"tz_be_mean": "BMT",
+			"tz_br_brasl": "BRT",
+			"tz_br_brasl_sumr": "BRST",
+			"tz_ch_bernn": "BMT",
+			"tz_cn_bjing": "BJT",
+			"tz_cn_stnd": "CST",
+			"tz_cn_sumr": "CDT",
+			"tz_dk_kopnh": "CMT",
+			"tz_eur_centl": "CET",
+			"tz_eur_centl_mids": "CEMT",
+			"tz_eur_centl_sumr": "CEST",
+			"tz_eur_eastn": "EET",
+			"tz_eur_eastn_sumr": "EEST",
+			"tz_eur_frest": "FET",
+			"tz_eur_frest_sumr": "FEST",
+			"tz_eur_westn": "WET",
+			"tz_eur_westn_mids": "WEMT",
+			"tz_eur_westn_sumr": "WEST",
+			"tz_fi_hlski": "HMT",
+			"tz_fr_paris": "PMT",
+			"tz_gb_dble": "BDT",
+			"tz_gb_greenwich": "GMT",
+			"tz_gb_sumr": "BST",
+			"tz_gl_centl": "CGT",
+			"tz_gl_centl_sumr": "CGST",
+			"tz_gl_eastn": "EGT",
+			"tz_gl_eastn_sumr": "EGST",
+			"tz_gl_westn": "WGT",
+			"tz_gl_westn_sumr": "WGST",
+			"tz_ht_potpr": "PPMT",
+			"tz_ie_sumr": "IST",
+			"tz_is_stnd": "IST",
+			"tz_is_sumr": "ISST",
+			"tz_jp_centl": "JCST",
+			"tz_jp_stnd": "JST",
+			"tz_jp_sumr": "JDT",
+			"tz_jp_tokyo": "JST",
+			"tz_jp_westn": "JWST",
+			"tz_ko_dlst": "KDT",
+			"tz_ko_stnd": "KST",
+			"tz_ld_howe_dlst": "LHDT",
+			"tz_ld_howe_stnd": "LHST",
+			"tz_line_islands": "LINT",
+			"tz_nam_atlnt_dbdt": "(NA)ADDT",
+			"tz_nam_atlnt_dlst": "(NA)ADT",
+			"tz_nam_atlnt_prvl": "(NA)APT",
+			"tz_nam_atlnt_stnd": "(NA)AST",
+			"tz_nam_atlnt_wart": "(NA)AWT",
+			"tz_nam_centl_dbdt": "(NA)CDDT",
+			"tz_nam_centl_dlst": "(NA)CDT",
+			"tz_nam_centl_prvl": "(NA)CPT",
+			"tz_nam_centl_stnd": "(NA)CST",
+			"tz_nam_centl_wart": "(NA)CWT",
+			"tz_nam_eastn_dbdt": "(NA)EDDT",
+			"tz_nam_eastn_dlst": "(NA)EDT",
+			"tz_nam_eastn_prvl": "(NA)EPT",
+			"tz_nam_eastn_stnd": "(NA)EST",
+			"tz_nam_eastn_wart": "(NA)EWT",
+			"tz_nam_moutn_dbdt": "(NA)MDDT",
+			"tz_nam_moutn_dlst": "(NA)MDT",
+			"tz_nam_moutn_prvl": "(NA)MPT",
+			"tz_nam_moutn_stnd": "(NA)MST",
+			"tz_nam_moutn_wart": "(NA)MWT",
+			"tz_nam_pacfc_dbdt": "(NA)PDDT",
+			"tz_nam_pacfc_dlst": "(NA)PDT",
+			"tz_nam_pacfc_prvl": "(NA)PPT",
+			"tz_nam_pacfc_stnd": "(NA)PST",
+			"tz_nam_pacfc_wart": "(NA)PWT",
+			"tz_nl_amstr": "AMT",
+			"tz_nl_stnd": "NET",
+			"tz_nl_sumr_new": "NEST",
+			"tz_nl_sumr_old": "NST",
+			"tz_nz_dlst": "NZDT",
+			"tz_nz_mean": "NZMT",
+			"tz_nz_stnd": "NZST",
+			"tz_nz_sumr": "NZST",
+			"tz_ph_dlst": "PhDT",
+			"tz_ph_stnd": "PhST",
+			"tz_pl_warsw": "WMT",
+			"tz_ru_mskva": "MSK",
+			"tz_ru_mskva_dble": "MDST",
+			"tz_ru_mskva_dlst": "MSD",
+			"tz_ru_mskva_mean": "MMT",
+			"tz_ru_mskva_mids": "MSM",
+			"tz_ru_mskva_stnd": "MSK",
+			"tz_ru_mskva_sumr": "MST",
+			"tz_se_stnd": "SET",
+			"tz_us_alask_dlst": "AKDT",
+			"tz_us_alask_stnd": "AKST",
+			"tz_us_hawal_dlst": "HADT",
+			"tz_us_hawal_stnd": "HAST",
+			"tz_ws_mean": "SAMT",
+			"tz_ws_westn": "WST",
+			"tz_za_stnd": "SAST",
+			"tz_za_sumr": "SAST",
+			"tz_zz_local_mean": "LMT",
+			"tz_zz_local_solar": "TST",
+			"tz_zz_utc": "UTC"
+		};
+
 		function importXML() {
 			const parser = new DOMParser();
 			const xmlDoc = parser.parseFromString(xmlInput.value, "text/xml");
@@ -477,7 +675,8 @@
             const serializer = new XMLSerializer();
             const xmlString = serializer.serializeToString(xmlDoc);
             const firstLine = xmlString.split('\n')[0];
-			locName.value = firstLine.match(/(?:\/|<!--) ([^\/]+) -->$/)[1];
+			console.log(firstLine);
+			locName.value = firstLine.match(/(?:(?:\/|<!--) ([^\/]+) -->|)$/)[1] || "";
 
 			locID.value = location.getAttribute('id');
 			country.value = location.getAttribute('c');
@@ -519,12 +718,12 @@
 				<label>Time</label><input type="number" value="${time}" min="0" max="86399" style="width: 7ch;">
 				<label>Calendar</label><input type="text" value="${cal}" maxlength="5" style="width: 5ch;">
 				<label>Offset</label><input type="number" value="${off}" min="-86400" max="86400" style="width: 8ch;">
-				<label>Timezone</label><input type="text" value="${tz}" maxlength="16" style="width: 16ch;">
+				<label>Timezone</label><input type="text" value="${tz}" maxlength="17" style="width: 17ch;">
 				<label>Summertime</label><input type="checkbox" ${dst == '1' ? 'checked' : ''}>
 				<div class="flex-container dst-details" style="${dst == '1' ? '' : 'display:none'}">
 					<label>Summertime:</label>
 					<label>Offset</label><input type="number" value="${dstoff}" min="-86400" max="86400" style="width: 6ch;">
-					<label>Timezone</label><input type="text" value="${dsttz}" maxlength="16" style="width: 16ch;">
+					<label>Timezone</label><input type="text" value="${dsttz}" maxlength="17" style="width: 17ch;">
 					<label>Start: Day</label><input type="text" value="${dstsd}" maxlength="4" style="width: 4ch;">
 					<label>Month</label><input type="number" value="${dstsm}" min="1" max="99" style="width: 2ch;">
 					<label>Time</label><input type="number" value="${dstso}" min="0" max="86399" style="width: 5ch;">
@@ -582,6 +781,243 @@
 			yearsSection.appendChild(yearDiv);
 		}
 		
+		function generateResults() {
+			let result = `<table><tr><th>date</th><th>calendar</th><th>offset</th><th>timezone</th></tr>`;
+			const rules = rulesSection.getElementsByClassName('rule');
+			Array.from(rules).forEach(rule => {
+				const inputs = rule.getElementsByTagName('input');
+				const dateString = datetimeString(inputs[0].value,inputs[1].value,inputs[2].value,inputs[3].value);
+				const calendar = calendarNames[inputs[2].value];
+				const offset = inputs[3].value<0?"UTC-"+secondsString(0-inputs[3].value):"UTC+"+secondsString(inputs[3].value);
+				const tzCode = timezoneCode[inputs[4].value];
+				result += `<tr><td>${dateString}</td><td>${calendar}</td><td>${offset}</td><td>${tzCode} (${inputs[4].value})</td></tr>`;
+			});
+			result += `</table>`;
+			resultOutput.innerHTML = result;
+		}
+		function datetimeString(date,time,calendar,offset) {
+			dateResult = "YYYY-MM-DD";
+			timeResult = "HH:MM:SS";
+			date = parseInt(date);
+			time = parseInt(time)+parseInt(offset);
+			if (time < 0) {
+				date -= 1;
+				time += 86400;
+			} else if (time >= 86400) {
+				date += 1;
+				time -= 86400;
+			}
+			
+			/* DATE */
+			if (calendar == "gregr") {
+				const cM = [0,31,59,90,120,151,181,212,243,273,304,334,365];
+				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+				
+				let xA = date+365;
+				let xB = Math.floor(xA/146097);
+				let xC = xA-xB*146097-1;
+				let xD = Math.max(Math.floor(xC/36524),0);
+				let xE = xC-xD*36524+1;
+				let xF = Math.max(Math.floor(xE/365.25),0);
+				let xG = xE-Math.floor(xF*365.25);
+				let xH = 0;
+
+				let dY = xB*400+xD*100+xF;
+				if (dY.mod(400) == 0 || (dY.mod(4) == 0 && dY.mod(100) != 0)) {
+					let xH = 1;
+				}
+				let dM = 0;
+				let dD = 0;
+				if (xG >= 60) {
+					if (xG<91) {
+						dM = 3;
+						dD = xG-59;
+					} else if (xG<121) {
+						dM = 4;
+						dD = xG-90;
+					} else if (xG<152) {
+						dM = 5;
+						dD = xG-120;
+					} else if (xG<182) {
+						dM = 6;
+						dD = xG-151;
+					} else if (xG<213) {
+						dM = 7;
+						dD = xG-181;
+					} else if (xG<244) {
+						dM = 8;
+						dD = xG-212;
+					} else if (xG<274) {
+						dM = 9;
+						dD = xG-243;
+					} else if (xG<305) {
+						dM = 10;
+						dD = xG-273;
+					} else if (xG<335) {
+						dM = 11;
+						dD = xG-304;
+					} else {
+						dM = 12;
+						dD = xG-334;
+					}
+				} else {
+					dM = (xG+xH>31?2:1);
+					dD = (xG+xH>31?xG+xH-31:xG+xH);
+				}
+
+				let dE = cW[date.mod(7)];
+				
+				dateResult = dE+" "+dY+"-"+(dM<10?"0":"")+dM+"-"+(dD<10?"0":"")+dD;
+			} else if (calendar == "julin") {
+				const cM = [0,31,59,90,120,151,181,212,243,273,304,334,365];
+				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+				
+				let dY = 0;
+				if (date>0) {
+					dY = Math.floor((date+367)/365.25)
+				} else if (date>-2557) {
+					dY = Math.floor((date+366)/365)
+				} else {
+					dY = Math.floor((date+365)/365.333333333)
+				}
+				let xA = 0;
+				if (date>0) {
+					xA = date+367-Math.floor(dY*365.25);
+				} else if (date>-2557) {
+					xA = date+367-dY*365;
+				} else {
+					xA = date+365+365-Math.floor((dY+1)*365.333333333);
+				}
+				let xB = 0;
+				if (date>0) {
+					xB = dY.mod(4)==0?1:0;
+				} else if (date>-2557) {
+					xB = 0;
+				} else {
+					xB = (dY+1).mod(3)==0?1:0;
+				}
+
+				let dM = 0;
+				let dD = 0;
+				if (xA >= 60) {
+					if (xA<91) {
+						dM = 3;
+						dD = xA-59;
+					} else if (xA<121) {
+						dM = 4;
+						dD = xA-90;
+					} else if (xA<152) {
+						dM = 5;
+						dD = xA-120;
+					} else if (xA<182) {
+						dM = 6;
+						dD = xA-151;
+					} else if (xA<213) {
+						dM = 7;
+						dD = xA-181;
+					} else if (xA<244) {
+						dM = 8;
+						dD = xA-212;
+					} else if (xA<274) {
+						dM = 9;
+						dD = xA-243;
+					} else if (xA<305) {
+						dM = 10;
+						dD = xA-273;
+					} else if (xA<335) {
+						dM = 11;
+						dD = xA-304;
+					} else {
+						dM = 12;
+						dD = xA-334;
+					}
+				} else {
+					dM = (xA+xB>31?2:1);
+					dD = (xA+xB>31?xA+xB-31:xA+xB);
+				}
+
+				let dE = cW[date.mod(7)];
+				
+				dateResult = dE+" "+dY+"-"+(dM<10?"0":"")+dM+"-"+(dD<10?"0":"")+dD;
+			} else if (calendar == "swedi") {
+				const cM = [0,31,59,90,120,151,181,212,243,273,304,334,365];
+				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+				
+				let xA = date+355;
+				let xB = Math.floor(xA/146097);
+				let xC = xA-xB*146097-1;
+				let xD = Math.max(Math.floor(xC/36524),0);
+				let xE = xC-xD*36524+1;
+				let xF = Math.max(Math.floor(xE/365.25),0);
+				let xG = xE-Math.floor(xF*365.25);
+				let xH = 0;
+
+				let dY = xB*400+xD*100+xF;
+				if (dY.mod(400) == 0 || (dY.mod(4) == 0 && dY.mod(100) != 0)) {
+					let xH = 1;
+				}
+				let dM = 0;
+				let dD = 0;
+				if (xG >= 60) {
+					if (xG<91) {
+						dM = 3;
+						dD = xG-59;
+					} else if (xG<121) {
+						dM = 4;
+						dD = xG-90;
+					} else if (xG<152) {
+						dM = 5;
+						dD = xG-120;
+					} else if (xG<182) {
+						dM = 6;
+						dD = xG-151;
+					} else if (xG<213) {
+						dM = 7;
+						dD = xG-181;
+					} else if (xG<244) {
+						dM = 8;
+						dD = xG-212;
+					} else if (xG<274) {
+						dM = 9;
+						dD = xG-243;
+					} else if (xG<305) {
+						dM = 10;
+						dD = xG-273;
+					} else if (xG<335) {
+						dM = 11;
+						dD = xG-304;
+					} else {
+						dM = 12;
+						dD = xG-334;
+					}
+				} else {
+					dM = (xG+xH>31?2:1);
+					dD = (xG+xH>31?xG+xH-31:xG+xH);
+				}
+
+				let dE = cW[date.mod(7)];
+				
+				dateResult = dE+" "+dY+"-"+(dM<10?"0":"")+dM+"-"+(dD<10?"0":"")+dD;
+			}
+			
+			/* TIME */
+			if (calendarTime[calendar] == "24 hours") {
+				let tH = Math.floor(time/3600);
+				let tM = Math.floor((time-tH*3600)/60);
+				let tS = (time-tH*3600-tM*60);
+				
+				timeResult = (tH<10?"0":"")+tH+":"+(tM<10?"0":"")+tM+":"+(tS<10?"0":"")+tS;
+			}
+			
+			return dateResult+" "+timeResult;
+		}
+		function secondsString(seconds) {
+			let tH = Math.floor(seconds/3600);
+			let tM = Math.floor((seconds-tH*3600)/60);
+			let tS = (seconds-tH*3600-tM*60);
+			
+			return (tH<10?"0":"")+tH+":"+(tM<10?"0":"")+tM+":"+(tS<10?"0":"")+tS;
+		}
 		function generateXML() {
 			const countryFullName = countryNames[country.value] || ((country.value === "ZZ") ? "" : country.value);
 			const subdivisionFullName = subdivisionNames[country.value]?.[subdivision.value] || subdivision.value;
@@ -618,6 +1054,8 @@
 
 			xml += '	</years>\n</location>';
 			xmlOutput.textContent = xml;
+			
+			generateResults();
 		}
 		importButton.addEventListener('click', generateXML);
 		rulesButton.addEventListener('click', generateXML);
