@@ -69,6 +69,14 @@
 			background-color: #C70848;
 			transition: background-color 0ms linear;
 		}
+		.btn:disabled {
+			padding: 9px 19px;
+			background-color: #FFFFFF;
+			color: #FA3B7B;
+			border: 1px solid #FA3B7B;
+			cursor: default;
+			transition: background-color 0ms linear;
+		}
 		.xml-output {
 			white-space: pre;
 			background-color: #f8f8f8;
@@ -123,7 +131,7 @@
 	<h2>Output XML</h2>
 	<div class="section">
 		<pre id="xmlOutput" class="xml-output"></pre>
-		<button class="btn" onclick="copyXML()">Copy XML</button>
+		<button class="btn" id="outputButton" onclick="copyXML()">Copy XML</button>
 	</div>
 	
 	<script>
@@ -675,7 +683,6 @@
             const serializer = new XMLSerializer();
             const xmlString = serializer.serializeToString(xmlDoc);
             const firstLine = xmlString.split('\n')[0];
-			console.log(firstLine);
 			locName.value = firstLine.match(/(?:(?:\/|<!--) ([^\/]+) -->|)$/)[1] || "";
 
 			locID.value = location.getAttribute('id');
@@ -692,6 +699,8 @@
 			const years = xmlDoc.getElementsByTagName('year');
 			yearsSection.innerHTML = '';
 			Array.from(years).forEach(year => addYear(year));
+			
+			importButton.disabled = true;
 		}
 		function addRule(rule = null) {
 			const ruleDiv = document.createElement('div');
@@ -782,22 +791,31 @@
 		}
 		
 		function generateResults() {
-			let result = `<table><tr><th>date</th><th>calendar</th><th>offset</th><th>timezone</th></tr>`;
+			let result = `<table><tr><th colspan="2">internal</th><th>from date</th><th></th><th>to date</th><th>calendar</th><th>offset</th><th colspan="2">timezone</th></tr>`;
 			const rules = rulesSection.getElementsByClassName('rule');
-			Array.from(rules).forEach(rule => {
+			Array.from(rules).forEach((rule, i, array) => {
 				const inputs = rule.getElementsByTagName('input');
-				const dateString = datetimeString(inputs[0].value,inputs[1].value,inputs[2].value,inputs[3].value);
-				const calendar = calendarNames[inputs[2].value];
-				const offset = inputs[3].value<0?"UTC-"+secondsString(0-inputs[3].value):"UTC+"+secondsString(inputs[3].value);
-				const tzCode = timezoneCode[inputs[4].value];
-				result += `<tr><td>${dateString}</td><td>${calendar}</td><td>${offset}</td><td>${tzCode} (${inputs[4].value})</td></tr>`;
+				let inputsN = null;
+				if (i>0) {inputsN = array[i-1].getElementsByTagName('input');}
+				let inputsP = null;
+				if (i<array.length-1) {inputsP = array[i+1].getElementsByTagName('input');}
+				
+				let dateString = datetimeString(inputs[0].value,inputs[1].value,inputs[2].value,inputs[3].value);
+				let dateStringP = "";
+				if (inputsP != null) {
+					dateStringP = datetimeString(inputs[0].value,inputs[1].value-1,inputsP[2].value,inputsP[3].value);
+				}
+				let calendar = calendarNames[inputs[2].value];
+				let offset = inputs[3].value<0?"UTC-"+secondsString(0-inputs[3].value):"UTC+"+secondsString(inputs[3].value);
+				let tzCode = timezoneCode[inputs[4].value];
+				result += `<tr><td align="right">${inputs[0].value}</td><td align="right">${inputs[1].value}</td><td>${dateStringP}</td><td>→</td><td>${dateString}</td><td>${calendar}</td><td>${offset}</td><td>${tzCode}</td><td>(${inputs[4].value})</td></tr>`;
 			});
 			result += `</table>`;
 			resultOutput.innerHTML = result;
 		}
 		function datetimeString(date,time,calendar,offset) {
-			dateResult = "YYYY-MM-DD";
-			timeResult = "HH:MM:SS";
+			dateResult = "??? ????-??-??";
+			timeResult = "??:??:??";
 			date = parseInt(date);
 			time = parseInt(time)+parseInt(offset);
 			if (time < 0) {
@@ -944,6 +962,9 @@
 				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 				
 				let xA = date+355;
+				if (date > 625000) {
+					xA = date+356;
+				}
 				let xB = Math.floor(xA/146097);
 				let xC = xA-xB*146097-1;
 				let xD = Math.max(Math.floor(xC/36524),0);
@@ -953,7 +974,9 @@
 				let xH = 0;
 
 				let dY = xB*400+xD*100+xF;
-				if (dY.mod(400) == 0 || (dY.mod(4) == 0 && dY.mod(100) != 0)) {
+				if (dY == 1712) {
+					let xH = 2;
+				} else if (dY.mod(400) == 0 || (dY.mod(4) == 0 && dY.mod(100) != 0)) {
 					let xH = 1;
 				}
 				let dM = 0;
@@ -994,6 +1017,10 @@
 					dM = (xG+xH>31?2:1);
 					dD = (xG+xH>31?xG+xH-31:xG+xH);
 				}
+				if (date == 625000) {
+					dM = 2;
+					dD = 30;
+				}
 
 				let dE = cW[date.mod(7)];
 				
@@ -1007,6 +1034,11 @@
 				let tS = (time-tH*3600-tM*60);
 				
 				timeResult = (tH<10?"0":"")+tH+":"+(tM<10?"0":"")+tM+":"+(tS<10?"0":"")+tS;
+			} else if (calendarTime[calendar] == "8 stounds") {
+				let tH = Math.floor(time/10800);
+				let tM = Math.floor((time-tH*10800)/5400);
+				let tS = Math.floor(((time-tH*10800-tM*5400)/5400)*100000);
+				timeResult = (tH+1)+(tM?"B":"A")+","+tS.toString().padStart(5, '0');
 			}
 			
 			return dateResult+" "+timeResult;
@@ -1056,10 +1088,16 @@
 			xmlOutput.textContent = xml;
 			
 			generateResults();
+			outputButton.disabled = false;
+		}
+		function copyXML() {
+			navigator.clipboard.writeText(xmlOutput.textContent);
+			outputButton.disabled = true;
 		}
 		importButton.addEventListener('click', generateXML);
 		rulesButton.addEventListener('click', generateXML);
 		yearsButton.addEventListener('click', generateXML);
+		xmlInput.addEventListener('input',() => importButton.disabled = false);
 		rulesSection.addEventListener('input', generateXML);
 		yearsSection.addEventListener('input', generateXML);
 		document.querySelectorAll('input').forEach(input => input.addEventListener('input', generateXML));
