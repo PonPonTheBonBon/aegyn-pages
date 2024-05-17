@@ -617,31 +617,31 @@
 			"tz_ld_howe_dlst": "LHDT",
 			"tz_ld_howe_stnd": "LHST",
 			"tz_line_islands": "LINT",
-			"tz_nam_atlnt_dbdt": "(NA)ADDT",
-			"tz_nam_atlnt_dlst": "(NA)ADT",
-			"tz_nam_atlnt_prvl": "(NA)APT",
-			"tz_nam_atlnt_stnd": "(NA)AST",
-			"tz_nam_atlnt_wart": "(NA)AWT",
-			"tz_nam_centl_dbdt": "(NA)CDDT",
-			"tz_nam_centl_dlst": "(NA)CDT",
-			"tz_nam_centl_prvl": "(NA)CPT",
-			"tz_nam_centl_stnd": "(NA)CST",
-			"tz_nam_centl_wart": "(NA)CWT",
-			"tz_nam_eastn_dbdt": "(NA)EDDT",
-			"tz_nam_eastn_dlst": "(NA)EDT",
-			"tz_nam_eastn_prvl": "(NA)EPT",
-			"tz_nam_eastn_stnd": "(NA)EST",
-			"tz_nam_eastn_wart": "(NA)EWT",
-			"tz_nam_moutn_dbdt": "(NA)MDDT",
-			"tz_nam_moutn_dlst": "(NA)MDT",
-			"tz_nam_moutn_prvl": "(NA)MPT",
-			"tz_nam_moutn_stnd": "(NA)MST",
-			"tz_nam_moutn_wart": "(NA)MWT",
-			"tz_nam_pacfc_dbdt": "(NA)PDDT",
-			"tz_nam_pacfc_dlst": "(NA)PDT",
-			"tz_nam_pacfc_prvl": "(NA)PPT",
-			"tz_nam_pacfc_stnd": "(NA)PST",
-			"tz_nam_pacfc_wart": "(NA)PWT",
+			"tz_nam_atlnt_dbdt": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>ADDT",
+			"tz_nam_atlnt_dlst": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>ADT",
+			"tz_nam_atlnt_prvl": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>APT",
+			"tz_nam_atlnt_stnd": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>AST",
+			"tz_nam_atlnt_wart": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>AWT",
+			"tz_nam_centl_dbdt": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>CDDT",
+			"tz_nam_centl_dlst": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>CDT",
+			"tz_nam_centl_prvl": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>CPT",
+			"tz_nam_centl_stnd": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>CST",
+			"tz_nam_centl_wart": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>CWT",
+			"tz_nam_eastn_dbdt": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>EDDT",
+			"tz_nam_eastn_dlst": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>EDT",
+			"tz_nam_eastn_prvl": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>EPT",
+			"tz_nam_eastn_stnd": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>EST",
+			"tz_nam_eastn_wart": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>EWT",
+			"tz_nam_moutn_dbdt": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>MDDT",
+			"tz_nam_moutn_dlst": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>MDT",
+			"tz_nam_moutn_prvl": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>MPT",
+			"tz_nam_moutn_stnd": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>MST",
+			"tz_nam_moutn_wart": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>MWT",
+			"tz_nam_pacfc_dbdt": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>PDDT",
+			"tz_nam_pacfc_dlst": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>PDT",
+			"tz_nam_pacfc_prvl": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>PPT",
+			"tz_nam_pacfc_stnd": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>PST",
+			"tz_nam_pacfc_wart": "<span style=\"color:rgba(0,0,0,0.5)\">NA</span>PWT",
 			"tz_nl_amstr": "AMT",
 			"tz_nl_stnd": "NET",
 			"tz_nl_sumr_new": "NEST",
@@ -667,11 +667,20 @@
 			"tz_us_hawal_stnd": "HAST",
 			"tz_ws_mean": "SAMT",
 			"tz_ws_westn": "WST",
-			"tz_za_stnd": "SAST",
-			"tz_za_sumr": "SAST",
+			"tz_za_stnd": "SAST❄︎",
+			"tz_za_sumr": "SAST☀︎",
 			"tz_zz_local_mean": "LMT",
 			"tz_zz_local_solar": "TST",
 			"tz_zz_utc": "UTC"
+		};
+		const weekdayValue = {
+			"Mon": "1",
+			"Tue": "2",
+			"Wed": "3",
+			"Thu": "4",
+			"Fri": "5",
+			"Sat": "6",
+			"Sun": "0"
 		};
 
 		function importXML() {
@@ -778,20 +787,17 @@
 				const calDetails = this.parentNode.querySelector('.cal-details');
 				calDetails.style.display = !!this.value.trim() ? 'flex' : 'none';
 			});
-			/*	const BstartInput = this.parentNode.querySelector('input[type="date"][value="${Bstart}"]');
-				const BendInput = this.parentNode.querySelector('input[type="date"][value="${Bend}"]');
-				const appendInput = this.parentNode.querySelector('input[type="checkbox"]');
-				const isCalB = !!this.value.trim();
-				BstartInput.disabled = !isCalB;
-				BendInput.disabled = !isCalB;
-				appendInput.disabled = !isCalB;
-			});*/
 
 			yearsSection.appendChild(yearDiv);
 		}
 		
 		function generateResults() {
-			let result = `<table><tr><th colspan="2">internal</th><th>from date</th><th></th><th>to date</th><th>calendar</th><th>offset</th><th colspan="2">timezone</th></tr>`;
+			let regionCode = country.value+(subdivision.value?"-"+subdivision.value:"")+(district.value?"-"+district.value:"");
+			const lat = Number(latitude.value).toFixed(7);
+			const long = Number(longitude.value).toFixed(7);
+			let result = `<table><tr><th>code</th><th>name</th><th>region</th><th>latitude</th><th>longitude</th></tr>
+			<tr><td>${locID.value}</td><td>${locName.value}</td><td>${regionCode}</td><td>${lat}</td><td>${long}</td></table>`
+			result += `<table><tr><th colspan="2">internal</th><th>from date</th><th></th><th>to date</th><th>calendar</th><th>offset</th><th colspan="2">timezone</th></tr>`;
 			const rules = rulesSection.getElementsByClassName('rule');
 			Array.from(rules).forEach((rule, i, array) => {
 				const inputs = rule.getElementsByTagName('input');
@@ -808,51 +814,24 @@
 				let calendar = calendarNames[inputs[2].value];
 				let offset = inputs[3].value<0?"UTC-"+secondsString(0-inputs[3].value):"UTC+"+secondsString(inputs[3].value);
 				let tzCode = timezoneCode[inputs[4].value];
-				result += `<tr><td align="right">${inputs[0].value}</td><td align="right">${inputs[1].value}</td><td>${dateStringP}</td><td>→</td><td>${dateString}</td><td>${calendar}</td><td>${offset}</td><td>${tzCode}</td><td>(${inputs[4].value})</td></tr>`;
+				result += `<tr><td align="right"><b>${inputs[0].value}</b></td><td align="right"><b>${inputs[1].value}</b></td><td>${dateStringP}</td><td>→</td><td>${dateString}</td><td>${calendar}</td><td>${offset}</td><td>${tzCode}</td><td>(${inputs[4].value})</td></tr>`;
 			});
 			result += `</table>`;
 			resultOutput.innerHTML = result;
 		}
-		function dayMonthRule(yr, mo, dy, cal, rule) {
+		function dayMonthRule(yr, mo, cal, rule) {
 			let dir = -1;
 			let wd = -1;
 			let occ = -1;
 			let weekday = -1;
 			if (rule.match('^[1-9][FMSTW][a-z]{2}$')) {
-				
+				dir = 1;
+				occ = parseInt(rule.charAt(0));
+				weekday = weekdayValue[rule.slice(-3)];
+				console.log("dir: "+dir);
+				console.log("occ: "+occ);
+				console.log("weekday: "+weekday);
 			}
-			/*switch (rule) {
-				case "1Sun":
-					dir = 1;
-					wd = 0;
-					occ = 1;
-					break;
-				case "2Sun":
-					dir = 1;
-					wd = 0;
-					occ = 2;
-					break;
-				case "3Sun":
-					dir = 1;
-					wd = 0;
-					occ = 3;
-					break;
-				case "4Sun":
-					dir = 1;
-					wd = 0;
-					occ = 4;
-					break;
-				case "1Sat":
-					dir = 1;
-					wd = 6;
-					occ = 1;
-					break;
-				case "2Sat":
-					dir = 1;
-					wd = 6;
-					occ = 2;
-					break;
-			}*/
 			if (cal == "Gregr") {
 				const mdPrev = [-1,0,31,59,90,120,151,181,212,243,273,304,334,365];
 				let date = (yr-1)*365 + Math.floor((yr-1)/4) - Math.floor((yr-1)/100) + Math.floor((yr-1)/400);
@@ -860,7 +839,7 @@
 				if (mo >= 3 && (yr.mod(400) == 0 || (yr.mod(4) == 0 && yr.mod(100) != 0))) {
 					date += 1;
 				}
-				date += dy;
+				date += 1;
 				weekday = date.mod(7);
 			} else if (cal == "Julin") {
 				const mdPrev = [-1,0,31,59,90,120,151,181,212,243,273,304,334,365];
@@ -869,13 +848,12 @@
 				if (mo >= 3 && yr.mod(4) == 0) {
 					date += 1;
 				}
-				date += dy;
+				date += 1;
 				weekday = date.mod(7);
 			}
 			if (dir == 1) {
 				let day = (wd-weekday+7).mod(7)+1+(7*(occ-1));
 				return day; 
-				break;
 			}
 		}
 		function datetimeString(date,time,calendar,offset) {
