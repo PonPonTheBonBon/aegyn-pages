@@ -893,135 +893,13 @@
 			
 			/* DATE */
 			if (calendar == "gregr") {
-				const cM = [0,31,59,90,120,151,181,212,243,273,304,334,365];
-				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-				
-				let xA = date+365;
-				let xB = Math.floor(xA/146097);
-				let xC = xA-xB*146097-1;
-				let xD = Math.max(Math.floor(xC/36524),0);
-				let xE = xC-xD*36524+1;
-				let xF = Math.max(Math.floor(xE/365.25),0);
-				let xG = xE-Math.floor(xF*365.25);
-				let xH = 0;
-
-				let dY = xB*400+xD*100+xF;
-				if (dY.mod(400) == 0 || (dY.mod(4) == 0 && dY.mod(100) != 0)) {
-					xH = 1;
-				}
-				let dM = 0;
-				let dD = 0;
-				if (xG >= 60) {
-					if (xG<91) {
-						dM = 3;
-						dD = xG-59;
-					} else if (xG<121) {
-						dM = 4;
-						dD = xG-90;
-					} else if (xG<152) {
-						dM = 5;
-						dD = xG-120;
-					} else if (xG<182) {
-						dM = 6;
-						dD = xG-151;
-					} else if (xG<213) {
-						dM = 7;
-						dD = xG-181;
-					} else if (xG<244) {
-						dM = 8;
-						dD = xG-212;
-					} else if (xG<274) {
-						dM = 9;
-						dD = xG-243;
-					} else if (xG<305) {
-						dM = 10;
-						dD = xG-273;
-					} else if (xG<335) {
-						dM = 11;
-						dD = xG-304;
-					} else {
-						dM = 12;
-						dD = xG-334;
-					}
-				} else {
-					dM = (xG+xH>31?2:1);
-					dD = (xG+xH>31?xG+xH-31:xG+xH);
-				}
-
-				let dE = cW[date.mod(7)];
-				
-				dateResult = dE+" "+dY+"-"+(dM<10?"0":"")+dM+"-"+(dD<10?"0":"")+dD;
+				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+				let calResult = dateToCal(date,"gregr");
+				dateResult = cW[calResult[4]]+" "+calResult[1]+"-"+(calResult[2]<10?"0":"")+calResult[2]+"-"+(calResult[3]<10?"0":"")+calResult[3];
 			} else if (calendar == "julin") {
-				const cM = [0,31,59,90,120,151,181,212,243,273,304,334,365];
-				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-				
-				let dY = 0;
-				if (date>0) {
-					dY = Math.floor((date+367)/365.25)
-				} else if (date>-2557) {
-					dY = Math.floor((date+366)/365)
-				} else {
-					dY = Math.floor((date+365)/365.333333333)
-				}
-				let xA = 0;
-				if (date>0) {
-					xA = date+367-Math.floor(dY*365.25);
-				} else if (date>-2557) {
-					xA = date+367-dY*365;
-				} else {
-					xA = date+365+365-Math.floor((dY+1)*365.333333333);
-				}
-				let xB = 0;
-				if (date>0) {
-					xB = dY.mod(4)==0?1:0;
-				} else if (date>-2557) {
-					xB = 0;
-				} else {
-					xB = (dY+1).mod(3)==0?1:0;
-				}
-
-				let dM = 0;
-				let dD = 0;
-				if (xA >= 60) {
-					if (xA<91) {
-						dM = 3;
-						dD = xA-59;
-					} else if (xA<121) {
-						dM = 4;
-						dD = xA-90;
-					} else if (xA<152) {
-						dM = 5;
-						dD = xA-120;
-					} else if (xA<182) {
-						dM = 6;
-						dD = xA-151;
-					} else if (xA<213) {
-						dM = 7;
-						dD = xA-181;
-					} else if (xA<244) {
-						dM = 8;
-						dD = xA-212;
-					} else if (xA<274) {
-						dM = 9;
-						dD = xA-243;
-					} else if (xA<305) {
-						dM = 10;
-						dD = xA-273;
-					} else if (xA<335) {
-						dM = 11;
-						dD = xA-304;
-					} else {
-						dM = 12;
-						dD = xA-334;
-					}
-				} else {
-					dM = (xA+xB>31?2:1);
-					dD = (xA+xB>31?xA+xB-31:xA+xB);
-				}
-
-				let dE = cW[date.mod(7)];
-				
-				dateResult = dE+" "+dY+"-"+(dM<10?"0":"")+dM+"-"+(dD<10?"0":"")+dD;
+				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+				let calResult = dateToCal(date,"julin");
+				dateResult = cW[calResult[4]]+" "+calResult[1]+"-"+(calResult[2]<10?"0":"")+calResult[2]+"-"+(calResult[3]<10?"0":"")+calResult[3];
 			} else if (calendar == "swedi") {
 				const cM = [0,31,59,90,120,151,181,212,243,273,304,334,365];
 				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
@@ -1169,14 +1047,106 @@
 		generateXML();
 		
 		function dateToCal(date,cal) {
-			
+			switch(cal) {
+				case "gregr": {
+					let xA = date+365;
+					let xB = Math.floor(xA/146097);
+					let xC = xA-xB*146097-1;
+					let xD = Math.max(Math.floor(xC/36524),0);
+					let xE = xC-xD*36524+1;
+					let xF = Math.max(Math.floor(xE/365.25),0);
+					let xG = xE-Math.floor(xF*365.25);
+					let dY = xB*400+xD*100+xF;
+					let xH = isLeapYear(dY,"gregr");
+					let dM = 0;
+					let dD = 0;
+					if (xG >= 60) {
+						if (xG<91) {
+							dM = 3; dD = xG-59;
+						} else if (xG<121) {
+							dM = 4; dD = xG-90;
+						} else if (xG<152) {
+							dM = 5; dD = xG-120;
+						} else if (xG<182) {
+							dM = 6; dD = xG-151;
+						} else if (xG<213) {
+							dM = 7; dD = xG-181;
+						} else if (xG<244) {
+							dM = 8; dD = xG-212;
+						} else if (xG<274) {
+							dM = 9; dD = xG-243;
+						} else if (xG<305) {
+							dM = 10; dD = xG-273;
+						} else if (xG<335) {
+							dM = 11; dD = xG-304;
+						} else {
+							dM = 12; dD = xG-334;
+						}
+					} else {
+						dM = (xG+xH>31?2:1);
+						dD = (xG+xH>31?xG+xH-31:xG+xH);
+					}
+					return ["gregr",dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
+				}
+				case "julin": {
+					let dY = 0;
+					if (date>0) {
+						dY = Math.floor((date+367)/365.25)
+					} else if (date>-2557) {
+						dY = Math.floor((date+366)/365)
+					} else {
+						dY = Math.floor((date+365)/365.333333333)
+					}
+					let xA = 0;
+					if (date>0) {
+						xA = date+367-Math.floor(dY*365.25);
+					} else if (date>-2557) {
+						xA = date+367-dY*365;
+					} else {
+						xA = date+365+365-Math.floor((dY+1)*365.333333333);
+					}
+					let xB = isLeapYear(dY,"julin");
+
+					let dM = 0;
+					let dD = 0;
+					if (xA >= 60) {
+						if (xA<91) {
+							dM = 3; dD = xA-59;
+						} else if (xA<121) {
+							dM = 4; dD = xA-90;
+						} else if (xA<152) {
+							dM = 5; dD = xA-120;
+						} else if (xA<182) {
+							dM = 6; dD = xA-151;
+						} else if (xA<213) {
+							dM = 7; dD = xA-181;
+						} else if (xA<244) {
+							dM = 8; dD = xA-212;
+						} else if (xA<274) {
+							dM = 9; dD = xA-243;
+						} else if (xA<305) {
+							dM = 10; dD = xA-273;
+						} else if (xA<335) {
+							dM = 11; dD = xA-304;
+						} else {
+							dM = 12; dD = xA-334;
+						}
+					} else {
+						dM = (xA+xB>31?2:1);
+						dD = (xA+xB>31?xA+xB-31:xA+xB);
+					}
+					return ["julin",dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
+				}
+				default:
+					throw Error("Unsupported type in dateToCal ('"+cal+"')");
+			}
 		}
 		function isLeapYear(year,cal) {
 			switch(cal) {
-				case "Gregr":
-				case "Swedi":
+				case "gregr":
+				case "swedi":
 					return (year.mod(4) === 0 && year.mod(100) !== 0) || (year.mod(400) === 0);
-				case "Julin":
+				case "julin":
 					if (year>0) {
 						return year.mod(4) === 0;
 					} else if (year>-7) {
@@ -1184,23 +1154,24 @@
 					} else {
 						return (year+1).mod(3) === 0;
 					}
-				default: 
-					throw Error("SupportError: "+cal+" is not supported in isLeapYear");
+				default:
+					throw Error("Unsupported type in isLeapYear ('"+cal+"')");
 			}
 		}
 		function daysElapsed(year,month,cal) {
 			switch(cal) {
-				case "Julin":
-				case "Gregr":
-				case "Swedi":
+				case "julin":
+				case "gregr":
+				case "swedi":
 					const cumul = [0,31,59,90,120,151,181,212,243,273,304,334,365];
 					if (isLeapYear(year,cal)) {
 						return cumul[month-1]+1;
 					} else {
 						return cumul[month-1];
 					}
-				default: 
-					throw Error("SupportError: "+cal+" is not supported in daysElapsed");
+				default:
+					throw Error("Unsupported type in daysElapsed ('"+cal+"')");
+			}
 		}
 	</script>
 </body>
