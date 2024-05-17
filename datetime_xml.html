@@ -732,23 +732,23 @@
 			const dsteo = rule ? rule.getAttribute('dsteo') : '';
 
 			ruleDiv.innerHTML = `
-				<label>Day</label><input type="number" value="${day}" min="-9999999" max="9999999" style="width: 10ch;">
-				<label>Time</label><input type="number" value="${time}" min="0" max="86399" style="width: 7ch;">
-				<label>Calendar</label><input type="text" value="${cal}" maxlength="5" style="width: 5ch;">
-				<label>Offset</label><input type="number" value="${off}" min="-86400" max="86400" style="width: 8ch;">
-				<label>Timezone</label><input type="text" value="${tz}" maxlength="17" style="width: 17ch;">
-				<label>Summertime</label><input type="checkbox" ${dst == '1' ? 'checked' : ''}>
+				<label>Day<\/label><input type="number" value="${day}" min="-9999999" max="9999999" style="width: 10ch;">
+				<label>Time<\/label><input type="number" value="${time}" min="0" max="86399" style="width: 7ch;">
+				<label>Calendar<\/label><input type="text" value="${cal}" maxlength="5" style="width: 5ch;">
+				<label>Offset<\/label><input type="number" value="${off}" min="-86400" max="86400" style="width: 8ch;">
+				<label>Timezone<\/label><input type="text" value="${tz}" maxlength="17" style="width: 17ch;">
+				<label>Summertime<\/label><input type="checkbox" ${dst == '1' ? 'checked' : ''}>
 				<div class="flex-container dst-details" style="${dst == '1' ? '' : 'display:none'}">
-					<label>Summertime:</label>
-					<label>Offset</label><input type="number" value="${dstoff}" min="-86400" max="86400" style="width: 6ch;">
-					<label>Timezone</label><input type="text" value="${dsttz}" maxlength="17" style="width: 17ch;">
-					<label>Start: Day</label><input type="text" value="${dstsd}" maxlength="4" style="width: 4ch;">
-					<label>Month</label><input type="number" value="${dstsm}" min="1" max="99" style="width: 2ch;">
-					<label>Time</label><input type="number" value="${dstso}" min="0" max="86399" style="width: 5ch;">
-					<label>End: Day</label><input type="text" value="${dsted}" maxlength="4" style="width: 4ch;">
-					<label>Month</label><input type="number" value="${dstem}" min="1" max="99" style="width: 2ch;">
-					<label>Time</label><input type="number" value="${dsteo}" min="0" max="86399" style="width: 5ch;">
-				</div>
+					<label>Summertime:<\/label>
+					<label>Offset<\/label><input type="number" value="${dstoff}" min="-86400" max="86400" style="width: 8ch;">
+					<label>Timezone<\/label><input type="text" value="${dsttz}" maxlength="17" style="width: 17ch;">
+					<label>Start: Day<\/label><input type="text" value="${dstsd}" maxlength="4" style="width: 4ch;">
+					<label>Month<\/label><input type="number" value="${dstsm}" min="1" max="99" style="width: 4ch;">
+					<label>Time<\/label><input type="number" value="${dstso}" min="0" max="86399" style="width: 8ch;">
+					<label>End: Day<\/label><input type="text" value="${dsted}" maxlength="4" style="width: 4ch;">
+					<label>Month<\/label><input type="number" value="${dstem}" min="1" max="99" style="width: 4ch;">
+					<label>Time<\/label><input type="number" value="${dsteo}" min="0" max="86399" style="width: 8ch;">
+				<\/div>
 			`;
 			ruleDiv.querySelector('input[type="checkbox"]').addEventListener('change', function() {
 				const dstDetails = this.parentNode.querySelector('.dst-details');
@@ -771,16 +771,16 @@
 			const app = year ? year.getAttribute('app') : '0';
 
 			yearDiv.innerHTML = `
-				<label>ID</label><input type="text" value="${id}" style="width: 2ch;">
-				<label>Cal A</label><input type="text" value="${calA}" maxlength="5" style="width: 5ch;">
-				<label>Cal B</label><input type="text" id="calB" value="${calB}" maxlength="5" style="width: 5ch;">
-				<label>Start Date A</label><input type="text" value="${Astart}" maxlength="12" style="width: 12ch;">
-				<label>End Date A</label><input type="text" value="${Aend}" maxlength="12" style="width: 12ch;">
+				<label>ID<\/label><input type="text" value="${id}" style="width: 2ch;">
+				<label>Cal A<\/label><input type="text" value="${calA}" maxlength="5" style="width: 5ch;">
+				<label>Cal B<\/label><input type="text" id="calB" value="${calB}" maxlength="5" style="width: 5ch;">
+				<label>Start Date A<\/label><input type="text" value="${Astart}" maxlength="12" style="width: 12ch;">
+				<label>End Date A<\/label><input type="text" value="${Aend}" maxlength="12" style="width: 12ch;">
 				<div class="flex-container cal-details" style="${calB != '' ? '' : 'display:none'}">
-					<label>Start Date B</label><input type="text" value="${Bstart}" maxlength="12" style="width: 12ch;">
-					<label>End Date B</label><input type="text" value="${Bend}" maxlength="12" style="width: 12ch;">
-					<label>Append Month</label><input type="checkbox" ${app == '0' ? '' : 'checked'}>
-				</div>
+					<label>Start Date B<\/label><input type="text" value="${Bstart}" maxlength="12" style="width: 12ch;">
+					<label>End Date B<\/label><input type="text" value="${Bend}" maxlength="12" style="width: 12ch;">
+					<label>Append Month<\/label><input type="checkbox" ${app == '0' ? '' : 'checked'}>
+				<\/div>
 			`;
 
 			yearDiv.querySelector('input[type="text"][id="calB"]').addEventListener('input', function() {
@@ -795,31 +795,53 @@
 			let regionCode = country.value+(subdivision.value?"-"+subdivision.value:"")+(district.value?"-"+district.value:"");
 			const lat = Number(latitude.value).toFixed(7);
 			const long = Number(longitude.value).toFixed(7);
-			let result = `<table><tr><th>code</th><th>name</th><th>region</th><th>latitude</th><th>longitude</th></tr>
-			<tr><td>${locID.value}</td><td>${locName.value}</td><td>${regionCode}</td><td>${lat}</td><td>${long}</td></table>`
-			result += `<table><tr><th colspan="2">internal</th><th>from date</th><th></th><th>to date</th><th>calendar</th><th>offset</th><th colspan="2">timezone</th></tr>`;
+			let result = `<table><tr><th>code<\/th><th>name<\/th><th>region<\/th><th>latitude<\/th><th>longitude<\/th><\/tr>
+			<tr><td>${locID.value}<\/td><td>${locName.value}<\/td><td>${regionCode}<\/td><td>${lat}<\/td><td>${long}<\/td><\/table>`
+			result += `<table><tr><th colspan="2">internal<\/th><th>from date<\/th><th><\/th><th>to date<\/th><th>calendar<\/th><th>offset<\/th><th colspan="2">timezone<\/th><\/tr>`;
 			const rules = rulesSection.getElementsByClassName('rule');
 			Array.from(rules).forEach((rule, i, array) => {
+				/* load variables for current, future and past entry */
 				const inputs = rule.getElementsByTagName('input');
-				let inputsN = null;
-				if (i>0) {inputsN = array[i-1].getElementsByTagName('input');}
-				let inputsP = null;
-				if (i<array.length-1) {inputsP = array[i+1].getElementsByTagName('input');}
+				let inputsFutr = null;
+				if (i>0) {inputsFutr = array[i-1].getElementsByTagName('input');}
+				let inputsPast = null;
+				if (i<array.length-1) {inputsPast = array[i+1].getElementsByTagName('input');}
 				
-				let dateString = datetimeString(inputs[0].value,inputs[1].value,inputs[2].value,inputs[3].value);
-				let dateStringP = "";
-				if (inputsP != null) {
-					dateStringP = datetimeString(inputs[0].value,inputs[1].value-1,inputsP[2].value,inputsP[3].value);
+				/* print out each time it changes during summertime */
+				if (inputs[5].checked) {
+					let maxDate = 9999999;
+					let maxTime = 86399;
+					if (inputsFutr != null) {
+						maxDate = inputsFutr[0].value;
+						maxTime = inputsFutr[1].value;
+					}
+					let summerArray = getSummertimeArray(maxDate,maxTime,inputs[0].value,inputs[1].value,inputs[2].value);
 				}
+				
+				/* print out the entry itself */
+				let dateString = datetimeString(inputs[0].value,inputs[1].value,inputs[2].value,inputs[3].value);
+				let dateStringPast = "";
 				let calendar = calendarNames[inputs[2].value];
 				let offset = inputs[3].value<0?"UTC-"+secondsString(0-inputs[3].value):"UTC+"+secondsString(inputs[3].value);
 				let tzCode = timezoneCode[inputs[4].value];
-				result += `<tr><td align="right"><b>${inputs[0].value}</b></td><td align="right"><b>${inputs[1].value}</b></td><td>${dateStringP}</td><td>→</td><td>${dateString}</td><td>${calendar}</td><td>${offset}</td><td>${tzCode}</td><td>(${inputs[4].value})</td></tr>`;
+				if (inputsPast != null) {
+					dateStringPast = datetimeString(inputs[0].value,inputs[1].value-1,inputsPast[2].value,inputsPast[3].value);
+					if (inputs[2].value == inputsPast[2].value && inputs[3].value == inputsPast[3].value && inputs[4].value == inputsPast[4].value) {
+						result += `<tr><td align="right"><b>${inputs[0].value}<\/b><\/td><td align="right"><b>${inputs[1].value}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td colspan="4" style="color:rgba(0,0,0,0.5)"><i>only change in the rule for when summertime occurs<\/i><\/td><\/tr>`;
+					} else {
+						result += `<tr><td align="right"><b>${inputs[0].value}<\/b><\/td><td align="right"><b>${inputs[1].value}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${inputs[4].value})<\/td><\/tr>`;
+					}
+				} else {
+					result += `<tr><td align="right"><b>${inputs[0].value}<\/b><\/td><td align="right"><b>${inputs[1].value}<\/b><\/td><td><\/td><td><\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${inputs[4].value})<\/td><\/tr>`;
+				}
 			});
-			result += `</table>`;
+			result += `<\/table>`;
 			resultOutput.innerHTML = result;
 		}
-		function dayMonthRule(yr, mo, cal, rule) {
+		function getSummertimeArray(maxDate,maxTime,startDate,startTime,cal) {
+			return [[1,2,3],[4,5,6],[7,8,9]];
+		}
+		function dayMonthRule(yr,mo,cal,rule) {
 			let dir = -1;
 			let wd = -1;
 			let occ = -1;
@@ -885,7 +907,7 @@
 
 				let dY = xB*400+xD*100+xF;
 				if (dY.mod(400) == 0 || (dY.mod(4) == 0 && dY.mod(100) != 0)) {
-					let xH = 1;
+					xH = 1;
 				}
 				let dM = 0;
 				let dD = 0;
@@ -1018,9 +1040,9 @@
 
 				let dY = xB*400+xD*100+xF;
 				if (dY == 1712) {
-					let xH = 2;
+					xH = 2;
 				} else if (dY.mod(400) == 0 || (dY.mod(4) == 0 && dY.mod(100) != 0)) {
-					let xH = 1;
+					xH = 1;
 				}
 				let dM = 0;
 				let dD = 0;
