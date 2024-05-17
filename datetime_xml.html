@@ -1167,6 +1167,41 @@
 		yearsSection.addEventListener('input', generateXML);
 		document.querySelectorAll('input').forEach(input => input.addEventListener('input', generateXML));
 		generateXML();
+		
+		function dateToCal(date,cal) {
+			
+		}
+		function isLeapYear(year,cal) {
+			switch(cal) {
+				case "Gregr":
+				case "Swedi":
+					return (year.mod(4) === 0 && year.mod(100) !== 0) || (year.mod(400) === 0);
+				case "Julin":
+					if (year>0) {
+						return year.mod(4) === 0;
+					} else if (year>-7) {
+						return 0;
+					} else {
+						return (year+1).mod(3) === 0;
+					}
+				default: 
+					throw Error("SupportError: "+cal+" is not supported in isLeapYear");
+			}
+		}
+		function daysElapsed(year,month,cal) {
+			switch(cal) {
+				case "Julin":
+				case "Gregr":
+				case "Swedi":
+					const cumul = [0,31,59,90,120,151,181,212,243,273,304,334,365];
+					if (isLeapYear(year,cal)) {
+						return cumul[month-1]+1;
+					} else {
+						return cumul[month-1];
+					}
+				default: 
+					throw Error("SupportError: "+cal+" is not supported in daysElapsed");
+		}
 	</script>
 </body>
 </html>
