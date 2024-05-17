@@ -813,6 +813,71 @@
 			result += `</table>`;
 			resultOutput.innerHTML = result;
 		}
+		function dayMonthRule(yr, mo, dy, cal, rule) {
+			let dir = -1;
+			let wd = -1;
+			let occ = -1;
+			let weekday = -1;
+			if (rule.match('^[1-9][FMSTW][a-z]{2}$')) {
+				
+			}
+			/*switch (rule) {
+				case "1Sun":
+					dir = 1;
+					wd = 0;
+					occ = 1;
+					break;
+				case "2Sun":
+					dir = 1;
+					wd = 0;
+					occ = 2;
+					break;
+				case "3Sun":
+					dir = 1;
+					wd = 0;
+					occ = 3;
+					break;
+				case "4Sun":
+					dir = 1;
+					wd = 0;
+					occ = 4;
+					break;
+				case "1Sat":
+					dir = 1;
+					wd = 6;
+					occ = 1;
+					break;
+				case "2Sat":
+					dir = 1;
+					wd = 6;
+					occ = 2;
+					break;
+			}*/
+			if (cal == "Gregr") {
+				const mdPrev = [-1,0,31,59,90,120,151,181,212,243,273,304,334,365];
+				let date = (yr-1)*365 + Math.floor((yr-1)/4) - Math.floor((yr-1)/100) + Math.floor((yr-1)/400);
+				date += mdPrev[mo];
+				if (mo >= 3 && (yr.mod(400) == 0 || (yr.mod(4) == 0 && yr.mod(100) != 0))) {
+					date += 1;
+				}
+				date += dy;
+				weekday = date.mod(7);
+			} else if (cal == "Julin") {
+				const mdPrev = [-1,0,31,59,90,120,151,181,212,243,273,304,334,365];
+				let date = Math.floor((yr-1)*365.25);
+				date += mdPrev[mo];
+				if (mo >= 3 && yr.mod(4) == 0) {
+					date += 1;
+				}
+				date += dy;
+				weekday = date.mod(7);
+			}
+			if (dir == 1) {
+				let day = (wd-weekday+7).mod(7)+1+(7*(occ-1));
+				return day; 
+				break;
+			}
+		}
 		function datetimeString(date,time,calendar,offset) {
 			dateResult = "??? ????-??-??";
 			timeResult = "??:??:??";
