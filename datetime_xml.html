@@ -675,7 +675,7 @@
 		importButton.addEventListener('click', generateXML);
 		rulesButton.addEventListener('click', generateXML);
 		yearsButton.addEventListener('click', generateXML);
-		xmlInput.addEventListener('input',() => importButton.disabled = false; fixInputXML(););
+		xmlInput.addEventListener('input', fixInputXML);
 		rulesSection.addEventListener('input', generateXML);
 		yearsSection.addEventListener('input', generateXML);
 		document.querySelectorAll('input').forEach(input => input.addEventListener('input', generateXML));
@@ -950,6 +950,7 @@
 			if (xmlInput.value.charAt(0) == '"') {
 				xmlInput.value = xmlInput.value.replace('""','¤').replace('"','').replace('¤','"');
 			}
+			importButton.disabled = false;
 		}
 		
 	</script>
