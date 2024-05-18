@@ -15,6 +15,9 @@
 		th, td {
 			padding-right: 18px;
 		}
+		tr.summertime {
+			border-left: 4px solid #F3872F;
+		}
 		.section {
 			margin-bottom: 20px;
 		}
@@ -518,7 +521,7 @@
 							dateStringPast = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[3]);
 							offset = values[6]<0?"UTC-"+secondsString(0-values[6]):"UTC+"+secondsString(values[6]);
 							tzCode = timezoneCode[values[7]];
-							result += `<tr><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[7]})<\/td><\/tr>`;
+							result += `<tr class="summertime"><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[7]})<\/td><\/tr>`;
 						}
 					}
 				}
