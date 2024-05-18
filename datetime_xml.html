@@ -153,338 +153,17 @@
 		const yearsSection = document.getElementById('yearsSection');
 
 		const countryNames = {
-			"AC": "Ascension Isl.",
-			"AD": "Andorra",
-			"AE": "UAE",
-			"AF": "Afghanistan",
-			"AG": "Antigua-Barbuda",
-			"AI": "Anguilla",
-			"AL": "Albania",
-			"AM": "Armenia",
-			"AO": "Angola",
-			"AQ": "Antarctica",
-			"AR": "Argentina",
-			"AS": "Am. Samoa",
-			"AT": "Austria",
-			"AU": "Australia",
-			"AW": "Aruba",
-			"AX": "Åland Isl.",
-			"AZ": "Azerbaijan",
-			"BA": "Bosnia-Herzeg.",
-			"BB": "Barbados",
-			"BD": "Bangladesh",
-			"BE": "Belgium",
-			"BF": "Burkina Faso",
-			"BG": "Bulgaria",
-			"BH": "Bahrain",
-			"BI": "Burundi",
-			"BJ": "Benin",
-			"BL": "St Barthélemy",
-			"BM": "Bermuda",
-			"BN": "Brunei",
-			"BO": "Bolivia",
-			"BQ": "Carib. Netherl.",
-			"BR": "Brazil",
-			"BS": "Bahamas",
-			"BT": "Bhutan",
-			"BV": "Bouvet Isl.",
-			"BW": "Botswana",
-			"BY": "Belarus",
-			"BZ": "Belize",
-			"CA": "Canada",
-			"CC": "Cocos-Keel. Isl.",
-			"CD": "DR Congo",
-			"CF": "CAR",
-			"CG": "Rep. Congo",
-			"CH": "Switzerland",
-			"CI": "Côte d’Ivoire",
-			"CK": "Cook Isl.",
-			"CL": "Chile",
-			"CM": "Cameroon",
-			"CN": "China",
-			"CO": "Colombia",
-			"CP": "Clipperton Isl.",
-			"CR": "Costa Rica",
-			"CU": "Cuba",
-			"CV": "Cape Verde",
-			"CW": "Curaçao",
-			"CX": "Christmas Isl.",
-			"CY": "Cyprus",
-			"CZ": "Czechia",
-			"DE": "Germany",
-			"DG": "Diego Garcia",
-			"DJ": "Djibouti",
-			"DK": "Denmark",
-			"DM": "Dominica",
-			"DO": "Dominican Rep.",
-			"DZ": "Algeria",
-			"EA": "Ceuta-Melilla",
-			"EC": "Ecuador",
-			"EE": "Estonia",
-			"EG": "Egypt",
-			"EH": "Western Sahara",
-			"ER": "Eritrea",
-			"ES": "Spain",
-			"ET": "Ethiopia",
-			"FI": "Finland",
-			"FJ": "Fiji",
-			"FK": "Falkland Isl.",
-			"FM": "Micronesia",
-			"FO": "Faroe Isl.",
-			"FR": "France",
-			"GA": "Gabon",
-			"GB": "UK",
-			"GD": "Grenada",
-			"GE": "Georgia",
-			"GF": "French Guiana",
-			"GG": "Guernsey",
-			"GH": "Ghana",
-			"GI": "Gibraltar",
-			"GL": "Greenland",
-			"GM": "Gambia",
-			"GN": "Guinea",
-			"GP": "Guadeloupe",
-			"GQ": "Equatorial Guinea",
-			"GR": "Greece",
-			"GS": "S.Geo.-S.San. Isl.",
-			"GT": "Guatemala",
-			"GU": "Guam",
-			"GW": "Guinea-Bissau",
-			"GY": "Guyana",
-			"HK": "Hong Kong",
-			"HM": "Heard-McD. Isl.",
-			"HN": "Honduras",
-			"HR": "Croatia",
-			"HT": "Haiti",
-			"HU": "Hungary",
-			"IC": "Canary Isl.",
-			"ID": "Indonesia",
-			"IE": "Ireland",
-			"IL": "Israel",
-			"IM": "Isle of Man",
-			"IN": "India",
-			"IO": "Br.In. Ocean Terr.",
-			"IQ": "Iraq",
-			"IR": "Iran",
-			"IS": "Iceland",
-			"IT": "Italy",
-			"JE": "Jersey",
-			"JM": "Jamaica",
-			"JO": "Jordan",
-			"JP": "Japan",
-			"KE": "Kenya",
-			"KG": "Kyrgyzstan",
-			"KH": "Cambodia",
-			"KI": "Kiribati",
-			"KM": "Comoros",
-			"KN": "St Kitts-Nevis",
-			"KP": "North Korea",
-			"KR": "South Korea",
-			"KW": "Kuwait",
-			"KY": "Cayman Isl.",
-			"KZ": "Kazakhstan",
-			"LA": "Laos",
-			"LB": "Lebanon",
-			"LC": "St Lucia",
-			"LI": "Liechtenstein",
-			"LK": "Sri Lanka",
-			"LR": "Liberia",
-			"LS": "Lesotho",
-			"LT": "Lithuania",
-			"LU": "Luxembourg",
-			"LV": "Latvia",
-			"LY": "Libya",
-			"MA": "Morocco",
-			"MC": "Monaco",
-			"MD": "Moldova",
-			"ME": "Montenegro",
-			"MF": "St Martin",
-			"MG": "Madagascar",
-			"MH": "Marshall Isl.",
-			"MK": "N.Macedonia",
-			"ML": "Mali",
-			"MM": "Myanmar",
-			"MN": "Mongolia",
-			"MO": "Macao",
-			"MP": "N.Mariana Isl.",
-			"MQ": "Martinique",
-			"MR": "Mauritania",
-			"MS": "Montserrat",
-			"MT": "Malta",
-			"MU": "Mauritius",
-			"MV": "Maldives",
-			"MW": "Malawi",
-			"MX": "Mexico",
-			"MY": "Malaysia",
-			"MZ": "Mozambique",
-			"NA": "Namibia",
-			"NC": "New Caledonia",
-			"NE": "Niger",
-			"NF": "Norfolk Isl.",
-			"NG": "Nigeria",
-			"NI": "Nicaragua",
-			"NL": "Netherlands",
-			"NO": "Norway",
-			"NP": "Nepal",
-			"NR": "Nauru",
-			"NU": "Niue",
-			"NZ": "New Zealand",
-			"OM": "Oman",
-			"PA": "Panama",
-			"PE": "Peru",
-			"PF": "Fr. Polynesia",
-			"PG": "PNG",
-			"PH": "Philippines",
-			"PK": "Pakistan",
-			"PL": "Poland",
-			"PM": "St Pierre-Miqu.",
-			"PN": "Pitcairn Isl.",
-			"PR": "Puerto Rico",
-			"PS": "Palestine",
-			"PT": "Portugal",
-			"PW": "Palau",
-			"PY": "Paraguay",
-			"QA": "Qatar",
-			"RE": "Réunion",
-			"RO": "Romania",
-			"RS": "Serbia",
-			"RU": "Russia",
-			"RW": "Rwanda",
-			"SA": "Saudi Arabia",
-			"SB": "Solomon Isl.",
-			"SC": "Seychelles",
-			"SD": "Sudan",
-			"SE": "Sweden",
-			"SG": "Singapore",
-			"SH": "St Helena",
-			"SI": "Slovenia",
-			"SJ": "Svalb.-Jan M.",
-			"SK": "Slovakia",
-			"SL": "Sierra Leone",
-			"SM": "San Marino",
-			"SN": "Senegal",
-			"SO": "Somalia",
-			"SR": "Suriname",
-			"SS": "South Sudan",
-			"ST": "S.Tomé-Prínc.",
-			"SV": "El Salvador",
-			"SX": "Sint Maarten",
-			"SY": "Syria",
-			"SZ": "Eswatini",
-			"TA": "Tristan da C.",
-			"TC": "Turks-Caicos Isl.",
-			"TD": "Chad",
-			"TF": "French S.Terr.",
-			"TG": "Togo",
-			"TH": "Thailand",
-			"TJ": "Tajikistan",
-			"TK": "Tokelau",
-			"TL": "Timor-Leste",
-			"TM": "Turkmenistan",
-			"TN": "Tunisia",
-			"TO": "Tonga",
-			"TR": "Turkey",
-			"TT": "Trinidad-Tobago",
-			"TV": "Tuvalu",
-			"TW": "Taiwan",
-			"TZ": "Tanzania",
-			"UA": "Ukraine",
-			"UG": "Uganda",
-			"UM": "US Outl. Isl.",
-			"US": "US",
-			"UY": "Uruguay",
-			"UZ": "Uzbekistan",
-			"VA": "Vatican City",
-			"VC": "St Vinc.-Gren.",
-			"VE": "Venezuela",
-			"VG": "UK Virgin Isl.",
-			"VI": "US Virgin Isl.",
-			"VN": "Vietnam",
-			"VU": "Vanuatu",
-			"WF": "Wallis-Futuna",
-			"WS": "Samoa",
-			"XK": "Kosovo",
-			"XN": "N.Cyprus",
-			"YE": "Yemen",
-			"YT": "Mayotte",
-			"ZA": "S.Africa",
-			"ZM": "Zambia",
-			"ZW": "Zimbabwe",
-			"ZZ": ""
+			"AC": "Ascension Isl.", "AD": "Andorra", "AE": "UAE", "AF": "Afghanistan", "AG": "Antigua-Barbuda", "AI": "Anguilla", "AL": "Albania", "AM": "Armenia", "AO": "Angola", "AQ": "Antarctica", "AR": "Argentina", "AS": "Am. Samoa", "AT": "Austria", "AU": "Australia", "AW": "Aruba", "AX": "Åland Isl.", "AZ": "Azerbaijan", "BA": "Bosnia-Herzeg.", "BB": "Barbados", "BD": "Bangladesh", "BE": "Belgium", "BF": "Burkina Faso", "BG": "Bulgaria", "BH": "Bahrain", "BI": "Burundi", "BJ": "Benin", "BL": "St Barthélemy", "BM": "Bermuda", "BN": "Brunei", "BO": "Bolivia", "BQ": "Carib. Netherl.", "BR": "Brazil", "BS": "Bahamas", "BT": "Bhutan", "BV": "Bouvet Isl.", "BW": "Botswana", "BY": "Belarus", "BZ": "Belize", "CA": "Canada", "CC": "Cocos-Keel. Isl.", "CD": "DR Congo", "CF": "CAR", "CG": "Rep. Congo", "CH": "Switzerland", "CI": "Côte d’Ivoire", "CK": "Cook Isl.", "CL": "Chile", "CM": "Cameroon", "CN": "China", "CO": "Colombia", "CP": "Clipperton Isl.", "CR": "Costa Rica", "CU": "Cuba", "CV": "Cape Verde", "CW": "Curaçao", "CX": "Christmas Isl.", "CY": "Cyprus", "CZ": "Czechia", "DE": "Germany", "DG": "Diego Garcia", "DJ": "Djibouti", "DK": "Denmark", "DM": "Dominica", "DO": "Dominican Rep.", "DZ": "Algeria", "EA": "Ceuta-Melilla", "EC": "Ecuador", "EE": "Estonia", "EG": "Egypt", "EH": "Western Sahara", "ER": "Eritrea", "ES": "Spain", "ET": "Ethiopia", "FI": "Finland", "FJ": "Fiji", "FK": "Falkland Isl.", "FM": "Micronesia", "FO": "Faroe Isl.", "FR": "France", "GA": "Gabon", "GB": "UK", "GD": "Grenada", "GE": "Georgia", "GF": "French Guiana", "GG": "Guernsey", "GH": "Ghana", "GI": "Gibraltar", "GL": "Greenland", "GM": "Gambia", "GN": "Guinea", "GP": "Guadeloupe", "GQ": "Equatorial Guinea", "GR": "Greece", "GS": "S.Geo.-S.San. Isl.", "GT": "Guatemala", "GU": "Guam", "GW": "Guinea-Bissau", "GY": "Guyana", "HK": "Hong Kong", "HM": "Heard-McD. Isl.", "HN": "Honduras", "HR": "Croatia", "HT": "Haiti", "HU": "Hungary", "IC": "Canary Isl.", "ID": "Indonesia", "IE": "Ireland", "IL": "Israel", "IM": "Isle of Man", "IN": "India", "IO": "Br.In. Ocean Terr.", "IQ": "Iraq", "IR": "Iran", "IS": "Iceland", "IT": "Italy", "JE": "Jersey", "JM": "Jamaica", "JO": "Jordan", "JP": "Japan", "KE": "Kenya", "KG": "Kyrgyzstan", "KH": "Cambodia", "KI": "Kiribati", "KM": "Comoros", "KN": "St Kitts-Nevis", "KP": "North Korea", "KR": "South Korea", "KW": "Kuwait", "KY": "Cayman Isl.", "KZ": "Kazakhstan", "LA": "Laos", "LB": "Lebanon", "LC": "St Lucia", "LI": "Liechtenstein", "LK": "Sri Lanka", "LR": "Liberia", "LS": "Lesotho", "LT": "Lithuania", "LU": "Luxembourg", "LV": "Latvia", "LY": "Libya", "MA": "Morocco", "MC": "Monaco", "MD": "Moldova", "ME": "Montenegro", "MF": "St Martin", "MG": "Madagascar", "MH": "Marshall Isl.", "MK": "N.Macedonia", "ML": "Mali", "MM": "Myanmar", "MN": "Mongolia", "MO": "Macao", "MP": "N.Mariana Isl.", "MQ": "Martinique", "MR": "Mauritania", "MS": "Montserrat", "MT": "Malta", "MU": "Mauritius", "MV": "Maldives", "MW": "Malawi", "MX": "Mexico", "MY": "Malaysia", "MZ": "Mozambique", "NA": "Namibia", "NC": "New Caledonia", "NE": "Niger", "NF": "Norfolk Isl.", "NG": "Nigeria", "NI": "Nicaragua", "NL": "Netherlands", "NO": "Norway", "NP": "Nepal", "NR": "Nauru", "NU": "Niue", "NZ": "New Zealand", "OM": "Oman", "PA": "Panama", "PE": "Peru", "PF": "Fr. Polynesia", "PG": "PNG", "PH": "Philippines", "PK": "Pakistan", "PL": "Poland", "PM": "St Pierre-Miqu.", "PN": "Pitcairn Isl.", "PR": "Puerto Rico", "PS": "Palestine", "PT": "Portugal", "PW": "Palau", "PY": "Paraguay", "QA": "Qatar", "RE": "Réunion", "RO": "Romania", "RS": "Serbia", "RU": "Russia", "RW": "Rwanda", "SA": "Saudi Arabia", "SB": "Solomon Isl.", "SC": "Seychelles", "SD": "Sudan", "SE": "Sweden", "SG": "Singapore", "SH": "St Helena", "SI": "Slovenia", "SJ": "Svalb.-Jan M.", "SK": "Slovakia", "SL": "Sierra Leone", "SM": "San Marino", "SN": "Senegal", "SO": "Somalia", "SR": "Suriname", "SS": "South Sudan", "ST": "S.Tomé-Prínc.", "SV": "El Salvador", "SX": "Sint Maarten", "SY": "Syria", "SZ": "Eswatini", "TA": "Tristan da C.", "TC": "Turks-Caicos Isl.", "TD": "Chad", "TF": "French S.Terr.", "TG": "Togo", "TH": "Thailand", "TJ": "Tajikistan", "TK": "Tokelau", "TL": "Timor-Leste", "TM": "Turkmenistan", "TN": "Tunisia", "TO": "Tonga", "TR": "Turkey", "TT": "Trinidad-Tobago", "TV": "Tuvalu", "TW": "Taiwan", "TZ": "Tanzania", "UA": "Ukraine", "UG": "Uganda", "UM": "US Outl. Isl.", "US": "US", "UY": "Uruguay", "UZ": "Uzbekistan", "VA": "Vatican City", "VC": "St Vinc.-Gren.", "VE": "Venezuela", "VG": "UK Virgin Isl.", "VI": "US Virgin Isl.", "VN": "Vietnam", "VU": "Vanuatu", "WF": "Wallis-Futuna", "WS": "Samoa", "XK": "Kosovo", "XN": "N.Cyprus", "YE": "Yemen", "YT": "Mayotte", "ZA": "S.Africa", "ZM": "Zambia", "ZW": "Zimbabwe", "ZZ": ""
 		};
 		const subdivisionNames = {
 			"CA": {
-				"AB": "Alberta",
-				"BC": "British Columbia",
-				"MB": "Manitoba",
-				"NB": "New Brunswick",
-				"NL": "Newfoundland and Labrador",
-				"NS": "Nova Scotia",
-				"NT": "Northwest Territories",
-				"NU": "Nunavut",
-				"ON": "Ontario",
-				"PE": "Prince Edward Island",
-				"QC": "Quebec",
-				"SK": "Saskatchewan",
-				"YT": "Yukon"
+				"AB": "Alberta", "BC": "British Columbia", "MB": "Manitoba", "NB": "New Brunswick", "NL": "Newfoundland and Labrador", "NS": "Nova Scotia", "NT": "Northwest Territories", "NU": "Nunavut", "ON": "Ontario", "PE": "Prince Edward Island", "QC": "Quebec", "SK": "Saskatchewan", "YT": "Yukon"
 			},
 			"GB": {
-				"ENG": "England",
-				"NIR": "Northern Ireland",
-				"SCT": "Scotland",
-				"WLS": "Wales"
+				"ENG": "England", "NIR": "Northern Ireland", "SCT": "Scotland", "WLS": "Wales"
 			},
 			"US": {
-				"AK": "Alaska",
-				"AL": "Alabama",
-				"AR": "Arkansas",
-				"AZ": "Arizona",
-				"CA": "California",
-				"CO": "Colorado",
-				"CT": "Connecticut",
-				"DE": "Delaware",
-				"FL": "Florida",
-				"GA": "Georgia",
-				"HI": "Hawaii",
-				"IA": "Iowa",
-				"ID": "Idaho",
-				"IL": "Illinois",
-				"IN": "Indiana",
-				"KS": "Kansas",
-				"KY": "Kentucky",
-				"LA": "Louisiana",
-				"MA": "Massachusetts",
-				"MD": "Maryland",
-				"ME": "Maine",
-				"MI": "Michigan",
-				"MN": "Minnesota",
-				"MO": "Missouri",
-				"MS": "Mississippi",
-				"MT": "Montana",
-				"NC": "North Carolina",
-				"ND": "North Dakota",
-				"NE": "Nebraska",
-				"NH": "New Hampshire",
-				"NJ": "New Jersey",
-				"NM": "New Mexico",
-				"NV": "Nevada",
-				"NY": "New York",
-				"OH": "Ohio",
-				"OK": "Oklahoma",
-				"OR": "Oregon",
-				"PA": "Pennsylvania",
-				"RI": "Rhode Island",
-				"SC": "South Carolina",
-				"SD": "South Dakota",
-				"TN": "Tennessee",
-				"TX": "Texas",
-				"UT": "Utah",
-				"VA": "Virginia",
-				"VT": "Vermont",
-				"WA": "Washington",
-				"WI": "Wisconsin",
-				"WV": "West Virginia",
-				"WY": "Wyoming"
+				"AK": "Alaska", "AL": "Alabama", "AR": "Arkansas", "AZ": "Arizona", "CA": "California", "CO": "Colorado", "CT": "Connecticut", "DE": "Delaware", "FL": "Florida", "GA": "Georgia", "HI": "Hawaii", "IA": "Iowa", "ID": "Idaho", "IL": "Illinois", "IN": "Indiana", "KS": "Kansas", "KY": "Kentucky", "LA": "Louisiana", "MA": "Massachusetts", "MD": "Maryland", "ME": "Maine", "MI": "Michigan", "MN": "Minnesota", "MO": "Missouri", "MS": "Mississippi", "MT": "Montana", "NC": "North Carolina", "ND": "North Dakota", "NE": "Nebraska", "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico", "NV": "Nevada", "NY": "New York", "OH": "Ohio", "OK": "Oklahoma", "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota", "TN": "Tennessee", "TX": "Texas", "UT": "Utah", "VA": "Virginia", "VT": "Vermont", "WA": "Washington", "WI": "Wisconsin", "WV": "West Virginia", "WY": "Wyoming"
 			}
 		};
 		const calendarNames = {
@@ -794,95 +473,373 @@
 		function generateResults() {
 			let regionCode = country.value+(subdivision.value?"-"+subdivision.value:"")+(district.value?"-"+district.value:"");
 			const lat = Number(latitude.value).toFixed(7);
-			const long = Number(longitude.value).toFixed(7);
+			const lon = Number(longitude.value).toFixed(7);
 			let result = `<table><tr><th>code<\/th><th>name<\/th><th>region<\/th><th>latitude<\/th><th>longitude<\/th><\/tr>
-			<tr><td>${locID.value}<\/td><td>${locName.value}<\/td><td>${regionCode}<\/td><td>${lat}<\/td><td>${long}<\/td><\/table>`
+			<tr><td>${locID.value}<\/td><td>${locName.value}<\/td><td>${regionCode}<\/td><td>${lat}<\/td><td>${lon}<\/td><\/table>`
 			result += `<table><tr><th colspan="2">internal<\/th><th>from date<\/th><th><\/th><th>to date<\/th><th>calendar<\/th><th>offset<\/th><th colspan="2">timezone<\/th><\/tr>`;
 			const rules = rulesSection.getElementsByClassName('rule');
 			Array.from(rules).forEach((rule, i, array) => {
 				/* load variables for current, future and past entry */
 				const inputs = rule.getElementsByTagName('input');
+				const values = [parseInt(inputs[0].value),parseInt(inputs[1].value),inputs[2].value,parseInt(inputs[3].value),inputs[4].value,inputs[5].checked,parseInt(inputs[6].value),inputs[7].value,inputs[8].value,parseInt(inputs[9].value),parseInt(inputs[10].value),inputs[11].value,parseInt(inputs[12].value),parseInt(inputs[13].value)];
 				let inputsFutr = null;
 				if (i>0) {inputsFutr = array[i-1].getElementsByTagName('input');}
+				const valuesFutr = inputsFutr===null?null:[parseInt(inputsFutr[0].value),parseInt(inputsFutr[1].value),inputsFutr[2].value,parseInt(inputsFutr[3].value),inputsFutr[4].value,inputsFutr[5].checked,parseInt(inputsFutr[6].value),inputsFutr[7].value,inputsFutr[8].value,parseInt(inputsFutr[9].value),parseInt(inputsFutr[10].value),inputsFutr[11].value,parseInt(inputsFutr[12].value),parseInt(inputsFutr[13].value)];
 				let inputsPast = null;
 				if (i<array.length-1) {inputsPast = array[i+1].getElementsByTagName('input');}
+				const valuesPast = inputsPast===null?null:[parseInt(inputsPast[0].value),parseInt(inputsPast[1].value),inputsPast[2].value,parseInt(inputsPast[3].value),inputsPast[4].value,inputsPast[5].checked,parseInt(inputsPast[6].value),inputsPast[7].value,inputsPast[8].value,parseInt(inputsPast[9].value),parseInt(inputsPast[10].value),inputsPast[11].value,parseInt(inputsPast[12].value),parseInt(inputsPast[13].value)];
+				
+				/* prepare variables */
+				let dateString = "";
+				let dateStringPast = "";
+				let calendar = calendarNames[values[2]];
+				let offset = "";
+				let tzCode = "";
 				
 				/* print out each time it changes during summertime */
 				if (inputs[5].checked) {
-					let maxDate = 9999999;
-					let maxTime = 86399;
-					if (inputsFutr != null) {
-						maxDate = inputsFutr[0].value;
-						maxTime = inputsFutr[1].value;
+					let maxDate = 748747; // 2050-12-31
+					let maxTime = 86399; // last second of the day
+					if (valuesFutr !== null) {
+						maxDate = valuesFutr[0];
+						maxTime = valuesFutr[1];
 					}
-					let summerArray = getSummertimeArray(maxDate,maxTime,inputs[0].value,inputs[1].value,inputs[2].value);
+					let summerArray = getSummertimeArray(values[2],maxDate,maxTime,values[0],values[1],values[3],values[6],values[8],values[9],values[10],values[11],values[12],values[13]);
+					for (let i=0;i<summerArray.length;i+=1) {
+						if (summerArray[i][2]) { // summertime ends
+							dateString = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[3]);
+							dateStringPast = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[6]);
+							offset = values[3]<0?"UTC-"+secondsString(0-values[3]):"UTC+"+secondsString(values[3]);
+							tzCode = timezoneCode[values[4]];
+							result += `<tr><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
+						} else { // summertime begins
+							dateString = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[6]);
+							dateStringPast = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[3]);
+							offset = values[6]<0?"UTC-"+secondsString(0-values[6]):"UTC+"+secondsString(values[6]);
+							tzCode = timezoneCode[values[7]];
+							result += `<tr><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[7]})<\/td><\/tr>`;
+						}
+					}
 				}
 				
 				/* print out the entry itself */
-				let dateString = datetimeString(inputs[0].value,inputs[1].value,inputs[2].value,inputs[3].value);
-				let dateStringPast = "";
-				let calendar = calendarNames[inputs[2].value];
-				let offset = inputs[3].value<0?"UTC-"+secondsString(0-inputs[3].value):"UTC+"+secondsString(inputs[3].value);
-				let tzCode = timezoneCode[inputs[4].value];
-				if (inputsPast != null) {
-					dateStringPast = datetimeString(inputs[0].value,inputs[1].value-1,inputsPast[2].value,inputsPast[3].value);
-					if (inputs[2].value == inputsPast[2].value && inputs[3].value == inputsPast[3].value && inputs[4].value == inputsPast[4].value) {
-						result += `<tr><td align="right"><b>${inputs[0].value}<\/b><\/td><td align="right"><b>${inputs[1].value}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td colspan="4" style="color:rgba(0,0,0,0.5)"><i>only change in the rule for when summertime occurs<\/i><\/td><\/tr>`;
+				dateString = datetimeString(values[2],values[0],values[1],values[3]);
+				dateStringPast = "";
+				offset = values[3]<0?"UTC-"+secondsString(0-values[3]):"UTC+"+secondsString(values[3]);
+				tzCode = timezoneCode[values[4]];
+				if (valuesPast != null) {
+					dateStringPast = datetimeString(valuesPast[2],values[0],values[1]-1,valuesPast[3]);
+					if (values[2] == valuesPast[2] && values[3] == valuesPast[3] && values[4] == valuesPast[4]) {
+						result += `<tr><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td colspan="4" style="color:rgba(0,0,0,0.5)"><i>only change in the rule for when summertime occurs<\/i><\/td><\/tr>`;
 					} else {
-						result += `<tr><td align="right"><b>${inputs[0].value}<\/b><\/td><td align="right"><b>${inputs[1].value}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${inputs[4].value})<\/td><\/tr>`;
+						result += `<tr><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
 					}
 				} else {
-					result += `<tr><td align="right"><b>${inputs[0].value}<\/b><\/td><td align="right"><b>${inputs[1].value}<\/b><\/td><td><\/td><td><\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${inputs[4].value})<\/td><\/tr>`;
+					result += `<tr><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td><\/td><td><\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
 				}
 			});
 			result += `<\/table>`;
 			resultOutput.innerHTML = result;
 		}
-		function getSummertimeArray(maxDate,maxTime,startDate,startTime,cal) {
-			return [[1,2,3],[4,5,6],[7,8,9]];
+		function getSummertimeArray(cal,maxDate,maxTime,startDate,startTime,offsetBefore,offsetDuring,startRule,startMonth,startOff,endRule,endMonth,endOff) {
+			const yearMax = dateToCal(maxDate,cal)[1];
+			const yearMin = dateToCal(startDate,cal)[1];
+			const yearRange = yearMax-yearMin+1;
+			
+			let list = [];
+			for (let i=0;i<yearRange;i+=1) {
+				const datumEnd = dayMonthRule(cal,yearMax-i,endMonth,endRule);
+				const datumStart = dayMonthRule(cal,yearMax-i,startMonth,startRule);
+				let dateEnd = calToDate(cal,datumEnd[1],datumEnd[2],datumEnd[3]);
+				let dateStart = calToDate(cal,datumStart[1],datumStart[2],datumStart[3]);
+				let timeEnd = 0-offsetDuring+endOff;
+				let timeStart = 0-offsetBefore+startOff;
+				if (timeEnd < 0) {
+					timeEnd += 86400;
+					dateEnd -= 1;
+				} else if (timeEnd >= 86400) {
+					timeEnd -= 86400;
+					dateEnd += 1;
+				}
+				if (timeStart < 0) {
+					timeStart += 86400;
+					dateStart -= 1;
+				} else if (timeStart >= 86400) {
+					timeStart -= 86400;
+					dateStart += 1;
+				}
+				if ((dateEnd < maxDate || (dateEnd === maxDate && timeEnd < maxTime)) && (dateEnd > startDate || (dateEnd === startDate && timeEnd >= startTime))) {
+					list.push([dateEnd,timeEnd,1]);
+				}
+				if ((dateStart < maxDate || (dateStart === maxDate && timeStart < maxTime)) && (dateStart > startDate || (dateStart === startDate && timeStart >= startTime))) {
+					list.push([dateStart,timeStart,0]);
+				}
+			}
+			return list;
 		}
-		function dayMonthRule(yr,mo,cal,rule) {
+		function dayMonthRule(cal,year,month,rule) {
 			let dir = -1;
 			let wd = -1;
 			let occ = -1;
-			let weekday = -1;
+			let wdfound = -1;
 			if (rule.match('^[1-9][FMSTW][a-z]{2}$')) {
 				dir = 1;
 				occ = parseInt(rule.charAt(0));
-				weekday = weekdayValue[rule.slice(-3)];
-				console.log("dir: "+dir);
-				console.log("occ: "+occ);
-				console.log("weekday: "+weekday);
+				wd = rule.slice(-3);
+			} else if (rule.match('^[LPATQ][FMSTW][a-z]{2}$')) {
+				dir = 2;
+				const ruleMap = { /* last, penultimate, antepenultimate, tetraultimate, quintultimate */
+					'L': 1, 'P': 2, 'A': 3, 'T': 4, 'Q': 5
+				};
+				occ = ruleMap[rule.charAt(0)];
+				wd = rule.slice(-3);
 			}
-			if (cal == "Gregr") {
-				const mdPrev = [-1,0,31,59,90,120,151,181,212,243,273,304,334,365];
-				let date = (yr-1)*365 + Math.floor((yr-1)/4) - Math.floor((yr-1)/100) + Math.floor((yr-1)/400);
-				date += mdPrev[mo];
-				if (mo >= 3 && (yr.mod(400) == 0 || (yr.mod(4) == 0 && yr.mod(100) != 0))) {
-					date += 1;
+			if (cal == "gregr" || cal == "julin") {
+				const weekdayMap = {
+					"Sun": 0, "Mon": 1, "Tue": 2, "Wed": 3, "Thu": 4, "Fri": 5, "Sat": 6
 				}
-				date += 1;
-				weekday = date.mod(7);
-			} else if (cal == "Julin") {
-				const mdPrev = [-1,0,31,59,90,120,151,181,212,243,273,304,334,365];
-				let date = Math.floor((yr-1)*365.25);
-				date += mdPrev[mo];
-				if (mo >= 3 && yr.mod(4) == 0) {
-					date += 1;
+				wd = weekdayMap[wd];
+				if (dir == 1) {
+					const monthLength = daysInMonth(cal,year,month);
+					wdfound = calToDate(cal,year,month,1).mod(7);
+					let day = (wd-wdfound+7).mod(7)+1+(7*(occ-1));
+					if (day > monthLength) {
+						month += 1;
+						if (month > 12) {
+							year += 1;
+							month -= 12;
+						}
+						day -= monthLength;
+					};
+					return [cal,year,month,day];
+				} else if (dir == 2) {
+					const monthLength = daysInMonth(cal,year,month);
+					wdfound = calToDate(cal,year,month,monthLength).mod(7);
+					let day = monthLength-(wdfound-wd+7).mod(7)-(7*(occ-1));
+					if (day < 1) {
+						month -= 1;
+						if (month < 1) {
+							year -= 1;
+							month += 12;
+						}
+						day += daysInMonth(cal,year,month);
+					};
+					return [cal,year,month,day];
 				}
-				date += 1;
-				weekday = date.mod(7);
-			}
-			if (dir == 1) {
-				let day = (wd-weekday+7).mod(7)+1+(7*(occ-1));
-				return day; 
 			}
 		}
-		function datetimeString(date,time,calendar,offset) {
+		function generateXML() {
+			const countryFullName = countryNames[country.value] || ((country.value === "ZZ") ? "" : country.value);
+			const subdivisionFullName = subdivisionNames[country.value]?.[subdivision.value] || subdivision.value;
+			const comment = `<!-- ${countryFullName ? countryFullName + ' / ' : ''}${subdivisionFullName ? subdivisionFullName + ' / ' : ''}${locName.value} -->`;
+			const lat = Number(latitude.value).toFixed(7);
+			const lon = Number(longitude.value).toFixed(7);
+
+			let xml = `<location id="${locID.value}" c="${country.value}" s="${subdivision.value}" d="${district.value}" lat="${lat}" lon="${lon}"> ${comment}\n`;
+			xml += '	<rules>\n';
+
+			const rules = rulesSection.getElementsByClassName('rule');
+			Array.from(rules).forEach(rule => {
+				const inputs = rule.getElementsByTagName('input');
+				xml += `		<rule day="${inputs[0].value}" time="${inputs[1].value}" cal="${inputs[2].value}" off="${inputs[3].value}" tz="${inputs[4].value}"`;
+				if (inputs[5].checked) {
+					xml += ` dst="1" dstoff="${inputs[6].value}" dsttz="${inputs[7].value}" dstsd="${inputs[8].value}" dstsm="${inputs[9].value}" dstso="${inputs[10].value}" dsted="${inputs[11].value}" dstem="${inputs[12].value}" dsteo="${inputs[13].value}"`;
+				} else {
+					xml += ' dst="0"';
+				}
+				xml += '/>\n';
+			});
+
+			xml += '	</rules>\n	<years>\n';
+
+			const years = yearsSection.getElementsByClassName('year');
+			Array.from(years).forEach(year => {
+				const inputs = year.getElementsByTagName('input');
+				xml += `		<year id="${inputs[0].value}" calA="${inputs[1].value}" calB="${inputs[2].value}" Astart="${inputs[3].value}" Aend="${inputs[4].value}"`;
+				if (inputs[2].value.trim()) {
+					xml += ` Bstart="${inputs[5].value}" Bend="${inputs[6].value}" app="${inputs[7].checked ? '1' : '0'}"`;
+				}
+				xml += '/>\n';
+			});
+
+			xml += '	</years>\n</location>';
+			xmlOutput.textContent = xml;
+			
+			generateResults();
+			outputButton.disabled = false;
+		}
+		function copyXML() {
+			navigator.clipboard.writeText(xmlOutput.textContent);
+			outputButton.disabled = true;
+		}
+		importButton.addEventListener('click', generateXML);
+		rulesButton.addEventListener('click', generateXML);
+		yearsButton.addEventListener('click', generateXML);
+		xmlInput.addEventListener('input',() => importButton.disabled = false);
+		rulesSection.addEventListener('input', generateXML);
+		yearsSection.addEventListener('input', generateXML);
+		document.querySelectorAll('input').forEach(input => input.addEventListener('input', generateXML));
+		generateXML();
+		
+		function dateToCal(date,cal) {
+			switch(cal) {
+				case "gregr": {
+					let xA = date+365;
+					let xB = Math.floor(xA/146097);
+					let xC = xA-xB*146097-1;
+					let xD = Math.max(Math.floor(xC/36524),0);
+					let xE = xC-xD*36524+1;
+					let xF = Math.max(Math.floor(xE/365.25),0);
+					let xG = xE-Math.floor(xF*365.25);
+					let dY = xB*400+xD*100+xF;
+					let xH = isLeapYear("gregr",dY);
+					let dM = 0;
+					let dD = 0;
+					if (xG >= 60) {
+						if (xG<91) {
+							dM = 3; dD = xG-59;
+						} else if (xG<121) {
+							dM = 4; dD = xG-90;
+						} else if (xG<152) {
+							dM = 5; dD = xG-120;
+						} else if (xG<182) {
+							dM = 6; dD = xG-151;
+						} else if (xG<213) {
+							dM = 7; dD = xG-181;
+						} else if (xG<244) {
+							dM = 8; dD = xG-212;
+						} else if (xG<274) {
+							dM = 9; dD = xG-243;
+						} else if (xG<305) {
+							dM = 10; dD = xG-273;
+						} else if (xG<335) {
+							dM = 11; dD = xG-304;
+						} else {
+							dM = 12; dD = xG-334;
+						}
+					} else {
+						dM = (xG+xH>31?2:1);
+						dD = (xG+xH>31?xG+xH-31:xG+xH);
+					}
+					return ["gregr",dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
+				}
+				case "julin": {
+					let dY = 0;
+					if (date>0) {
+						dY = Math.floor((date+367)/365.25)
+					} else if (date>-2557) {
+						dY = Math.floor((date+366)/365)
+					} else {
+						dY = Math.floor((date+365)/365.333333333)
+					}
+					let xA = 0;
+					if (date>0) {
+						xA = date+367-Math.floor(dY*365.25);
+					} else if (date>-2557) {
+						xA = date+367-dY*365;
+					} else {
+						xA = date+365+365-Math.floor((dY+1)*365.333333333);
+					}
+					let xB = isLeapYear("julin",dY);
+
+					let dM = 0;
+					let dD = 0;
+					if (xA >= 60) {
+						if (xA<91) {
+							dM = 3; dD = xA-59;
+						} else if (xA<121) {
+							dM = 4; dD = xA-90;
+						} else if (xA<152) {
+							dM = 5; dD = xA-120;
+						} else if (xA<182) {
+							dM = 6; dD = xA-151;
+						} else if (xA<213) {
+							dM = 7; dD = xA-181;
+						} else if (xA<244) {
+							dM = 8; dD = xA-212;
+						} else if (xA<274) {
+							dM = 9; dD = xA-243;
+						} else if (xA<305) {
+							dM = 10; dD = xA-273;
+						} else if (xA<335) {
+							dM = 11; dD = xA-304;
+						} else {
+							dM = 12; dD = xA-334;
+						}
+					} else {
+						dM = (xA+xB>31?2:1);
+						dD = (xA+xB>31?xA+xB-31:xA+xB);
+					}
+					return ["julin",dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
+				}
+				default:
+					throw Error("Unsupported type in dateToCal ('"+cal+"')");
+			}
+		}
+		function calToDate(cal,year,month,day) {
+			switch(cal) {
+				case "gregr":
+					return (year-1)*365+Math.floor((year-1)/4)-Math.floor((year-1)/100)+Math.floor((year-1)/400)+daysElapsed("gregr",year,month)+day;
+				case "julin":
+					if (year>0) {
+						return (year-1)*365+Math.floor((year-1)/4)+daysElapsed("julin",year,month)+day-2;
+					} else if (year>-7) {
+						return (year-1)*365+daysElapsed("julin",year,month)+day-2;
+					} else {
+						return (year-1)*365+Math.floor(year/3)+2+daysElapsed("julin",year,month)+day-2;
+					}
+				default:
+					throw Error("Unsupported type in calToDate ('"+cal+"')");
+			}
+		}
+		function isLeapYear(cal,year) {
+			switch(cal) {
+				case "gregr":
+				case "swedi":
+					return (year.mod(4) === 0 && year.mod(100) !== 0) || (year.mod(400) === 0);
+				case "julin":
+					if (year>0) {
+						return year.mod(4) === 0;
+					} else if (year>-7) {
+						return 0;
+					} else {
+						return (year+1).mod(3) === 0;
+					}
+				default:
+					throw Error("Unsupported type in isLeapYear ('"+cal+"')");
+			}
+		}
+		function daysElapsed(cal,year,month) {
+			switch(cal) {
+				case "julin":
+				case "gregr":
+				case "swedi":
+					const cumul = [0,31,59,90,120,151,181,212,243,273,304,334,365];
+					if (isLeapYear(cal,year) && month>2) {
+						return cumul[month-1]+1;
+					} else {
+						return cumul[month-1];
+					}
+				default:
+					throw Error("Unsupported type in daysElapsed ('"+cal+"')");
+			}
+		}
+		function daysInMonth(cal,year,month) {
+			switch(cal) {
+				case "julin":
+				case "gregr":
+				case "swedi":
+					const cumul = [31,isLeapYear(cal,year)?29:28,31,30,31,30,31,31,30,31,30,31];
+					return cumul[month-1];
+				default:
+					throw Error("Unsupported type in daysElapsed ('"+cal+"')");
+			}
+		}
+		
+		function datetimeString(cal,date,time,offset) {
 			dateResult = "??? ????-??-??";
 			timeResult = "??:??:??";
-			date = parseInt(date);
-			time = parseInt(time)+parseInt(offset);
+			time = time+offset;
 			if (time < 0) {
 				date -= 1;
 				time += 86400;
@@ -892,15 +849,15 @@
 			}
 			
 			/* DATE */
-			if (calendar == "gregr") {
+			if (cal == "gregr") {
 				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 				let calResult = dateToCal(date,"gregr");
 				dateResult = cW[calResult[4]]+" "+calResult[1]+"-"+(calResult[2]<10?"0":"")+calResult[2]+"-"+(calResult[3]<10?"0":"")+calResult[3];
-			} else if (calendar == "julin") {
+			} else if (cal == "julin") {
 				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 				let calResult = dateToCal(date,"julin");
 				dateResult = cW[calResult[4]]+" "+calResult[1]+"-"+(calResult[2]<10?"0":"")+calResult[2]+"-"+(calResult[3]<10?"0":"")+calResult[3];
-			} else if (calendar == "swedi") {
+			} else if (cal == "swedi") {
 				const cM = [0,31,59,90,120,151,181,212,243,273,304,334,365];
 				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 				
@@ -971,13 +928,9 @@
 			}
 			
 			/* TIME */
-			if (calendarTime[calendar] == "24 hours") {
-				let tH = Math.floor(time/3600);
-				let tM = Math.floor((time-tH*3600)/60);
-				let tS = (time-tH*3600-tM*60);
-				
-				timeResult = (tH<10?"0":"")+tH+":"+(tM<10?"0":"")+tM+":"+(tS<10?"0":"")+tS;
-			} else if (calendarTime[calendar] == "8 stounds") {
+			if (calendarTime[cal] == "24 hours") {
+				timeResult = secondsString(time);
+			} else if (calendarTime[cal] == "8 stounds") {
 				let tH = Math.floor(time/10800);
 				let tM = Math.floor((time-tH*10800)/5400);
 				let tS = Math.floor(((time-tH*10800-tM*5400)/5400)*100000);
@@ -993,186 +946,7 @@
 			
 			return (tH<10?"0":"")+tH+":"+(tM<10?"0":"")+tM+":"+(tS<10?"0":"")+tS;
 		}
-		function generateXML() {
-			const countryFullName = countryNames[country.value] || ((country.value === "ZZ") ? "" : country.value);
-			const subdivisionFullName = subdivisionNames[country.value]?.[subdivision.value] || subdivision.value;
-			const comment = `<!-- ${countryFullName ? countryFullName + ' / ' : ''}${subdivisionFullName ? subdivisionFullName + ' / ' : ''}${locName.value} -->`;
-			const lat = Number(latitude.value).toFixed(7);
-			const long = Number(longitude.value).toFixed(7);
-
-			let xml = `<location id="${locID.value}" c="${country.value}" s="${subdivision.value}" d="${district.value}" lat="${lat}" long="${long}"> ${comment}\n`;
-			xml += '	<rules>\n';
-
-			const rules = rulesSection.getElementsByClassName('rule');
-			Array.from(rules).forEach(rule => {
-				const inputs = rule.getElementsByTagName('input');
-				xml += `		<rule day="${inputs[0].value}" time="${inputs[1].value}" cal="${inputs[2].value}" off="${inputs[3].value}" tz="${inputs[4].value}"`;
-				if (inputs[5].checked) {
-					xml += ` dst="1" dstoff="${inputs[6].value}" dsttz="${inputs[7].value}" dstsd="${inputs[8].value}" dstsm="${inputs[9].value}" dstso="${inputs[10].value}" dsted="${inputs[11].value}" dstem="${inputs[12].value}" dsteo="${inputs[13].value}"`;
-				} else {
-					xml += ' dst="0"';
-				}
-				xml += '/>\n';
-			});
-
-			xml += '	</rules>\n	<years>\n';
-
-			const years = yearsSection.getElementsByClassName('year');
-			Array.from(years).forEach(year => {
-				const inputs = year.getElementsByTagName('input');
-				xml += `		<year id="${inputs[0].value}" calA="${inputs[1].value}" calB="${inputs[2].value}" Astart="${inputs[3].value}" Aend="${inputs[4].value}"`;
-				if (inputs[2].value.trim()) {
-					xml += ` Bstart="${inputs[5].value}" Bend="${inputs[6].value}" app="${inputs[7].checked ? '1' : '0'}"`;
-				}
-				xml += '/>\n';
-			});
-
-			xml += '	</years>\n</location>';
-			xmlOutput.textContent = xml;
-			
-			generateResults();
-			outputButton.disabled = false;
-		}
-		function copyXML() {
-			navigator.clipboard.writeText(xmlOutput.textContent);
-			outputButton.disabled = true;
-		}
-		importButton.addEventListener('click', generateXML);
-		rulesButton.addEventListener('click', generateXML);
-		yearsButton.addEventListener('click', generateXML);
-		xmlInput.addEventListener('input',() => importButton.disabled = false);
-		rulesSection.addEventListener('input', generateXML);
-		yearsSection.addEventListener('input', generateXML);
-		document.querySelectorAll('input').forEach(input => input.addEventListener('input', generateXML));
-		generateXML();
 		
-		function dateToCal(date,cal) {
-			switch(cal) {
-				case "gregr": {
-					let xA = date+365;
-					let xB = Math.floor(xA/146097);
-					let xC = xA-xB*146097-1;
-					let xD = Math.max(Math.floor(xC/36524),0);
-					let xE = xC-xD*36524+1;
-					let xF = Math.max(Math.floor(xE/365.25),0);
-					let xG = xE-Math.floor(xF*365.25);
-					let dY = xB*400+xD*100+xF;
-					let xH = isLeapYear(dY,"gregr");
-					let dM = 0;
-					let dD = 0;
-					if (xG >= 60) {
-						if (xG<91) {
-							dM = 3; dD = xG-59;
-						} else if (xG<121) {
-							dM = 4; dD = xG-90;
-						} else if (xG<152) {
-							dM = 5; dD = xG-120;
-						} else if (xG<182) {
-							dM = 6; dD = xG-151;
-						} else if (xG<213) {
-							dM = 7; dD = xG-181;
-						} else if (xG<244) {
-							dM = 8; dD = xG-212;
-						} else if (xG<274) {
-							dM = 9; dD = xG-243;
-						} else if (xG<305) {
-							dM = 10; dD = xG-273;
-						} else if (xG<335) {
-							dM = 11; dD = xG-304;
-						} else {
-							dM = 12; dD = xG-334;
-						}
-					} else {
-						dM = (xG+xH>31?2:1);
-						dD = (xG+xH>31?xG+xH-31:xG+xH);
-					}
-					return ["gregr",dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
-				}
-				case "julin": {
-					let dY = 0;
-					if (date>0) {
-						dY = Math.floor((date+367)/365.25)
-					} else if (date>-2557) {
-						dY = Math.floor((date+366)/365)
-					} else {
-						dY = Math.floor((date+365)/365.333333333)
-					}
-					let xA = 0;
-					if (date>0) {
-						xA = date+367-Math.floor(dY*365.25);
-					} else if (date>-2557) {
-						xA = date+367-dY*365;
-					} else {
-						xA = date+365+365-Math.floor((dY+1)*365.333333333);
-					}
-					let xB = isLeapYear(dY,"julin");
-
-					let dM = 0;
-					let dD = 0;
-					if (xA >= 60) {
-						if (xA<91) {
-							dM = 3; dD = xA-59;
-						} else if (xA<121) {
-							dM = 4; dD = xA-90;
-						} else if (xA<152) {
-							dM = 5; dD = xA-120;
-						} else if (xA<182) {
-							dM = 6; dD = xA-151;
-						} else if (xA<213) {
-							dM = 7; dD = xA-181;
-						} else if (xA<244) {
-							dM = 8; dD = xA-212;
-						} else if (xA<274) {
-							dM = 9; dD = xA-243;
-						} else if (xA<305) {
-							dM = 10; dD = xA-273;
-						} else if (xA<335) {
-							dM = 11; dD = xA-304;
-						} else {
-							dM = 12; dD = xA-334;
-						}
-					} else {
-						dM = (xA+xB>31?2:1);
-						dD = (xA+xB>31?xA+xB-31:xA+xB);
-					}
-					return ["julin",dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
-				}
-				default:
-					throw Error("Unsupported type in dateToCal ('"+cal+"')");
-			}
-		}
-		function isLeapYear(year,cal) {
-			switch(cal) {
-				case "gregr":
-				case "swedi":
-					return (year.mod(4) === 0 && year.mod(100) !== 0) || (year.mod(400) === 0);
-				case "julin":
-					if (year>0) {
-						return year.mod(4) === 0;
-					} else if (year>-7) {
-						return 0;
-					} else {
-						return (year+1).mod(3) === 0;
-					}
-				default:
-					throw Error("Unsupported type in isLeapYear ('"+cal+"')");
-			}
-		}
-		function daysElapsed(year,month,cal) {
-			switch(cal) {
-				case "julin":
-				case "gregr":
-				case "swedi":
-					const cumul = [0,31,59,90,120,151,181,212,243,273,304,334,365];
-					if (isLeapYear(year,cal)) {
-						return cumul[month-1]+1;
-					} else {
-						return cumul[month-1];
-					}
-				default:
-					throw Error("Unsupported type in daysElapsed ('"+cal+"')");
-			}
-		}
 	</script>
 </body>
 </html>
