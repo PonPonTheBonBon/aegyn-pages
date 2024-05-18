@@ -515,7 +515,7 @@
 							dateStringPast = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[6]);
 							offset = values[3]<0?"UTC-"+secondsString(0-values[3]):"UTC+"+secondsString(values[3]);
 							tzCode = timezoneCode[values[4]];
-							result += `<tr><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
+							result += `<tr class="summertime"><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
 						} else { // summertime begins
 							dateString = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[6]);
 							dateStringPast = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[3]);
