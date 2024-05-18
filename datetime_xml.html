@@ -948,7 +948,7 @@
 		}
 		function fixInputXML() {
 			if (xmlInput.value.charAt(0) == '"') {
-				xmlInput.value = xmlInput.value.replace('""','¤').replace('"','').replace('¤','"');
+				xmlInput.value = xmlInput.value.replaceAll('""','¤').replaceAll('"','').replaceAll('¤','"');
 			}
 			importButton.disabled = false;
 		}
