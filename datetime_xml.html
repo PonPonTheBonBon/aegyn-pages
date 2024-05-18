@@ -476,7 +476,7 @@
 			const lon = Number(longitude.value).toFixed(7);
 			let result = `<table><tr><th>code<\/th><th>name<\/th><th>region<\/th><th>latitude<\/th><th>longitude<\/th><\/tr>
 			<tr><td>${locID.value}<\/td><td>${locName.value}<\/td><td>${regionCode}<\/td><td>${lat}<\/td><td>${lon}<\/td><\/table>`
-			result += `<table><tr><th colspan="2">internal<\/th><th>from date<\/th><th><\/th><th>to date<\/th><th>calendar<\/th><th>offset<\/th><th colspan="2">timezone<\/th><\/tr>`;
+			result += `<table><tr><th colspan="2">internal<\/th><th style="width: 23ch;">from date<\/th><th><\/th><th style="width: 23ch;">to date<\/th><th>calendar<\/th><th style="width: 12ch;">offset<\/th><th colspan="2">timezone<\/th><\/tr>`;
 			const rules = rulesSection.getElementsByClassName('rule');
 			Array.from(rules).forEach((rule, i, array) => {
 				/* load variables for current, future and past entry */
