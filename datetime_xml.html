@@ -16,11 +16,15 @@
 			padding-right: 18px;
 		}
 		tr.result_core td {
-			background: #DDD;
+			background: #EEE;
 			border-bottom: 1px solid #BBB;
 		}
 		tr.summertime td:first-child {
 			border-left: 4px solid #F3872F;
+		}
+		tr.summertime_core td:first-child {
+			border-left: 4px solid #F3872F;
+			border-bottom-left-radius: 5px;
 		}
 		.section {
 			margin-bottom: 20px;
@@ -503,9 +507,11 @@
 				let calendar = calendarNames[values[2]];
 				let offset = "";
 				let tzCode = "";
+				let tr_class_append = "";
 				
 				/* print out each time it changes during summertime */
 				if (inputs[5].checked) {
+					tr_class_append += " summertime_core";
 					let maxDate = 748747; // 2050-12-31
 					let maxTime = 86399; // last second of the day
 					if (valuesFutr !== null) {
@@ -538,12 +544,12 @@
 				if (valuesPast != null) {
 					dateStringPast = datetimeString(valuesPast[2],values[0],values[1]-1,valuesPast[3]);
 					if (values[2] == valuesPast[2] && values[3] == valuesPast[3] && values[4] == valuesPast[4]) {
-						result += `<tr class="result_core"><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td colspan="4" style="color:rgba(0,0,0,0.5)"><i>only change in the rule for when summertime occurs<\/i><\/td><\/tr>`;
+						result += `<tr class="result_core${tr_class_append}"><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td colspan="4" style="color:rgba(0,0,0,0.5)"><i>only change in the rule for when summertime occurs<\/i><\/td><\/tr>`;
 					} else {
-						result += `<tr class="result_core"><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
+						result += `<tr class="result_core${tr_class_append}"><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
 					}
 				} else {
-					result += `<tr class="result_core"><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td><\/td><td><\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
+					result += `<tr class="result_core${tr_class_append}"><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td><\/td><td><\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
 				}
 			});
 			result += `<\/table>`;
