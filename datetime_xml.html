@@ -26,6 +26,10 @@
 			border-left: 4px solid #F3872F;
 			border-bottom-left-radius: 10px;
 		}
+		tr.summertime_initial td:first-child {
+    border-image: linear-gradient(to bottom, rgba(0,0,0,0) 25%,#F3872F 25%);
+    	border-image-slice: 1;
+		}
 		.section {
 			margin-bottom: 20px;
 		}
@@ -508,6 +512,7 @@
 				let offset = "";
 				let tzCode = "";
 				let tr_class_append = "";
+				let tr_summer_append = "";
 				
 				/* print out each time it changes during summertime */
 				if (inputs[5].checked) {
@@ -520,18 +525,20 @@
 					}
 					let summerArray = getSummertimeArray(values[2],maxDate,maxTime,values[0],values[1],values[3],values[6],values[8],values[9],values[10],values[11],values[12],values[13]);
 					for (let i=0;i<summerArray.length;i+=1) {
+						tr_summer_append = "";
+						if (i===0) {tr_summer_append = " summertime_initial";}
 						if (summerArray[i][2]) { // summertime ends
 							dateString = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[3]);
 							dateStringPast = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[6]);
 							offset = values[3]<0?"UTC-"+secondsString(0-values[3]):"UTC+"+secondsString(values[3]);
 							tzCode = timezoneCode[values[4]];
-							result += `<tr class="summertime"><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
+							result += `<tr class="summertime${tr_summer_append}"><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
 						} else { // summertime begins
 							dateString = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[6]);
 							dateStringPast = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[3]);
 							offset = values[6]<0?"UTC-"+secondsString(0-values[6]):"UTC+"+secondsString(values[6]);
 							tzCode = timezoneCode[values[7]];
-							result += `<tr class="summertime"><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[7]})<\/td><\/tr>`;
+							result += `<tr class="summertime${tr_summer_append}"><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[7]})<\/td><\/tr>`;
 						}
 					}
 				}
