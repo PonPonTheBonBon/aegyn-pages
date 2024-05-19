@@ -15,6 +15,10 @@
 		th, td {
 			padding-right: 18px;
 		}
+		tr.result_core {
+			background: #BBB;
+			border-bottom: 1px solid #767676;
+		}
 		tr.summertime {
 			border-left: 4px solid #F3872F;
 		}
@@ -534,12 +538,12 @@
 				if (valuesPast != null) {
 					dateStringPast = datetimeString(valuesPast[2],values[0],values[1]-1,valuesPast[3]);
 					if (values[2] == valuesPast[2] && values[3] == valuesPast[3] && values[4] == valuesPast[4]) {
-						result += `<tr><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td colspan="4" style="color:rgba(0,0,0,0.5)"><i>only change in the rule for when summertime occurs<\/i><\/td><\/tr>`;
+						result += `<tr class="result_core"><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td colspan="4" style="color:rgba(0,0,0,0.5)"><i>only change in the rule for when summertime occurs<\/i><\/td><\/tr>`;
 					} else {
-						result += `<tr><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
+						result += `<tr class="result_core"><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
 					}
 				} else {
-					result += `<tr><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td><\/td><td><\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
+					result += `<tr class="result_core"><td align="right"><b>${values[0]}<\/b><\/td><td align="right"><b>${values[1]}<\/b><\/td><td><\/td><td><\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
 				}
 			});
 			result += `<\/table>`;
