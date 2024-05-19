@@ -7,7 +7,7 @@
 		body {
 			font-family: Arial, sans-serif;
 			margin: 20px;
-			width: 140ch;
+			min-width: 125ch;
 		}
 		h2 {
 			display: block;
@@ -21,6 +21,10 @@
 		}
 		tr.summertime td:first-child {
 			border-left: 4px solid #F3872F;
+		}
+		tr.summertime_core td {
+			background: #F6E4D6;
+			border-bottom: 1px solid #F3872F;
 		}
 		tr.summertime_core td:first-child {
 			border-left: 4px solid #F3872F;
@@ -492,7 +496,7 @@
 			const lon = Number(longitude.value).toFixed(7);
 			let result = `<table cellspacing="0"><tr><th>code<\/th><th>name<\/th><th>region<\/th><th>latitude<\/th><th>longitude<\/th><\/tr>
 			<tr><td>${locID.value}<\/td><td>${locName.value}<\/td><td>${regionCode}<\/td><td>${lat}<\/td><td>${lon}<\/td><\/table>`
-			result += `<table cellspacing="0"><tr><th colspan="2">internal<\/th><th style="width: 23ch;">from date<\/th><th><\/th><th style="width: 23ch;">to date<\/th><th>calendar<\/th><th style="width: 12ch;">offset<\/th><th colspan="2">timezone<\/th><\/tr>`;
+			result += `<table cellspacing="0"><tr><th colspan="2">internal<\/th><th style="width: 25ch;">from date<\/th><th><\/th><th style="width: 25ch;">to date<\/th><th>calendar<\/th><th style="width: 12ch;">offset<\/th><th colspan="2">timezone<\/th><\/tr>`;
 			const rules = rulesSection.getElementsByClassName('rule');
 			Array.from(rules).forEach((rule, i, array) => {
 				/* load variables for current, future and past entry */
