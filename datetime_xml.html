@@ -15,11 +15,11 @@
 		th, td {
 			padding-right: 18px;
 		}
-		tr.result_core {
-			background: #BBB;
-			border-bottom: 1px solid #767676;
+		tr.result_core td {
+			background: #DDD;
+			border-bottom: 1px solid #BBB;
 		}
-		tr.summertime {
+		tr.summertime td:first-child {
 			border-left: 4px solid #F3872F;
 		}
 		.section {
@@ -482,9 +482,9 @@
 			let regionCode = country.value+(subdivision.value?"-"+subdivision.value:"")+(district.value?"-"+district.value:"");
 			const lat = Number(latitude.value).toFixed(7);
 			const lon = Number(longitude.value).toFixed(7);
-			let result = `<table><tr><th>code<\/th><th>name<\/th><th>region<\/th><th>latitude<\/th><th>longitude<\/th><\/tr>
+			let result = `<table cellspacing="0"><tr><th>code<\/th><th>name<\/th><th>region<\/th><th>latitude<\/th><th>longitude<\/th><\/tr>
 			<tr><td>${locID.value}<\/td><td>${locName.value}<\/td><td>${regionCode}<\/td><td>${lat}<\/td><td>${lon}<\/td><\/table>`
-			result += `<table><tr><th colspan="2">internal<\/th><th style="width: 23ch;">from date<\/th><th><\/th><th style="width: 23ch;">to date<\/th><th>calendar<\/th><th style="width: 12ch;">offset<\/th><th colspan="2">timezone<\/th><\/tr>`;
+			result += `<table cellspacing="0"><tr><th colspan="2">internal<\/th><th style="width: 23ch;">from date<\/th><th><\/th><th style="width: 23ch;">to date<\/th><th>calendar<\/th><th style="width: 12ch;">offset<\/th><th colspan="2">timezone<\/th><\/tr>`;
 			const rules = rulesSection.getElementsByClassName('rule');
 			Array.from(rules).forEach((rule, i, array) => {
 				/* load variables for current, future and past entry */
