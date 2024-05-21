@@ -206,6 +206,7 @@
 			"julin": "Julian",
 			"maria": "Marian",
 			"mariN": "Marian (Norse)",
+			"mariR": "Marian (Roman)",
 			"roman": "Roman",
 			"rumii": "Rumi",
 			"swedi": "Swedish"
@@ -230,6 +231,7 @@
 			"julin": "Western",
 			"maria": "Western",
 			"mariN": "Western",
+			"mariR": "Roman",
 			"roman": "Roman",
 			"rumii": "Hijrah",
 			"swedi": "Western"
@@ -254,6 +256,7 @@
 			"julin": "24 hours",
 			"maria": "24 hours",
 			"mariN": "8 stounds",
+			"mariR": "24 hours",
 			"roman": "24 hours",
 			"rumii": "24 hours",
 			"swedi": "24 hours"
@@ -534,13 +537,13 @@
 						if (summerArray[i][2]) { // summertime ends
 							dateString = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[3]);
 							dateStringPast = datetimeString(values[2],summerArray[i][0],summerArray[i][1]-1,values[6]);
-							offset = values[3]<0?"UTC-"+secondsString(0-values[3]):"UTC+"+secondsString(values[3]);
+							offset = values[3]<0?"UTC-"+secondsString(0-values[3],"24 hours"):"UTC+"+secondsString(values[3],"24 hours");
 							tzCode = timezoneCode[values[4]];
 							result += `<tr class="summertime${tr_summer_append}"><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[4]})<\/td><\/tr>`;
 						} else { // summertime begins
 							dateString = datetimeString(values[2],summerArray[i][0],summerArray[i][1],values[6]);
 							dateStringPast = datetimeString(values[2],summerArray[i][0],summerArray[i][1]-1,values[3]);
-							offset = values[6]<0?"UTC-"+secondsString(0-values[6]):"UTC+"+secondsString(values[6]);
+							offset = values[6]<0?"UTC-"+secondsString(0-values[6],"24 hours"):"UTC+"+secondsString(values[6],"24 hours");
 							tzCode = timezoneCode[values[7]];
 							result += `<tr class="summertime${tr_summer_append}"><td align="right">${summerArray[i][0]}<\/td><td align="right">${summerArray[i][1]}<\/td><td>${dateStringPast}<\/td><td>→<\/td><td>${dateString}<\/td><td>${calendar}<\/td><td>${offset}<\/td><td>${tzCode}<\/td><td>(${values[7]})<\/td><\/tr>`;
 						}
@@ -550,7 +553,7 @@
 				/* print out the entry itself */
 				dateString = datetimeString(values[2],values[0],values[1],values[3]);
 				dateStringPast = "";
-				offset = values[3]<0?"UTC-"+secondsString(0-values[3]):"UTC+"+secondsString(values[3]);
+				offset = values[3]<0?"UTC-"+secondsString(0-values[3],"24 hours"):"UTC+"+secondsString(values[3],"24 hours");
 				tzCode = timezoneCode[values[4]];
 				if (valuesPast != null) {
 					dateStringPast = datetimeString(valuesPast[2],values[0],values[1]-1,valuesPast[3]);
@@ -620,8 +623,11 @@
 				wd = rule.slice(-3);
 			} else if (rule.match('^D[0-9]{1,2}$')) {
 				type = 0;
-				occ = parseInt(rule.slice(1,rule.length-1));
+				occ = parseInt(rule.slice(1));
 				wd = -1;
+				console.log("rule: "+rule+", occ: "+occ);
+			} else {
+				throw Error("Unsupported type in dayMonthRule ('"+rule+"')");
 			}
 			if (cal == "gregr" || cal == "julin") {
 				wd = weekdayValue[wd];
@@ -720,7 +726,7 @@
 					let xF = Math.max(Math.floor(xE/365.25),0);
 					let xG = xE-Math.floor(xF*365.25);
 					let dY = xB*400+xD*100+xF;
-					let xH = isLeapYear("gregr",dY);
+					let xH = isLeapYear(cal,dY);
 					let dM = 0;
 					let dD = 0;
 					if (xG >= 60) {
@@ -749,7 +755,7 @@
 						dM = (xG+xH>31?2:1);
 						dD = (xG+xH>31?xG+xH-31:xG+xH);
 					}
-					return ["gregr",dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
+					return [cal,dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
 				}
 				case "julin": {
 					let dY = 0;
@@ -768,7 +774,7 @@
 					} else {
 						xA = date+365+365-Math.floor((dY+1)*365.333333333);
 					}
-					let xB = isLeapYear("julin",dY);
+					let xB = isLeapYear(cal,dY);
 
 					let dM = 0;
 					let dD = 0;
@@ -798,7 +804,159 @@
 						dM = (xA+xB>31?2:1);
 						dD = (xA+xB>31?xA+xB-31:xA+xB);
 					}
-					return ["julin",dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
+					return [cal,dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
+				}
+				case "maria":
+				case "mariN": {
+					let dY = 0;
+					if (date>0) {
+						dY = Math.floor((date+367)/365.25)
+					} else if (date>-2557) {
+						dY = Math.floor((date+366)/365)
+					} else {
+						dY = Math.floor((date+365)/365.333333333)
+					}
+					let xA = 0;
+					if (date>0) {
+						xA = date+367-Math.floor(dY*365.25);
+					} else if (date>-2557) {
+						xA = date+367-dY*365;
+					} else {
+						xA = date+365+365-Math.floor((dY+1)*365.333333333);
+					}
+					let xB = isLeapYear(cal,dY);
+
+					let dM = 0;
+					let dD = 0;
+					if (xA >= 60) {
+						if (xA<91) {
+							dM = 3; dD = xA-59;
+						} else if (xA<121) {
+							dM = 4; dD = xA-90;
+						} else if (xA<152) {
+							dM = 5; dD = xA-120;
+						} else if (xA<182) {
+							dM = 6; dD = xA-151;
+						} else if (xA<213) {
+							dM = 7; dD = xA-181;
+						} else if (xA<244) {
+							dM = 8; dD = xA-212;
+						} else if (xA<274) {
+							dM = 9; dD = xA-243;
+						} else if (xA<305) {
+							dM = 10; dD = xA-273;
+						} else if (xA<335) {
+							dM = 11; dD = xA-304;
+						} else {
+							dM = 12; dD = xA-334;
+						}
+					} else {
+						dM = (xA+xB>31?2:1);
+						dD = (xA+xB>31?xA+xB-31:xA+xB);
+					}
+					if (dM < 3 || (dM === 3 && dD < 25)) {
+						dY -= 1;
+					}
+					return [cal,dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
+				}
+				case "bruml": {
+					let dY = 0;
+					if (date>0) {
+						dY = Math.floor((date+367)/365.25)
+					} else if (date>-2557) {
+						dY = Math.floor((date+366)/365)
+					} else {
+						dY = Math.floor((date+365)/365.333333333)
+					}
+					let xA = 0;
+					if (date>0) {
+						xA = date+367-Math.floor(dY*365.25);
+					} else if (date>-2557) {
+						xA = date+367-dY*365;
+					} else {
+						xA = date+365+365-Math.floor((dY+1)*365.333333333);
+					}
+					let xB = isLeapYear(cal,dY);
+
+					let dM = 0;
+					let dD = 0;
+					if (xA >= 60) {
+						if (xA<91) {
+							dM = 3; dD = xA-59;
+						} else if (xA<121) {
+							dM = 4; dD = xA-90;
+						} else if (xA<152) {
+							dM = 5; dD = xA-120;
+						} else if (xA<182) {
+							dM = 6; dD = xA-151;
+						} else if (xA<213) {
+							dM = 7; dD = xA-181;
+						} else if (xA<244) {
+							dM = 8; dD = xA-212;
+						} else if (xA<274) {
+							dM = 9; dD = xA-243;
+						} else if (xA<305) {
+							dM = 10; dD = xA-273;
+						} else if (xA<335) {
+							dM = 11; dD = xA-304;
+						} else {
+							dM = 12; dD = xA-334;
+						}
+					} else {
+						dM = (xA+xB>31?2:1);
+						dD = (xA+xB>31?xA+xB-31:xA+xB);
+					}
+					if (dM === 12 && dD > 24) {
+						dY += 1;
+					}
+					return [cal,dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
+				}
+				case "swedi": {
+					let xA = date+355;
+					if (date > 625000) {
+						xA = date+356;
+					}
+					let xB = Math.floor(xA/146097);
+					let xC = xA-xB*146097-1;
+					let xD = Math.max(Math.floor(xC/36524),0);
+					let xE = xC-xD*36524+1;
+					let xF = Math.max(Math.floor(xE/365.25),0);
+					let xG = xE-Math.floor(xF*365.25);
+					let dY = xB*400+xD*100+xF;
+					let xH = isLeapYear(cal,dY);
+					let dM = 0;
+					let dD = 0;
+					if (xG >= 60) {
+						if (xG<91) {
+							dM = 3; dD = xG-59;
+						} else if (xG<121) {
+							dM = 4; dD = xG-90;
+						} else if (xG<152) {
+							dM = 5; dD = xG-120;
+						} else if (xG<182) {
+							dM = 6; dD = xG-151;
+						} else if (xG<213) {
+							dM = 7; dD = xG-181;
+						} else if (xG<244) {
+							dM = 8; dD = xG-212;
+						} else if (xG<274) {
+							dM = 9; dD = xG-243;
+						} else if (xG<305) {
+							dM = 10; dD = xG-273;
+						} else if (xG<335) {
+							dM = 11; dD = xG-304;
+						} else {
+							dM = 12; dD = xG-334;
+						}
+					} else {
+						dM = (xG+xH>31?2:1);
+						dD = (xG+xH>31?xG+xH-31:xG+xH);
+					}
+					if (date == 625000) {
+						dM = 2;
+						dD = 30;
+					}
+					return [cal,dY,dM,dD,date.mod(7)]; // calendar, year, month, day, weekday
 				}
 				default:
 					throw Error("Unsupported type in dateToCal ('"+cal+"')");
@@ -826,6 +984,10 @@
 				case "swedi":
 					return (year.mod(4) === 0 && year.mod(100) !== 0) || (year.mod(400) === 0);
 				case "julin":
+				case "maria":
+				case "mariN":
+				case "bruml":
+				case "brumR":
 					if (year>0) {
 						return year.mod(4) === 0;
 					} else if (year>-7) {
@@ -877,102 +1039,43 @@
 			}
 			
 			/* DATE */
-			if (cal == "gregr") {
+			if (cal == "gregr" || cal == "julin" || cal == "maria" || cal == "mariN" || cal == "bruml" || cal == "swedi") {
 				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-				let calResult = dateToCal(date,"gregr");
+				let calResult = dateToCal(date,cal);
 				dateResult = cW[calResult[4]]+" "+calResult[1]+"-"+(calResult[2]<10?"0":"")+calResult[2]+"-"+(calResult[3]<10?"0":"")+calResult[3];
-			} else if (cal == "julin") {
-				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-				let calResult = dateToCal(date,"julin");
-				dateResult = cW[calResult[4]]+" "+calResult[1]+"-"+(calResult[2]<10?"0":"")+calResult[2]+"-"+(calResult[3]<10?"0":"")+calResult[3];
-			} else if (cal == "swedi") {
-				const cM = [0,31,59,90,120,151,181,212,243,273,304,334,365];
-				const cW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-				
-				let xA = date+355;
-				if (date > 625000) {
-					xA = date+356;
-				}
-				let xB = Math.floor(xA/146097);
-				let xC = xA-xB*146097-1;
-				let xD = Math.max(Math.floor(xC/36524),0);
-				let xE = xC-xD*36524+1;
-				let xF = Math.max(Math.floor(xE/365.25),0);
-				let xG = xE-Math.floor(xF*365.25);
-				let xH = 0;
-
-				let dY = xB*400+xD*100+xF;
-				if (dY == 1712) {
-					xH = 2;
-				} else if (dY.mod(400) == 0 || (dY.mod(4) == 0 && dY.mod(100) != 0)) {
-					xH = 1;
-				}
-				let dM = 0;
-				let dD = 0;
-				if (xG >= 60) {
-					if (xG<91) {
-						dM = 3;
-						dD = xG-59;
-					} else if (xG<121) {
-						dM = 4;
-						dD = xG-90;
-					} else if (xG<152) {
-						dM = 5;
-						dD = xG-120;
-					} else if (xG<182) {
-						dM = 6;
-						dD = xG-151;
-					} else if (xG<213) {
-						dM = 7;
-						dD = xG-181;
-					} else if (xG<244) {
-						dM = 8;
-						dD = xG-212;
-					} else if (xG<274) {
-						dM = 9;
-						dD = xG-243;
-					} else if (xG<305) {
-						dM = 10;
-						dD = xG-273;
-					} else if (xG<335) {
-						dM = 11;
-						dD = xG-304;
-					} else {
-						dM = 12;
-						dD = xG-334;
-					}
-				} else {
-					dM = (xG+xH>31?2:1);
-					dD = (xG+xH>31?xG+xH-31:xG+xH);
-				}
-				if (date == 625000) {
-					dM = 2;
-					dD = 30;
-				}
-
-				let dE = cW[date.mod(7)];
-				
-				dateResult = dE+" "+dY+"-"+(dM<10?"0":"")+dM+"-"+(dD<10?"0":"")+dD;
+			} else if (cal == "frenc" || cal == "frenD") {
+				const cW = ["Pri","Duo","Tri","Qua","Qui","Sex","Sep","Oct","Non","Dec"];
+				//let calResult = dateToCal(date,cal);
+				//dateResult = cW[calResult[4]]+" "+calResult[1]+"-"+(calResult[2]<10?"0":"")+calResult[2]+"-"+(calResult[3]<10?"0":"")+calResult[3];
 			}
 			
 			/* TIME */
-			if (calendarTime[cal] == "24 hours") {
-				timeResult = secondsString(time);
-			} else if (calendarTime[cal] == "8 stounds") {
-				let tH = Math.floor(time/10800);
-				let tM = Math.floor((time-tH*10800)/5400);
-				let tS = Math.floor(((time-tH*10800-tM*5400)/5400)*100000);
-				timeResult = (tH+1)+(tM?"B":"A")+","+tS.toString().padStart(5, '0');
-			}
+			timeResult = secondsString(time,calendarTime[cal]);
 			
 			return dateResult+" "+timeResult;
 		}
-		function secondsString(seconds) {
-			let tH = Math.floor(seconds/3600);
-			let tM = Math.floor((seconds-tH*3600)/60);
-			let tS = (seconds-tH*3600-tM*60);
-			
-			return (tH<10?"0":"")+tH+":"+(tM<10?"0":"")+tM+":"+(tS<10?"0":"")+tS;
+		function secondsString(seconds,style) {
+			if (style == "24 hours") {
+				let tH = Math.floor(seconds/3600);
+				let tM = Math.floor((seconds-tH*3600)/60);
+				let tS = (seconds-tH*3600-tM*60);
+				
+				return (tH<10?"0":"")+tH+":"+(tM<10?"0":"")+tM+":"+(tS<10?"0":"")+tS;
+			} else if (style == "10 hours") {
+				let tH = Math.floor(seconds/8640);
+				let tM = Math.floor((seconds-tH*8640)/86.4);
+				let tS = Math.floor(seconds-tH*8640-tM*86.4+0.5);
+				
+				return (tH<10?"0":"")+tH+":"+(tM<10?"0":"")+tM+":"+(tS<10?"0":"")+tS;
+			} else if (style == "8 stounds") {
+				let tH = Math.floor(seconds/10800);
+				let tM = Math.floor((seconds-tH*10800)/5400);
+				let tS = Math.floor(((seconds-tH*10800-tM*5400)/5400)*100000);
+				
+				return (tH+1)+(tM?"B":"A")+","+tS.toString().padStart(5, '0');
+			} else if (style == "86400 s") {
+				return seconds;
+			}
 		}
 		function fixInputXML() {
 			if (xmlInput.value.charAt(0) == '"') {
