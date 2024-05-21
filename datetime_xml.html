@@ -603,28 +603,29 @@
 			return list;
 		}
 		function dayMonthRule(cal,year,month,rule) {
-			let dir = -1;
+			let type = -1;
 			let wd = -1;
 			let occ = -1;
 			let wdfound = -1;
 			if (rule.match('^[1-9][FMSTW][a-z]{2}$')) {
-				dir = 1;
+				type = 1;
 				occ = parseInt(rule.charAt(0));
 				wd = rule.slice(-3);
 			} else if (rule.match('^[LPATQ][FMSTW][a-z]{2}$')) {
-				dir = 2;
+				type = 2;
 				const ruleMap = { /* last, penultimate, antepenultimate, tetraultimate, quintultimate */
 					'L': 1, 'P': 2, 'A': 3, 'T': 4, 'Q': 5
 				};
 				occ = ruleMap[rule.charAt(0)];
 				wd = rule.slice(-3);
+			} else if (rule.match('^D[0-9]{1,2}$')) {
+				type = 0;
+				occ = parseInt(rule.slice(1,rule.length-1));
+				wd = -1;
 			}
 			if (cal == "gregr" || cal == "julin") {
-				const weekdayMap = {
-					"Sun": 0, "Mon": 1, "Tue": 2, "Wed": 3, "Thu": 4, "Fri": 5, "Sat": 6
-				}
-				wd = weekdayMap[wd];
-				if (dir == 1) {
+				wd = weekdayValue[wd];
+				if (type == 1) {
 					const monthLength = daysInMonth(cal,year,month);
 					wdfound = calToDate(cal,year,month,1).mod(7);
 					let day = (wd-wdfound+7).mod(7)+1+(7*(occ-1));
@@ -637,7 +638,7 @@
 						day -= monthLength;
 					};
 					return [cal,year,month,day];
-				} else if (dir == 2) {
+				} else if (type == 2) {
 					const monthLength = daysInMonth(cal,year,month);
 					wdfound = calToDate(cal,year,month,monthLength).mod(7);
 					let day = monthLength-(wdfound-wd+7).mod(7)-(7*(occ-1));
@@ -650,6 +651,8 @@
 						day += daysInMonth(cal,year,month);
 					};
 					return [cal,year,month,day];
+				} else if (type == 0) {
+					return [cal,year,month,occ];
 				}
 			}
 		}
